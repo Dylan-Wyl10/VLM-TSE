@@ -20,10 +20,10 @@ from i24_rcs import I24_RCS    # Requires: pip install git+https://github.com/I2
 hg_cache_file = "WACV2024_hg_save.cpkl" # NOTE: need to change to absolute path
 segment_file   = "Pole-Centered_Segments_Poles_1_48.csv"
 traj_npy       = "MOTION_NEW_TIME.npy"
-bin_size       = 300   # 5 min in seconds
+bin_size       = 900   # 5 min in seconds
 
 # === OUTPUT FILES ===
-output_dir = "traffic_state_groundtruth/"
+output_dir = "traffic_state_groundtruth/15min/"
 output_files = {
     "fwd_speed":    output_dir + "edie_speed.csv",
     "fwd_density":  output_dir + "edie_density.csv",
@@ -39,6 +39,10 @@ output_files = {
 seg_df = pd.read_csv(segment_file).set_index("pole_id")
 segments = {pid: (row["x_start"], row["x_end"]) for pid, row in seg_df.iterrows()}
 pole_ids = [pid for pid in sorted(segments.keys()) if pid != 25]  # Skip pole 25
+
+# === Filtering parameters for optional pole subset output ===
+start, end = 10, 16
+filtered_poles = [pid for pid in pole_ids if start <= pid <= end]
 
 # === 2. Load trajectory data ===
 data = np.load(traj_npy)
@@ -160,5 +164,21 @@ output_map = [
 
 for df, path in output_map:
     df.index.name = "time_bin"
-    df.to_csv(path)
-    print(f"Saved: {path}")
+
+    # Add 'average' row
+    avg_row = df.mean(axis=0, skipna=True).to_frame().T
+    avg_row.index = ["average"]
+    df_full = pd.concat([df, avg_row])
+    df_full.to_csv(path)
+    print(f"Saved full file: {path}")
+
+    # Create and save filtered version
+    df_filtered = df[filtered_poles].copy()
+    avg_filtered = df_filtered.mean(axis=0, skipna=True).to_frame().T
+    avg_filtered.index = ["average"]
+    df_filtered = pd.concat([df_filtered, avg_filtered])
+
+    path_parts = path.rsplit(".csv", 1)
+    filtered_path = f"{path_parts[0]}_{start}_{end}.csv"
+    df_filtered.to_csv(filtered_path)
+    print(f"Saved filtered file: {filtered_path}")
