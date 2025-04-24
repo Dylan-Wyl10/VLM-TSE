@@ -8,12 +8,16 @@ import torch
 import numpy as np
 from huggingface_hub import hf_hub_download
 from transformers import LlavaNextVideoProcessor, LlavaNextVideoForConditionalGeneration
-from transformers import *
+# from transformers import *
 from Dataloader import MultiModalDataset
+import torch
+from torch.utils.data import Dataset, DataLoader
+import os
 
 
 class VLM_TSE_Agent:
     def __init__(self, model_name, data_source, parameter, mode):
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         self.dataset = MultiModalDataset(csv_paths=data_source['tse-param'],
                                          video_dir=data_source['video-dir'],
@@ -21,9 +25,25 @@ class VLM_TSE_Agent:
         self.model = LlavaNextVideoForConditionalGeneration.from_pretrained(
             model_name,
             torch_dtype=torch.float16,
-        ).to(0)
+
+        ).to(self.device)
 
         self.processor = LlavaNextVideoProcessor.from_pretrained(model_name)
+        if not os.path.isdir(data_source['output-dir']):
+            self.dataset._split_videos_with_ffmpeg()
+
+        # model parameters
+        def custom_collat_fn(batch):
+            return batch
+
+        self.data_count = len(self.dataset)
+        self.batch_size = min(self.data_count//4, 16)
+        self.dataloader = DataLoader(self.dataset,
+                                     batch_size=1,
+                                     shuffle=True,
+                                     collate_fn=custom_collat_fn,
+                                     num_workers=2)
+
 
         # model_id = "llava-hf/llava-1.5-7b-hf"
         # self.model = LlavaForConditionalGeneration.from_pretrained(
@@ -34,7 +54,7 @@ class VLM_TSE_Agent:
         #
         # processor = AutoProcessor.from_pretrained(model_id)
 
-    def read_video_pyav(container, indices):
+    def read_video_pyav(self, container, indices):
         '''
         Decode the video with PyAV decoder.
         Args:
@@ -54,34 +74,66 @@ class VLM_TSE_Agent:
                 frames.append(frame)
         return np.stack([x.to_ndarray(format="rgb24") for x in frames])
 
+    def test(self):
+        for batch_id, data in enumerate(self.dataloader):
+            conversation = data[0]['conversation']
+            # print(type(data[0]['conversation'][0]['content'][0]["text"]))
+
+            inputs = self.processor.apply_chat_template(conversation, num_frames=8, add_generation_prompt=True, tokenize=True,
+                                           return_dict=True, return_tensors="pt").to(self.device)
+            # input = self.processor(text=prompt, v)
+            print(type(inputs))
+            output = self.model.generate(**inputs, max_new_tokens=512)
+
+
+            groundtruth = data['groundtruth']
+
+
+
+
     def smalltry(self):
-        conversation = [
-            {
+        # messages = [
+        #     {
+        #         "role": "user",
+        #         "content": [
+        #             {"type": "image", "url": "https://www.ilankelman.org/stopsigns/australia.jpg"},
+        #             {"type": "video", "path": "../data/video_cut/P10/P10_0_300.mp4"},
+        #             {"type": "text", "text": "What is shown in this image and video?"},
+        #         ],
+        #     },
+        # ]
 
-                "role": "user",
-                "content": [
-                    {"type": "text", "text": "Why is this video funny?"},
-                    {"type": "video"},
-                ],
-            },
-        ]
+        messages = [
+                {
+                    "role": "user",
+                    "content": [
+                        {"type": "text", "text": "Your task is to predict the complete traffic state at the second time step based on: \n - The full information of the first time step.\n- The partially observed data and videos at the second time step."
+                            "Time step 0 - Fully observed:"
+                            "Density: {Sensor10: 212.3, Sensor11: 217.8, Sensor12: 206.1, Sensor13: 178.0, Sensor14: 185.3, Sensor15: 194.0, Sensor16: 188.2}"
+                            "Speed:   {Sensor10: 24.1, Sensor11: 25.0, Sensor12: 26.8, Sensor13: 27.3, Sensor14: 28.8, Sensor15: 32.9, Sensor16: 37.1}"
+                            "Flow:    {Sensor10: 5113.9, Sensor11: 5440.0, Sensor12: 5524.1, Sensor13: 4862.2, Sensor14: 5341.1, Sensor15: 6387.2, Sensor16: 6973.1}"
 
-        prompt = self.processor.apply_chat_template(conversation, add_generation_prompt=True)
+                            "Time step 1 - Observed (some values may be missing):"
+                            "Density: {Sensor10: 178.0, Sensor11: 211.6, Sensor12: 214.4, Sensor13: 186.0, Sensor14: 196.6, Sensor15: 242.2, Sensor16: 251.5}"
+                            "Speed:   {Sensor10: 39.4, Sensor11: 28.2, Sensor12: 25.2, Sensor13: 24.1, Sensor14: 19.2, Sensor15: 19.8, Sensor16: 22.3}"
+                            "Flow:    {Sensor10: 7020.5, Sensor11: 5910.9, Sensor12: 5358.4, Sensor13: 4449.4, Sensor14: 3778.0, Sensor15: 4789.4, Sensor16: 5621.8}"
+                            "All sensors are connected sequentially with index (e.g., Sensor 1 → Sensor 2 → ...)."},
 
-        print('before download the video')
+                        {"type": "video", "path": "../data/video_cut/P10/P10_300_600.mp4"},
+                        {"type": "video", "path": "../data/video_cut/P14/P14_300_600.mp4"},
+                        {"type": "video", "path": "../data/video_cut/P15/P15_300_600.mp4"},
+                        {"type": "video", "path": "../data/video_cut/P16/P16_300_600.mp4"}
+                    ],
+                },
+            ]
 
-        video_path = hf_hub_download(repo_id="raushan-testing-hf/videos-test", filename="sample_demo_1.mp4",
-                                 repo_type="dataset")
-    #     container = av.open(video_path)
-    #
-    # # sample uniformly 8 frames from the video, can sample more for longer videos
-    #     total_frames = container.streams.video[0].frames
-    #     indices = np.arange(0, total_frames, total_frames / 8).astype(int)
-    #     clip = read_video_pyav(container, indices)
-    #     inputs_video = processor(text=prompt, videos=clip, padding=True, return_tensors="pt").to(model.device)
-    #
-    #     output = model.generate(**inputs_video, max_new_tokens=100, do_sample=False)
-    #     print(processor.decode(output[0][2:], skip_special_tokens=True))
+        inputs = self.processor.apply_chat_template(messages, num_frames=8, add_generation_prompt=True, tokenize=True,
+                                           return_dict=True, return_tensors="pt").to(self.device)
+        output = self.model.generate(**inputs, max_new_tokens=512)
+
+        print(self.processor.decode(output[0][2:], skip_special_tokens=True))
+        print('eye')
+
 
     # def train(self):
     #
@@ -111,6 +163,7 @@ if __name__ == "__main__":
         mode=None
     )
 
+# tse_agent.test()
 tse_agent.smalltry()
 
 
