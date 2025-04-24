@@ -13,6 +13,7 @@ from Dataloader import MultiModalDataset
 import torch
 from torch.utils.data import Dataset, DataLoader
 import os
+from PIL import Image
 
 
 class VLM_TSE_Agent:
@@ -54,42 +55,63 @@ class VLM_TSE_Agent:
         #
         # processor = AutoProcessor.from_pretrained(model_id)
 
-    def read_video_pyav(self, container, indices):
-        '''
-        Decode the video with PyAV decoder.
-        Args:
-            container (`av.container.input.InputContainer`): PyAV container.
-            indices (`List[int]`): List of frame indices to decode.
-        Returns:
-            result (np.ndarray): np array of decoded frames of shape (num_frames, height, width, 3).
-        '''
+    def read_video_pyav(self, video_path, num_frames=8, resize=(336, 336)):
+        if not isinstance(video_path, str) or not os.path.isfile(video_path):
+            raise FileNotFoundError(f"Invalid or missing video file: {video_path}")
+        
+        container = av.open(video_path)
+        total_frames = container.streams.video[0].frames
+        indices = np.linspace(0, total_frames - 1, num_frames).astype(int)
+
         frames = []
         container.seek(0)
-        start_index = indices[0]
-        end_index = indices[-1]
         for i, frame in enumerate(container.decode(video=0)):
-            if i > end_index:
+            if i > indices[-1]:
                 break
-            if i >= start_index and i in indices:
-                frames.append(frame)
-        return np.stack([x.to_ndarray(format="rgb24") for x in frames])
+            if i in indices:
+                img = Image.fromarray(frame.to_ndarray(format="rgb24")).resize(resize)
+                frames.append(np.array(img))
 
+        # Pad if not enough
+        while len(frames) < num_frames:
+            frames.append(frames[-1])
+        return np.stack(frames)
+    
     def test(self):
         for batch_id, data in enumerate(self.dataloader):
-            conversation = data[0]['conversation']
-            # print(type(data[0]['conversation'][0]['content'][0]["text"]))
+            sample = data[0]['conversation']
+            prompt = sample[0]["content"][0]["text"]
+            video_paths = [v["path"] for v in sample[0]["content"][1:]]
 
-            inputs = self.processor.apply_chat_template(conversation, num_frames=8, add_generation_prompt=True, tokenize=True,
-                                           return_dict=True, return_tensors="pt").to(self.device)
-            # input = self.processor(text=prompt, v)
-            print(type(inputs))
+            print("Prompt:")
+            print(prompt)
+            print("Videos:", video_paths)
+
+            clips = [self.read_video_pyav(path) for path in video_paths]
+            print("Video shapes:", [c.shape for c in clips])
+            
+            conversation = [
+                {
+                    "role": "user",
+                    "content": [{"type": "text", "text": prompt}] + [{"type": "video"} for _ in video_paths]
+                }
+            ]
+            formatted_prompt = self.processor.apply_chat_template(conversation, add_generation_prompt=True)
+            
+            inputs = self.processor(
+                text=formatted_prompt,
+                videos=clips,
+                padding=True,
+                return_tensors="pt"
+            ).to(self.device)
+            
             output = self.model.generate(**inputs, max_new_tokens=512)
+            decoded = self.processor.decode(output[0][2:], skip_special_tokens=True)
 
-
-            groundtruth = data['groundtruth']
-
-
-
+            print("\nModel Prediction:\n", decoded)
+            return decoded
+            
+            # input = self.processor(text=prompt, v)
 
     def smalltry(self):
         # messages = [
@@ -97,7 +119,7 @@ class VLM_TSE_Agent:
         #         "role": "user",
         #         "content": [
         #             {"type": "image", "url": "https://www.ilankelman.org/stopsigns/australia.jpg"},
-        #             {"type": "video", "path": "../data/video_cut/P10/P10_0_300.mp4"},
+        #             {"type": "video", "path": "data/video_cut/P10/P10_0_300.mp4"},
         #             {"type": "text", "text": "What is shown in this image and video?"},
         #         ],
         #     },
@@ -119,10 +141,10 @@ class VLM_TSE_Agent:
                             "Flow:    {Sensor10: 7020.5, Sensor11: 5910.9, Sensor12: 5358.4, Sensor13: 4449.4, Sensor14: 3778.0, Sensor15: 4789.4, Sensor16: 5621.8}"
                             "All sensors are connected sequentially with index (e.g., Sensor 1 → Sensor 2 → ...)."},
 
-                        {"type": "video", "path": "../data/video_cut/P10/P10_300_600.mp4"},
-                        {"type": "video", "path": "../data/video_cut/P14/P14_300_600.mp4"},
-                        {"type": "video", "path": "../data/video_cut/P15/P15_300_600.mp4"},
-                        {"type": "video", "path": "../data/video_cut/P16/P16_300_600.mp4"}
+                        {"type": "video", "path": "data/video_cut/P10/P10_300_600.mp4"},
+                        {"type": "video", "path": "data/video_cut/P14/P14_300_600.mp4"},
+                        {"type": "video", "path": "data/video_cut/P15/P15_300_600.mp4"},
+                        {"type": "video", "path": "data/video_cut/P16/P16_300_600.mp4"}
                     ],
                 },
             ]
@@ -142,19 +164,19 @@ class VLM_TSE_Agent:
 
 if __name__ == "__main__":
     csv_files = {
-                'density': '../data/traffic_state/traffic_state_groundtruth/5min/edie_density_10_16.csv',
-                'speed': '../data/traffic_state/traffic_state_groundtruth/5min/edie_speed_10_16.csv',
-                'rate': '../data/traffic_state/traffic_state_groundtruth/5min/edie_flow_10_16.csv'
+                'density': 'data/traffic_state/traffic_state_groundtruth/5min/edie_density_10_16.csv',
+                'speed': 'data/traffic_state/traffic_state_groundtruth/5min/edie_speed_10_16.csv',
+                'rate': 'data/traffic_state/traffic_state_groundtruth/5min/edie_flow_10_16.csv'
     }
     # dataset = MultiModalDataset(
     #     csv_paths=csv_files,
-    #     video_dir='../data/video',
-    #     output_dir='../data/video_cut'
+    #     video_dir='data/video',
+    #     output_dir='data/video_cut'
     # )
 
     path = {'tse-param': csv_files,
-            'video-dir': '../data/video',
-            'output-dir': '../data/video_cut'}
+            'video-dir': 'data/video',
+            'output-dir': 'data/video_cut'}
 
     tse_agent = VLM_TSE_Agent(
         model_name='llava-hf/LLaVA-NeXT-Video-7B-hf',
@@ -163,8 +185,8 @@ if __name__ == "__main__":
         mode=None
     )
 
-# tse_agent.test()
-tse_agent.smalltry()
+tse_agent.test()
+#tse_agent.smalltry()
 
 
 
