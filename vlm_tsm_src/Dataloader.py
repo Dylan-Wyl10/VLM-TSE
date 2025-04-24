@@ -11,25 +11,23 @@ import random
 
 class MultiModalDataset(Dataset):
     def __init__(self, csv_paths, video_dir, output_dir, missing_ratio=0.3):
-        """
-        Args:
-            csv_paths (dict): {'density': 'density.csv', 'speed': 'speed.csv', 'rate': 'rate.csv'}
-            video_dir (str): path to raw video files
-            output_dir (str): where to save split videos
-            perform_split (bool): whether to cut raw videos
-        """
-        self.features = list(csv_paths.keys())
         self.video_dir = video_dir
         self.output_dir = output_dir
+        self.missing_ratio = missing_ratio
 
-        self.missing_ratio =missing_ratio
+        self.data_frames = {}
+        self.avg_values = {}
 
-        self.data_frames = {k: pd.read_csv(v) for k, v in csv_paths.items()}
-        self.time_bins = self.data_frames[self.features[0]]['time_bin'].tolist()
-        self.space_columns = self.data_frames[self.features[0]].columns.drop('time_bin')
-        self.feature_data = {
-            k: self.data_frames[k][self.space_columns].values for k in self.features
-        }
+        for feature, path in csv_paths.items():
+            df = pd.read_csv(path)
+            avg_row = df.iloc[-1]
+            self.avg_values[feature] = {int(col): avg_row[col] for col in df.columns[1:]}
+            df = df.iloc[:-1]  # exclude average row
+            self.data_frames[feature] = df
+            # self.avg_values[feature] = {int(col): avg_row[col] for col in df.columns if col != "time_bin"}
+
+        self.time_bins = [int(float(t)) for t in self.data_frames["density"]["time_bin"].tolist()]
+        self.sensor_ids = [int(col) for col in self.data_frames["density"].columns if col != "time_bin"]
 
         # self.indices = [(i, j) for i in range(len(self.time_bins)) for j in range(len(self.space_columns))]
 
@@ -44,6 +42,7 @@ class MultiModalDataset(Dataset):
             os.makedirs(cam_out_dir, exist_ok=True)
 
             for i in range(len(self.time_bins) - 1):
+                # a = int('0.0')
                 start = int(self.time_bins[i])
                 end = int(self.time_bins[i + 1])
                 outname = f"{obs_id}_{start}_{end}.mp4"
@@ -62,73 +61,44 @@ class MultiModalDataset(Dataset):
 
     def build_temporal_datapoints(self):
         self.temporal_data = []
-        num_time_steps = len(self.time_bins)
-        num_sensors = len(self.space_columns)
+        for i, t in enumerate(self.time_bins):
+            time_start = t
+            time_end = self.time_bins[i + 1] if i + 1 < len(self.time_bins) else t + 300
 
-        for t in range(num_time_steps):
-            density_row = self.feature_data["density"][t]
-            speed_row = self.feature_data["speed"][t]
-            rate_row = self.feature_data["rate"][t]
+            entry = {"time_index": i, "video_paths": {}, "density": {}, "speed": {}, "rate": {}}
 
-            time_start = self.time_bins[t]
-            time_end = self.time_bins[t + 1] if t + 1 < num_time_steps else time_start + 300
+            for sensor_id in self.sensor_ids:
+                entry["density"][sensor_id] = self.data_frames["density"].iloc[i][str(sensor_id)]
+                entry["speed"][sensor_id] = self.data_frames["speed"].iloc[i][str(sensor_id)]
+                entry["rate"][sensor_id] = self.data_frames["rate"].iloc[i][str(sensor_id)]
+                video_name = f"{sensor_id}_{int(time_start)}_{int(time_end)}.mp4"
+                video_path = os.path.join(self.output_dir, str(sensor_id), video_name)
+                entry["video_paths"][sensor_id] = video_path
 
-            video_paths = []
-            for sid in self.space_columns:
-                obs_id = sid.strip()
-                video_name = f"{obs_id}_{int(time_start)}_{int(time_end)}.mp4"
-                video_path = os.path.join(self.output_dir, obs_id, video_name)
-                video_paths.append(video_path)
-
-            self.temporal_data.append({
-                "time_index": t,
-                "density": density_row.tolist(),
-                "speed": speed_row.tolist(),
-                "rate": rate_row.tolist(),
-                "video_paths": video_paths
-            })
-
-    def generate_prompt(self, time_idx, space_id, density, speed, rate):
-        return (
-            f"At timestep {time_idx}, sensor {space_id} recorded: "
-            f"density = {density:.2f} vehicles/km, "
-            f"speed = {speed:.2f} km/h, "
-            f"flow = {rate:.0f} vehicles."
-        )
+            self.temporal_data.append(entry)
 
     def __len__(self):
-        return len(self.temporal_data)
+        return len(self.temporal_data) - 1
 
     def __getitem__(self, index):
-        # ensure index is valid (must have t and t+1)
-        if index >= len(self.temporal_data) - 1:
-            raise IndexError("Last time step has no next-step pair.")
-
         t1_data = self.temporal_data[index]
         t2_data = self.temporal_data[index + 1]
-        num_sensors = len(t1_data["density"])
 
-        # apply masking to t2 data
-        masked_density = []
-        masked_speed = []
-        masked_rate = []
-        available_video_paths = []
+        masked_density, masked_speed, masked_rate, masked_videos = {}, {}, {}, []
 
-        for i in range(num_sensors):
+        for sensor_id in self.sensor_ids:
             if random.random() < self.missing_ratio:
-                masked_density.append(30.0)
-                masked_speed.append(60.0)
-                masked_rate.append(1800.0)
-                # video is omitted
+                masked_density[sensor_id] = self.avg_values["density"][sensor_id]
+                masked_speed[sensor_id] = self.avg_values["speed"][sensor_id]
+                masked_rate[sensor_id] = self.avg_values["rate"][sensor_id]
             else:
-                masked_density.append(t2_data["density"][i])
-                masked_speed.append(t2_data["speed"][i])
-                masked_rate.append(t2_data["rate"][i])
-                available_video_paths.append({"type": "video", "path": t2_data["video_paths"][i]})
+                masked_density[sensor_id] = t2_data["density"][sensor_id]
+                masked_speed[sensor_id] = t2_data["speed"][sensor_id]
+                masked_rate[sensor_id] = t2_data["rate"][sensor_id]
+                masked_videos.append({"type": "video", "path": t2_data["video_paths"][sensor_id]})
 
-        # format matrix strings for prompt
-        def format_matrix(matrix):
-            return "[" + ", ".join(f"{v:.1f}" for v in matrix) + "]"
+        def format_matrix(data_dict):
+            return "[" + ", ".join(f"{v:.1f}" for _, v in sorted(data_dict.items())) + "]"
 
         prompt = (
             "Your task is to predict the complete traffic state at the second time step based on:\n"
@@ -147,7 +117,7 @@ class MultiModalDataset(Dataset):
 
         conversation = [{
             "role": "user",
-            "content": [{"type": "text", "text": prompt}] + available_video_paths
+            "content": [{"type": "text", "text": prompt}] + masked_videos
         }]
 
         return {
@@ -163,9 +133,9 @@ class MultiModalDataset(Dataset):
 # Example usage of the DataLoader
 if __name__ == "__main__":
     csv_files = {
-        'density': '../data/traffic_state/traffic_state_groundtruth/edie_density.csv',
-        'speed': '../data/traffic_state/traffic_state_groundtruth/edie_speed.csv',
-        'rate': '../data/traffic_state/traffic_state_groundtruth/edie_flow.csv'
+        'density': '../data/traffic_state/traffic_state_groundtruth/5min/edie_density_10_16.csv',
+        'speed': '../data/traffic_state/traffic_state_groundtruth/5min/edie_speed_10_16.csv',
+        'rate': '../data/traffic_state/traffic_state_groundtruth/5min/edie_flow_10_16.csv'
     }
 
     dataset = MultiModalDataset(
@@ -179,7 +149,7 @@ if __name__ == "__main__":
     sample = dataset[0]
     print("Prompt:\n", sample["conversation"][0]["content"][0]["text"])
     print("Videos:", [v["path"] for v in sample["conversation"][0]["content"][1:]])
-    print("Groundtruth:", sample["groundtruth"]["density"])
+    print("Groundtruth density:", sample["groundtruth"]["density"])
 
     dataloader = DataLoader(dataset, batch_size=8, shuffle=True, num_workers=2)
     #
