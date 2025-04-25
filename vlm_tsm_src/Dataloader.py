@@ -104,7 +104,7 @@ class MultiModalDataset(Dataset):
             f"Density: {dict_to_str(partial_t2_data['density'])}\n"
             f"Speed:   {dict_to_str(partial_t2_data['speed'])}\n"
             f"Flow:    {dict_to_str(partial_t2_data['rate'])}\n\n"
-            "All sensors are connected sequentially with index (e.g., Sensor 1 → Sensor 2 → ...)."
+            "All sensors are connected sequentially with index (e.g., Sensor 1 → Sensor 2 → ..)."
         )
         return prompt
 
@@ -162,15 +162,15 @@ class MultiModalDataset(Dataset):
 # Example usage of the DataLoader
 if __name__ == "__main__":
     csv_files = {
-        'density': '../data/traffic_state/traffic_state_groundtruth/5min/edie_density_10_16.csv',
-        'speed': '../data/traffic_state/traffic_state_groundtruth/5min/edie_speed_10_16.csv',
-        'rate': '../data/traffic_state/traffic_state_groundtruth/5min/edie_flow_10_16.csv'
+        'density': 'data/traffic_state/traffic_state_groundtruth/5min/edie_density_10_16.csv',
+        'speed': 'data/traffic_state/traffic_state_groundtruth/5min/edie_speed_10_16.csv',
+        'rate': 'data/traffic_state/traffic_state_groundtruth/5min/edie_flow_10_16.csv'
     }
 
     dataset = MultiModalDataset(
         csv_paths=csv_files,
-        video_dir='../data/video',
-        output_dir='../data/video_cut'
+        video_dir='data/video',
+        output_dir='data/video_cut'
     )
     dataset._split_videos_with_ffmpeg()
     dataset.build_temporal_datapoints()

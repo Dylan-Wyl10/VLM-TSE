@@ -164,9 +164,9 @@ class VLM_TSE_Agent:
 
 if __name__ == "__main__":
     csv_files = {
-                'density': 'data/traffic_state/traffic_state_groundtruth/5min/edie_density_10_16.csv',
-                'speed': 'data/traffic_state/traffic_state_groundtruth/5min/edie_speed_10_16.csv',
-                'rate': 'data/traffic_state/traffic_state_groundtruth/5min/edie_flow_10_16.csv'
+                'density': '../data/traffic_state/traffic_state_groundtruth/5min/edie_density_10_16.csv',
+                'speed': '../data/traffic_state/traffic_state_groundtruth/5min/edie_speed_10_16.csv',
+                'rate': '../data/traffic_state/traffic_state_groundtruth/5min/edie_flow_10_16.csv'
     }
     # dataset = MultiModalDataset(
     #     csv_paths=csv_files,
@@ -175,8 +175,8 @@ if __name__ == "__main__":
     # )
 
     path = {'tse-param': csv_files,
-            'video-dir': 'data/video',
-            'output-dir': 'data/video_cut'}
+            'video-dir': '../data/video',
+            'output-dir': '../data/video_cut'}
 
     tse_agent = VLM_TSE_Agent(
         model_name='llava-hf/LLaVA-NeXT-Video-7B-hf',
