@@ -17,8 +17,9 @@ from PIL import Image
 
 
 class VLM_TSE_Agent:
-    def __init__(self, model_name, data_source, parameter, mode):
+    def __init__(self, model_name, data_source, parameter, mode, split_video=False):
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = 0
 
         self.dataset = MultiModalDataset(csv_paths=data_source['tse-param'],
                                          video_dir=data_source['video-dir'],
@@ -30,7 +31,8 @@ class VLM_TSE_Agent:
         ).to(self.device)
 
         self.processor = LlavaNextVideoProcessor.from_pretrained(model_name)
-        if not os.path.isdir(data_source['output-dir']):
+        # if not os.path.isdir(data_source['output-dir']):
+        if split_video:
             self.dataset._split_videos_with_ffmpeg()
 
         # model parameters
@@ -104,8 +106,10 @@ class VLM_TSE_Agent:
                 padding=True,
                 return_tensors="pt"
             ).to(self.device)
-            
-            output = self.model.generate(**inputs, max_new_tokens=512)
+
+            torch.cuda.empty_cache()
+            with torch.no_grad():
+                output = self.model.generate(**inputs, max_new_tokens=512)
             decoded = self.processor.decode(output[0][2:], skip_special_tokens=True)
 
             print("\nModel Prediction:\n", decoded)
@@ -164,9 +168,9 @@ class VLM_TSE_Agent:
 
 if __name__ == "__main__":
     csv_files = {
-                'density': 'data/traffic_state/traffic_state_groundtruth/5min/edie_density_10_16.csv',
-                'speed': 'data/traffic_state/traffic_state_groundtruth/5min/edie_speed_10_16.csv',
-                'rate': 'data/traffic_state/traffic_state_groundtruth/5min/edie_flow_10_16.csv'
+                'density': '../data/traffic_state/traffic_state_groundtruth/5min/edie_density_10_16.csv',
+                'speed': '../data/traffic_state/traffic_state_groundtruth/5min/edie_speed_10_16.csv',
+                'rate': '../data/traffic_state/traffic_state_groundtruth/5min/edie_flow_10_16.csv'
     }
     # dataset = MultiModalDataset(
     #     csv_paths=csv_files,
@@ -175,14 +179,15 @@ if __name__ == "__main__":
     # )
 
     path = {'tse-param': csv_files,
-            'video-dir': 'data/video',
-            'output-dir': 'data/video_cut'}
+            'video-dir': '../data/video',
+            'output-dir': '../data/video_cut'}
 
     tse_agent = VLM_TSE_Agent(
         model_name='llava-hf/LLaVA-NeXT-Video-7B-hf',
         data_source=path,
         parameter=0,
-        mode=None
+        mode=None,
+        split_video=True
     )
 
 tse_agent.test()
