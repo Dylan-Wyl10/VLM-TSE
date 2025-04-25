@@ -42,10 +42,10 @@ class MultiModalDataset(Dataset):
             cam_out_dir = os.path.join(self.output_dir, obs_id)
             os.makedirs(cam_out_dir, exist_ok=True)
 
-            for i in range(len(self.time_bins) - 1):
+            for i in range(len(self.time_bins)):
                 # a = int('0.0')
                 start = int(self.time_bins[i])
-                end = int(self.time_bins[i + 1])
+                end = int(self.time_bins[i] + self.time_bins[1])
                 outname = f"{obs_id}_{start}_{end}.mp4"
                 outpath = os.path.join(cam_out_dir, outname)
 
@@ -90,21 +90,20 @@ class MultiModalDataset(Dataset):
         """
 
         def dict_to_str(d):
-            return "{" + ", ".join(f"Sensor{int(k)}: {v:.1f}" for k, v in d.items()) + "}"
+            return "{" + ", ".join(f"{int(k)}: {v:.1f}" for k, v in d.items()) + "}"
 
         prompt = (
-            f"Your task is to predict the complete traffic state at the second time step based on:\n"
-            f"- The full information of the first time step.\n"
-            f"- The partially observed data and videos at the second time step.\n\n"
-            f"Time step {t1_idx} - Fully observed:\n"
+            f"Your task is to predict the density, speed, and flow for step 2. Step 1 is the fully observed data.\n"
+            f"below are the data for the observation with dictionary, the key is the sensor index."
+            f"Your output should consider the location for the sensors, which is sequentially linked from small to large. "
+            f"Time step {t1_idx}:\n"
             f"Density: {dict_to_str(full_t1_data['density'])}\n"
             f"Speed:   {dict_to_str(full_t1_data['speed'])}\n"
             f"Flow:    {dict_to_str(full_t1_data['rate'])}\n\n"
             f"Time step {t2_idx} - Observed (some values may be missing):\n"
             f"Density: {dict_to_str(partial_t2_data['density'])}\n"
             f"Speed:   {dict_to_str(partial_t2_data['speed'])}\n"
-            f"Flow:    {dict_to_str(partial_t2_data['rate'])}\n\n"
-            "All sensors are connected sequentially with index (e.g., Sensor 1 → Sensor 2 → ...)."
+            f"Flow:    {dict_to_str(partial_t2_data['rate'])}\n"
         )
         return prompt
 
@@ -162,15 +161,15 @@ class MultiModalDataset(Dataset):
 # Example usage of the DataLoader
 if __name__ == "__main__":
     csv_files = {
-        'density': '../data/traffic_state/traffic_state_groundtruth/5min/edie_density_10_16.csv',
-        'speed': '../data/traffic_state/traffic_state_groundtruth/5min/edie_speed_10_16.csv',
-        'rate': '../data/traffic_state/traffic_state_groundtruth/5min/edie_flow_10_16.csv'
+        'density': 'data/traffic_state/traffic_state_groundtruth/5min/edie_density_10_16.csv',
+        'speed': 'data/traffic_state/traffic_state_groundtruth/5min/edie_speed_10_16.csv',
+        'rate': 'data/traffic_state/traffic_state_groundtruth/5min/edie_flow_10_16.csv'
     }
 
     dataset = MultiModalDataset(
         csv_paths=csv_files,
-        video_dir='../data/video',
-        output_dir='../data/video_cut'
+        video_dir='data/video',
+        output_dir='data/video_cut'
     )
     dataset._split_videos_with_ffmpeg()
     dataset.build_temporal_datapoints()
