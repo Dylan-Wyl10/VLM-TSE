@@ -18,19 +18,15 @@ class EvaluationTool:
         with open(self.txt_path, 'r', encoding='utf-8') as f:
             raw_text = f.read()
 
-        raw_cases = raw_text.split(
-            '-----------------------------------------------------------------------------------------------output:')
+        raw_cases = raw_text.split('-----------------------------------------------------------------------------------------------output:')
         for idx, case_text in enumerate(raw_cases[1:]):
             try:
-                # Assistant prediction
                 pred_json_match = re.search(r'ASSISTANT:\s*(\{.*?\})\s*video path:', case_text, re.DOTALL)
                 pred_text = pred_json_match.group(1) if pred_json_match else None
 
-                # video path
                 video_match = re.search(r'video path:\s*(\[.*?\])\s*ground truth:', case_text, re.DOTALL)
                 video_text = video_match.group(1) if video_match else None
 
-                # ground truth
                 gt_match = re.search(r'ground truth:\s*({.*})', case_text, re.DOTALL)
                 gt_text = gt_match.group(1) if gt_match else None
 
@@ -181,6 +177,9 @@ class EvaluationTool:
         for key in ["density", "speed", "flow"]:
             self.plot_error_heatmap([{key: case[key]} for case in all_errors], error_type=key)
 
-evaluator = EvaluationTool(txt_path="logs_5min.txt", save_dir="../result/eval_results5min")
-evaluator.parse_cases()
-evaluator.evaluate_all()
+
+if __name__ == "__main__":
+
+    evaluator = EvaluationTool(txt_path="logs_1min.txt", save_dir="../result/eval_results1min")
+    evaluator.parse_cases()
+    evaluator.evaluate_all()

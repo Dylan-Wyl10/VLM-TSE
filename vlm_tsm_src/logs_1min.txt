@@ -1,0 +1,4361 @@
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 0 (no missing data).
+2. Partial observations and available video clips at time step 1 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 0:
+Density: {1: 167.0, 2: 194.6, 3: 178.6, 4: 186.1, 5: 171.3, 6: 213.3, 7: 264.1}
+Speed:   {1: 39.3, 2: 38.3, 3: 41.0, 4: 30.4, 5: 29.5, 6: 23.0, 7: 16.2}
+Flow:    {1: 6568.9, 2: 7448.4, 3: 7330.3, 4: 5652.4, 5: 5052.5, 6: 4909.8, 7: 4288.9}
+
+Partially observed sensor readings at time step 1:
+Density: {1: 238.5, 2: 211.6, 3: 188.9, 4: 147.4, 5: 148.4, 6: 175.6, 7: 219.1}
+Speed:   {1: 30.8, 2: 29.0, 3: 33.9, 4: 37.2, 5: 39.9, 6: 39.3, 7: 31.9}
+Flow:    {1: 7355.2, 2: 5910.9, 3: 6402.0, 4: 5483.0, 5: 5920.4, 6: 6910.4, 7: 6496.4}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 1 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 238.5,
+    "2": 21.6,
+    "3": 18.9,
+    "4": 147.4,
+    "5": 148.4,
+    "6": 175.6,
+    "7": 29.1
+  },
+  "speed": {
+    "1": 30.8,
+    "2": 29.0,
+    "3": 3.9,
+    "4": 37.2,
+    "5": 39.9,
+    "6": 39.3,
+    "7": 31.9
+  },
+  "flow": {
+    "1": 735.2,
+    "2": 5910.9,
+    "3": 602.0,
+    "4": 5483.0,
+    "5": 592.4,
+    "6": 6910.4,
+    "7": 6496.4
+  }
+}
+```
+
+video path:
+['../data/video_cut/P1/P1_60_120.mp4', '../data/video_cut/P3/P3_60_120.mp4', '../data/video_cut/P4/P4_60_120.mp4', '../data/video_cut/P5/P5_60_120.mp4', '../data/video_cut/P6/P6_60_120.mp4']
+
+ ground truth:
+{'density': {1: np.float64(238.4656761354869), 2: np.float64(223.22793510511272), 3: np.float64(188.86197018523328), 4: np.float64(147.4274652531077), 5: np.float64(148.35661184534194), 6: np.float64(175.57786701065478), 7: np.float64(199.03376760834556)}, 'speed': {1: np.float64(30.836062996553064), 2: np.float64(29.944381250924707), 3: np.float64(33.889058266365225), 4: np.float64(37.18146449674078), 5: np.float64(39.89639159936682), 6: np.float64(39.34779907664715), 7: np.float64(36.26168095535645)}, 'rate': {1: np.float64(7355.219255160116), 2: np.float64(6686.128323140666), 3: np.float64(6401.987743514061), 4: np.float64(5482.968013980742), 5: np.float64(5920.404040736885), 6: np.float64(6910.365774878056), 7: np.float64(7219.140904051716)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 1 (no missing data).
+2. Partial observations and available video clips at time step 2 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 1:
+Density: {1: 238.5, 2: 223.2, 3: 188.9, 4: 147.4, 5: 148.4, 6: 175.6, 7: 199.0}
+Speed:   {1: 30.8, 2: 29.9, 3: 33.9, 4: 37.2, 5: 39.9, 6: 39.3, 7: 36.3}
+Flow:    {1: 7355.2, 2: 6686.1, 3: 6402.0, 4: 5483.0, 5: 5920.4, 6: 6910.4, 7: 7219.1}
+
+Partially observed sensor readings at time step 2:
+Density: {1: 200.8, 2: 211.6, 3: 214.4, 4: 202.1, 5: 197.2, 6: 178.3, 7: 161.9}
+Speed:   {1: 31.6, 2: 29.0, 3: 25.9, 4: 26.5, 5: 32.2, 6: 44.5, 7: 51.8}
+Flow:    {1: 6035.2, 2: 5910.9, 3: 5358.4, 4: 5366.7, 5: 6343.1, 6: 7945.5, 7: 8392.3}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 2 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+  "density": {
+    "1": 20.8,
+    "2": 21.6,
+    "3": 214.4,
+    "4": 202.1,
+    "5": 197.2,
+    "6": 178.3,
+    "7": 161.9
+  },
+  "speed": {
+    "1": 31.6,
+    "2": 29.0,
+    "3": 25.9,
+    "4": 26.5,
+    "5": 32.2,
+    "6": 4.5,
+    "7": 51.8
+  },
+  "flow": {
+    "1": 6035.2,
+    "2": 5910.9,
+    "3": 535.4,
+    "4": 536.7,
+    "5": 634.1,
+    "6": 7945.5,
+    "7": 8392.3
+  }
+}
+
+video path:
+['../data/video_cut/P4/P4_120_180.mp4', '../data/video_cut/P5/P5_120_180.mp4', '../data/video_cut/P6/P6_120_180.mp4', '../data/video_cut/P7/P7_120_180.mp4']
+
+ ground truth:
+{'density': {1: np.float64(201.16169824304404), 2: np.float64(183.4496678036432), 3: np.float64(202.574601487434), 4: np.float64(202.13281655048877), 5: np.float64(197.19500670337897), 6: np.float64(178.3131541962926), 7: np.float64(161.929385821403)}, 'speed': {1: np.float64(28.197751316121355), 2: np.float64(35.257049776826534), 3: np.float64(29.38845496070317), 4: np.float64(26.543636229941853), 5: np.float64(32.15831778594102), 6: np.float64(44.5480856816237), 7: np.float64(51.81385813746356)}, 'rate': {1: np.float64(5673.755168496383), 2: np.float64(6469.544737693249), 3: np.float64(5954.873904990073), 4: np.float64(5366.709238696945), 5: np.float64(6343.07809250401), 6: np.float64(7945.536930903067), 7: np.float64(8392.327480969505)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 2 (no missing data).
+2. Partial observations and available video clips at time step 3 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 2:
+Density: {1: 201.2, 2: 183.4, 3: 202.6, 4: 202.1, 5: 197.2, 6: 178.3, 7: 161.9}
+Speed:   {1: 28.2, 2: 35.3, 3: 29.4, 4: 26.5, 5: 32.2, 6: 44.5, 7: 51.8}
+Flow:    {1: 5673.8, 2: 6469.5, 3: 5954.9, 4: 5366.7, 5: 6343.1, 6: 7945.5, 7: 8392.3}
+
+Partially observed sensor readings at time step 3:
+Density: {1: 215.7, 2: 246.6, 3: 214.4, 4: 180.9, 5: 207.1, 6: 205.5, 7: 151.1}
+Speed:   {1: 13.4, 2: 14.6, 3: 25.9, 4: 31.9, 5: 26.0, 6: 30.2, 7: 50.4}
+Flow:    {1: 2899.5, 2: 3594.5, 3: 5358.4, 4: 5767.1, 5: 5381.9, 6: 6198.8, 7: 7614.2}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 3 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 215.7,
+    "2": 24.6,
+    "3": 214.4,
+    "4": 180.9,
+    "5": 207.1,
+    "6": 205.5,
+    "7": 151.1
+  },
+  "speed": {
+    "1": 13.4,
+    "2": 14.6,
+    "3": 25.9,
+    "4": 31.9,
+    "5": 26.0,
+    "6": 30.2,
+    "7": 50.4
+  },
+  "flow": {
+    "1": 29.5,
+    "2": 3594.5,
+    "3": 535.9,
+    "4": 577.1,
+    "5": 536.7,
+    "6": 534.1,
+    "7": 6194.5
+  }
+}
+```
+
+video path:
+['../data/video_cut/P1/P1_180_240.mp4', '../data/video_cut/P2/P2_180_240.mp4', '../data/video_cut/P4/P4_180_240.mp4', '../data/video_cut/P5/P5_180_240.mp4', '../data/video_cut/P6/P6_180_240.mp4', '../data/video_cut/P7/P7_180_240.mp4']
+
+ground truth:
+{'density': {1: np.float64(215.71902766582065), 2: np.float64(246.62758709891943), 3: np.float64(202.4535450164408), 4: np.float64(180.8756087477073), 5: np.float64(207.1166099799294), 6: np.float64(205.49792323774577), 7: np.float64(151.12309046627507)}, 'speed': {1: np.float64(13.437728852616912), 2: np.float64(14.57102084823218), 3: np.float64(24.8271779446024), 4: np.float64(31.87616968881696), 5: np.float64(25.978249181674737), 6: np.float64(30.15724621767574), 7: np.float64(50.37110491031533)}, 'rate': {1: np.float64(2899.513596909306), 2: np.float64(3594.5328384516574), 3: np.float64(5027.632960257262), 4: np.float64(5767.093038759417), 5: np.float64(5381.900065624647), 6: np.float64(6198.833066120587), 7: np.float64(7614.179759912559)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 3 (no missing data).
+2. Partial observations and available video clips at time step 4 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 3:
+Density: {1: 215.7, 2: 246.6, 3: 202.5, 4: 180.9, 5: 207.1, 6: 205.5, 7: 151.1}
+Speed:   {1: 13.4, 2: 14.6, 3: 24.8, 4: 31.9, 5: 26.0, 6: 30.2, 7: 50.4}
+Flow:    {1: 2899.5, 2: 3594.5, 3: 5027.6, 4: 5767.1, 5: 5381.9, 6: 6198.8, 7: 7614.2}
+
+Partially observed sensor readings at time step 4:
+Density: {1: 200.8, 2: 211.6, 3: 257.8, 4: 173.3, 5: 202.6, 6: 215.0, 7: 164.6}
+Speed:   {1: 31.6, 2: 29.0, 3: 11.3, 4: 11.8, 5: 19.8, 6: 28.0, 7: 44.7}
+Flow:    {1: 6035.2, 2: 5910.9, 3: 2905.9, 4: 2041.8, 5: 4007.6, 6: 5692.5, 7: 7351.1}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 4 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 20.8,
+    "2": 21.6,
+    "3": 25.8,
+    "4": 173.3,
+    "5": 202.6,
+    "6": 215.0,
+    "7": 16.4
+  },
+  "speed": {
+    "1": 3.6,
+    "2": 29.0,
+    "3": 1.3,
+    "4": 1.8,
+    "5": 19.8,
+    "6": 28.0,
+    "7": 4.7
+  },
+  "flow": {
+    "1": 6035.2,
+    "2": 5910.9,
+    "3": 2905.9,
+    "4": 2041.8,
+    "5": 407.6,
+    "6": 592.5,
+    "7": 7314.2
+  }
+}
+```
+
+video path:
+['../data/video_cut/P3/P3_240_300.mp4', '../data/video_cut/P4/P4_240_300.mp4', '../data/video_cut/P5/P5_240_300.mp4', '../data/video_cut/P7/P7_240_300.mp4']
+
+ground truth:
+{'density': {1: np.float64(239.40635727023448), 2: np.float64(241.33006542151688), 3: np.float64(257.8431429349807), 4: np.float64(173.2651035178091), 5: np.float64(202.6367969602204), 6: np.float64(197.5212272399552), 7: np.float64(164.5690708027129)}, 'speed': {1: np.float64(12.8294005842026), 2: np.float64(12.433893606287578), 3: np.float64(11.267326549410733), 4: np.float64(11.781395761844005), 5: np.float64(19.772005021663794), 6: np.float64(30.224421814801172), 7: np.float64(44.65718030546359)}, 'rate': {1: np.float64(3072.223920690016), 2: np.float64(3001.438157720848), 3: np.float64(2905.9443255253364), 4: np.float64(2041.825716748331), 5: np.float64(4007.558273300565), 6: np.float64(5971.488481588744), 7: np.float64(7351.066251254105)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 4 (no missing data).
+2. Partial observations and available video clips at time step 5 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 4:
+Density: {1: 239.4, 2: 241.3, 3: 257.8, 4: 173.3, 5: 202.6, 6: 197.5, 7: 164.6}
+Speed:   {1: 12.8, 2: 12.4, 3: 11.3, 4: 11.8, 5: 19.8, 6: 30.2, 7: 44.7}
+Flow:    {1: 3072.2, 2: 3001.4, 3: 2905.9, 4: 2041.8, 5: 4007.6, 6: 5971.5, 7: 7351.1}
+
+Partially observed sensor readings at time step 5:
+Density: {1: 200.8, 2: 211.6, 3: 259.8, 4: 219.6, 5: 189.2, 6: 281.5, 7: 219.1}
+Speed:   {1: 31.6, 2: 29.0, 3: 12.0, 4: 9.7, 5: 9.3, 6: 13.9, 7: 31.9}
+Flow:    {1: 6035.2, 2: 5910.9, 3: 3106.7, 4: 2121.4, 5: 1757.5, 6: 3914.3, 7: 6496.4}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 5 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+"density": {
+"1": 20.8,
+"2": 21.6,
+"3": 29.8,
+"4": 29.6,
+"5": 18.2,
+"6": 28.5,
+"7": 29.1
+}
+"speed": {
+"1": 31.6,
+"2": 29.0,
+"3": 12.0,
+"4": 9.7,
+"5": 9.3,
+"6": 13.9,
+"7": 31.9
+}
+"flow": {
+"1": 6035.2,
+"2": 5910.9,
+"3": 3106.7,
+"4": 212.4,
+"5": 1757.5,
+"6": 3914.3,
+"7": 6496.4
+}
+}
+
+video path:
+['../data/video_cut/P3/P3_300_360.mp4', '../data/video_cut/P4/P4_300_360.mp4', '../data/video_cut/P5/P5_300_360.mp4', '../data/video_cut/P6/P6_300_360.mp4']
+ ground truth:
+{'density': {1: np.float64(201.87328884923227), 2: np.float64(258.7380867451439), 3: np.float64(259.82425676394007), 4: np.float64(219.57882364802504), 5: np.float64(189.21098942065532), 6: np.float64(281.5052000465703), 7: np.float64(252.78478377065557)}, 'speed': {1: np.float64(34.63574425164636), 2: np.float64(19.370457041588335), 3: np.float64(11.954021412827052), 4: np.float64(9.658533817250852), 5: np.float64(9.28624733083542), 6: np.float64(13.901473477548404), 7: np.float64(22.92081545082949)}, 'rate': {1: np.float64(6993.81603712808), 2: np.float64(5013.154072730367), 3: np.float64(3106.737395714878), 4: np.float64(2121.350744613817), 5: np.float64(1757.5084639929414), 6: np.float64(3914.3357932706967), 7: np.float64(5795.5120702924805)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 5 (no missing data).
+2. Partial observations and available video clips at time step 6 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 5:
+Density: {1: 201.9, 2: 258.7, 3: 259.8, 4: 219.6, 5: 189.2, 6: 281.5, 7: 252.8}
+Speed:   {1: 34.6, 2: 19.4, 3: 12.0, 4: 9.7, 5: 9.3, 6: 13.9, 7: 22.9}
+Flow:    {1: 6993.8, 2: 5013.2, 3: 3106.7, 4: 2121.4, 5: 1757.5, 6: 3914.3, 7: 5795.5}
+
+Partially observed sensor readings at time step 6:
+Density: {1: 158.1, 2: 181.8, 3: 221.4, 4: 192.3, 5: 251.6, 6: 291.8, 7: 324.3}
+Speed:   {1: 44.1, 2: 38.8, 3: 25.6, 4: 12.7, 5: 9.5, 6: 12.4, 7: 13.6}
+Flow:    {1: 6970.9, 2: 7063.3, 3: 5680.0, 4: 2446.1, 5: 2401.9, 6: 3627.6, 7: 4409.3}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 6 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+  "density": {
+   "1": 158.1,
+   "2": 181.8,
+   "3": 21.4,
+   "4": 192.3,
+   "5": 251.6,
+   "6": 291.8,
+   "7": 324.3
+  },
+  "speed": {
+   "1": 4.1,
+   "2": 38.8,
+   "3": 25.6,
+   "4": 12.7,
+   "5": 9.5,
+   "6": 12.4,
+   "7": 13.6
+  },
+  "flow": {
+   "1": 697.9,
+   "2": 706.3,
+   "3": 580.0,
+   "4": 246.1,
+   "5": 241.9,
+   "6": 362.6,
+   "7": 409.3
+  }
+}
+
+video path:
+['../data/video_cut/P1/P1_360_420.mp4', '../data/video_cut/P2/P2_360_420.mp4', '../data/video_cut/P3/P3_360_420.mp4', '../data/video_cut/P4/P4_360_420.mp4', '../data/video_cut/P5/P5_360_420.mp4', '../data/video_cut/P6/P6_360_420.mp4', '../data/video_cut/P7/P7_360_420.mp4']
+ ground truth:
+{'density': {1: np.float64(158.11675957184542), 2: np.float64(181.81871104442823), 3: np.float64(221.42677003969013), 4: np.float64(192.27358372596893), 5: np.float64(251.5575465566729), 6: np.float64(291.75871395942914), 7: np.float64(324.3372423631481)}, 'speed': {1: np.float64(44.07550846460165), 2: np.float64(38.838106060322325), 3: np.float64(25.645225783538063), 4: np.float64(12.718692570844231), 5: np.float64(9.54560532142926), 6: np.float64(12.43026746659952), 7: np.float64(13.591185493918314)}, 'rate': {1: np.float64(6970.855149868773), 2: np.float64(7063.296544167311), 3: np.float64(5679.988729756319), 4: np.float64(2446.0927078700865), 5: np.float64(2401.881881875438), 6: np.float64(3627.564403131131), 7: np.float64(4409.252619853594)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 6 (no missing data).
+2. Partial observations and available video clips at time step 7 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 6:
+Density: {1: 158.1, 2: 181.8, 3: 221.4, 4: 192.3, 5: 251.6, 6: 291.8, 7: 324.3}
+Speed:   {1: 44.1, 2: 38.8, 3: 25.6, 4: 12.7, 5: 9.5, 6: 12.4, 7: 13.6}
+Flow:    {1: 6970.9, 2: 7063.3, 3: 5680.0, 4: 2446.1, 5: 2401.9, 6: 3627.6, 7: 4409.3}
+
+Partially observed sensor readings at time step 7:
+Density: {1: 200.8, 2: 203.5, 3: 214.4, 4: 186.0, 5: 192.2, 6: 248.8, 7: 219.1}
+Speed:   {1: 31.6, 2: 31.7, 3: 25.9, 4: 24.5, 5: 24.3, 6: 12.5, 7: 31.9}
+Flow:    {1: 6035.2, 2: 6451.3, 3: 5358.4, 4: 4449.4, 5: 4543.6, 6: 3120.8, 7: 6496.4}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 7 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+"density": {
+"1": 20.8,
+"2": 203.5,
+"3": 214.4,
+"4": 18.0,
+"5": 192.2,
+"6": 24.8,
+"7": 29.1
+},
+"speed": {
+"1": 31.6,
+"2": 31.7,
+"3": 25.9,
+"4": 24.5,
+"5": 24.3,
+"6": 12.5,
+"7": 31.9
+},
+"flow": {
+"1": 6035.2,
+"2": 645.3,
+"3": 535.4,
+"4": 444.9,
+"5": 443.6,
+"6": 312.8,
+"7": 6496.4
+}
+}
+
+video path:
+['../data/video_cut/P2/P2_420_480.mp4', '../data/video_cut/P6/P6_420_480.mp4']
+ ground truth:
+{'density': {1: np.float64(201.6682504935553), 2: np.float64(203.54125312797188), 3: np.float64(164.10004020375487), 4: np.float64(165.9860984446433), 5: np.float64(200.31452784882188), 6: np.float64(248.8347146728161), 7: np.float64(270.3716892382451)}, 'speed': {1: np.float64(31.454396385276013), 2: np.float64(31.687386999958704), 3: np.float64(37.50186489417293), 4: np.float64(32.08572721308922), 5: np.float64(18.88432205177486), 6: np.float64(12.538593537521294), 7: np.float64(13.194391256383126)}, 'rate': {1: np.float64(6344.971973698665), 2: np.float64(6451.3364809849645), 3: np.float64(6155.62811116419), 4: np.float64(5327.143867022224), 5: np.float64(3783.769463303997), 6: np.float64(3120.8336086648137), 7: np.float64(3568.3002844523244)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 7 (no missing data).
+2. Partial observations and available video clips at time step 8 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 7:
+Density: {1: 201.7, 2: 203.5, 3: 164.1, 4: 166.0, 5: 200.3, 6: 248.8, 7: 270.4}
+Speed:   {1: 31.5, 2: 31.7, 3: 37.5, 4: 32.1, 5: 18.9, 6: 12.5, 7: 13.2}
+Flow:    {1: 6345.0, 2: 6451.3, 3: 6155.6, 4: 5327.1, 5: 3783.8, 6: 3120.8, 7: 3568.3}
+
+Partially observed sensor readings at time step 8:
+Density: {1: 200.8, 2: 213.0, 3: 214.4, 4: 155.3, 5: 192.2, 6: 190.4, 7: 242.0}
+Speed:   {1: 31.6, 2: 31.6, 3: 25.9, 4: 35.6, 5: 24.3, 6: 35.7, 7: 26.5}
+Flow:    {1: 6035.2, 2: 6732.0, 3: 5358.4, 4: 5533.6, 5: 4543.6, 6: 6805.3, 7: 6408.5}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 8 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+  "density": {
+    "1": 20.8,
+    "2": 21.0,
+    "3": 21.4,
+    "4": 15.3,
+    "5": 192.2,
+    "6": 190.4,
+    "7": 242.0
+  },
+  "speed": {
+    "1": 31.6,
+    "2": 31.6,
+    "3": 25.9,
+    "4": 35.6,
+    "5": 24.3,
+    "6": 35.7,
+    "7": 26.5
+  },
+  "flow": {
+    "1": 6035.2,
+    "2": 632.0,
+    "3": 538.4,
+    "4": 537.1,
+    "5": 537.8,
+    "6": 685.3,
+    "7": 640.5
+  }
+}
+
+video path:
+['../data/video_cut/P2/P2_480_540.mp4', '../data/video_cut/P4/P4_480_540.mp4', '../data/video_cut/P6/P6_480_540.mp4', '../data/video_cut/P7/P7_480_540.mp4']
+ ground truth:
+{'density': {1: np.float64(162.1451649701146), 2: np.float64(213.00278190576333), 3: np.float64(264.97474667035453), 4: np.float64(155.28657212243954), 5: np.float64(162.82665805133004), 6: np.float64(190.41563002617747), 7: np.float64(241.96201694316463)}, 'speed': {1: np.float64(45.78764732007441), 2: np.float64(31.596991112525345), 3: np.float64(22.866692930175603), 4: np.float64(35.62574477629233), 5: np.float64(39.669181600933), 6: np.float64(35.73010970351329), 7: np.float64(26.47882956482556)}, 'rate': {1: np.float64(7426.140366765135), 2: np.float64(6731.964630195169), 3: np.float64(6060.642505627142), 4: np.float64(5533.611655891055), 5: np.float64(6460.848717367864), 6: np.float64(6805.307686547878), 7: np.float64(6408.50610252874)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 8 (no missing data).
+2. Partial observations and available video clips at time step 9 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 8:
+Density: {1: 162.1, 2: 213.0, 3: 265.0, 4: 155.3, 5: 162.8, 6: 190.4, 7: 242.0}
+Speed:   {1: 45.8, 2: 31.6, 3: 22.9, 4: 35.6, 5: 39.7, 6: 35.7, 7: 26.5}
+Flow:    {1: 7426.1, 2: 6732.0, 3: 6060.6, 4: 5533.6, 5: 6460.8, 6: 6805.3, 7: 6408.5}
+
+Partially observed sensor readings at time step 9:
+Density: {1: 200.8, 2: 176.2, 3: 172.0, 4: 183.7, 5: 192.2, 6: 198.5, 7: 167.9}
+Speed:   {1: 31.6, 2: 38.8, 3: 33.9, 4: 24.1, 5: 24.3, 6: 32.6, 7: 47.2}
+Flow:    {1: 6035.2, 2: 6827.9, 3: 5835.3, 4: 4427.0, 5: 4543.6, 6: 6478.8, 7: 7927.6}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 9 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 20.8,
+    "2": 17.2,
+    "3": 172.0,
+    "4": 183.7,
+    "5": 192.2,
+    "6": 19.5,
+    "7": 16.9
+  },
+  "speed": {
+    "1": 31.6,
+    "2": 38.8,
+    "3": 3.9,
+    "4": 24.1,
+    "5": 24.3,
+    "6": 32.6,
+    "7": 47.2
+  },
+  "flow": {
+    "1": 6035.2,
+    "2": 6827.9,
+    "3": 5835.3,
+    "4": 427.0,
+    "5": 434.6,
+    "6": 470.8,
+    "7": 6408.5
+  }
+}
+```
+
+video path:
+['../data/video_cut/P2/P2_540_600.mp4', '../data/video_cut/P3/P3_540_600.mp4', '../data/video_cut/P4/P4_540_600.mp4', '../data/video_cut/P6/P6_540_600.mp4', '../data/video_cut/P7/P7_540_600.mp4']
+ ground truth:
+{'density': {1: np.float64(166.0527344013262), 2: np.float64(176.1510252021931), 3: np.float64(172.0348835194755), 4: np.float64(183.69245888149365), 5: np.float64(179.13824633022512), 6: np.float64(198.48408947887287), 7: np.float64(167.91821983480708)}, 'speed': {1: np.float64(44.35171823778513), 2: np.float64(38.75145187869595), 3: np.float64(33.91069271018101), 4: np.float64(24.094065864856688), 5: np.float64(25.035639879631187), 6: np.float64(32.633125993088186), 7: np.float64(47.19905445608508)}, 'rate': {1: np.float64(7366.603636773736), 2: np.float64(6827.850064517204), 3: np.float64(5835.310917622955), 4: np.float64(4427.027734700097), 5: np.float64(4485.985197993307), 6: np.float64(6478.809331795072), 7: np.float64(7927.603886241254)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 9 (no missing data).
+2. Partial observations and available video clips at time step 10 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 9:
+Density: {1: 166.1, 2: 176.2, 3: 172.0, 4: 183.7, 5: 179.1, 6: 198.5, 7: 167.9}
+Speed:   {1: 44.4, 2: 38.8, 3: 33.9, 4: 24.1, 5: 25.0, 6: 32.6, 7: 47.2}
+Flow:    {1: 7366.6, 2: 6827.9, 3: 5835.3, 4: 4427.0, 5: 4486.0, 6: 6478.8, 7: 7927.6}
+
+Partially observed sensor readings at time step 10:
+Density: {1: 151.0, 2: 167.5, 3: 198.2, 4: 168.9, 5: 191.0, 6: 215.0, 7: 261.1}
+Speed:   {1: 47.5, 2: 45.6, 3: 34.2, 4: 35.5, 5: 33.5, 6: 28.0, 7: 29.9}
+Flow:    {1: 7174.7, 2: 7633.6, 3: 6771.5, 4: 5991.4, 5: 6406.9, 6: 5692.5, 7: 7800.8}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 10 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 151.0,
+    "2": 17.5,
+    "3": 19.2,
+    "4": 18.9,
+    "5": 191.0,
+    "6": 215.0,
+    "7": 26.1
+  },
+  "speed": {
+    "1": 4.5,
+    "2": 5.6,
+    "3": 4.2,
+    "4": 3.5,
+    "5": 3.5,
+    "6": 28.0,
+    "7": 29.9
+  },
+  "flow": {
+    "1": 7174.7,
+    "2": 736.6,
+    "3": 6827.9,
+    "4": 5835.3,
+    "5": 425.0,
+    "6": 478.8,
+    "7": 7927.6
+  }
+}
+```
+
+video path:
+['../data/video_cut/P1/P1_600_660.mp4', '../data/video_cut/P2/P2_600_660.mp4', '../data/video_cut/P3/P3_600_660.mp4', '../data/video_cut/P4/P4_600_660.mp4', '../data/video_cut/P5/P5_600_660.mp4', '../data/video_cut/P7/P7_600_660.mp4']
+ ground truth:
+{'density': {1: np.float64(151.01300335849376), 2: np.float64(167.51067031614335), 3: np.float64(198.22752832495948), 4: np.float64(168.85032380376606), 5: np.float64(190.95628942180437), 6: np.float64(207.37740574282864), 7: np.float64(261.11621208228144)}, 'speed': {1: np.float64(47.49836243925285), 2: np.float64(45.55890667422137), 3: np.float64(34.15173537180735), 4: np.float64(35.47434848049726), 5: np.float64(33.54311546838662), 6: np.float64(32.26357465644393), 7: np.float64(29.86727180346643)}, 'rate': {1: np.float64(7174.700951650208), 2: np.float64(7633.55065391017), 3: np.float64(6771.541812035126), 4: np.float64(5991.383895975192), 5: np.float64(6406.903551337451), 6: np.float64(6692.44395213756), 7: np.float64(7800.819214237713)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 10 (no missing data).
+2. Partial observations and available video clips at time step 11 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 10:
+Density: {1: 151.0, 2: 167.5, 3: 198.2, 4: 168.9, 5: 191.0, 6: 207.4, 7: 261.1}
+Speed:   {1: 47.5, 2: 45.6, 3: 34.2, 4: 35.5, 5: 33.5, 6: 32.3, 7: 29.9}
+Flow:    {1: 7174.7, 2: 7633.6, 3: 6771.5, 4: 5991.4, 5: 6406.9, 6: 6692.4, 7: 7800.8}
+
+Partially observed sensor readings at time step 11:
+Density: {1: 200.8, 2: 211.6, 3: 188.5, 4: 186.0, 5: 192.2, 6: 193.1, 7: 201.9}
+Speed:   {1: 31.6, 2: 29.0, 3: 40.5, 4: 24.5, 5: 24.3, 6: 44.5, 7: 46.3}
+Flow:    {1: 6035.2, 2: 5910.9, 3: 7638.5, 4: 4449.4, 5: 4543.6, 6: 8598.1, 7: 9350.8}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 11 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 20.8,
+    "2": 21.6,
+    "3": 18.5,
+    "4": 16.0,
+    "5": 192.2,
+    "6": 193.1,
+    "7": 201.9
+  },
+  "speed": {
+    "1": 31.6,
+    "2": 29.0,
+    "3": 40.5,
+    "4": 24.5,
+    "5": 24.3,
+    "6": 4.5,
+    "7": 46.3
+  },
+  "flow": {
+    "1": 6035.2,
+    "2": 5910.9,
+    "3": 738.5,
+    "4": 4449.4,
+    "5": 443.6,
+    "6": 858.1,
+    "7": 930.8
+  }
+}
+```
+
+video path:
+['../data/video_cut/P3/P3_660_720.mp4', '../data/video_cut/P6/P6_660_720.mp4', '../data/video_cut/P7/P7_660_720.mp4']
+ ground truth:
+{'density': {1: np.float64(200.5826996221523), 2: np.float64(192.74946662825556), 3: np.float64(188.5427889811018), 4: np.float64(197.93104023454788), 5: np.float64(207.0065995701736), 6: np.float64(193.1050512232352), 7: np.float64(201.88797948257252)}, 'speed': {1: np.float64(40.33502246169356), 2: np.float64(42.98096251553083), 3: np.float64(40.50287839198531), 4: np.float64(32.94635962160875), 5: np.float64(31.52198604625384), 6: np.float64(44.51411126143896), 7: np.float64(46.30475407044389)}, 'rate': {1: np.float64(8092.572469593525), 2: np.float64(8286.671898335406), 3: np.float64(7638.474568137405), 4: np.float64(6522.77148075222), 5: np.float64(6526.924451646612), 6: np.float64(8598.093491084022), 7: np.float64(9350.759033938191)}}
+
+
+-----------------------------------------------------------------------------------------------Error in case 11: skipping...
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 12 (no missing data).
+2. Partial observations and available video clips at time step 13 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 12:
+Density: {1: 218.8, 2: 198.5, 3: 210.9, 4: 180.9, 5: 179.3, 6: 208.7, 7: 170.0}
+Speed:   {1: 31.9, 2: 39.7, 3: 35.9, 4: 34.8, 5: 35.6, 6: 34.2, 7: 45.7}
+Flow:    {1: 6988.0, 2: 7889.6, 3: 7565.0, 4: 6297.6, 5: 6378.6, 6: 7132.7, 7: 7763.9}
+
+Partially observed sensor readings at time step 13:
+Density: {1: 192.9, 2: 226.5, 3: 185.4, 4: 186.0, 5: 182.5, 6: 182.0, 7: 171.2}
+Speed:   {1: 39.1, 2: 25.5, 3: 28.2, 4: 24.5, 5: 33.9, 6: 40.3, 7: 47.0}
+Flow:    {1: 7549.6, 2: 5772.8, 3: 5225.5, 4: 4449.4, 5: 6197.3, 6: 7342.0, 7: 8042.7}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 13 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 192.9,
+    "2": 26.5,
+    "3": 185.4,
+    "4": 180.0,
+    "5": 182.5,
+    "6": 182.0,
+    "7": 171.2
+  },
+  "speed": {
+    "1": 39.1,
+    "2": 25.5,
+    "3": 28.2,
+    "4": 24.5,
+    "5": 3.9,
+    "6": 40.3,
+    "7": 47.0
+  },
+  "flow": {
+    "1": 749.6,
+    "2": 572.8,
+    "3": 525.0,
+    "4": 49.4,
+    "5": 6197.3,
+    "6": 732.0,
+    "7": 804.7
+  }
+}
+```
+
+video path:
+['../data/video_cut/P1/P1_780_840.mp4', '../data/video_cut/P2/P2_780_840.mp4', '../data/video_cut/P3/P3_780_840.mp4', '../data/video_cut/P5/P5_780_840.mp4', '../data/video_cut/P6/P6_780_840.mp4', '../data/video_cut/P7/P7_780_840.mp4']
+ ground truth:
+{'density': {1: np.float64(192.8759634676724), 2: np.float64(226.54767695673155), 3: np.float64(185.4063720490886), 4: np.float64(161.7251924944722), 5: np.float64(182.5187289842197), 6: np.float64(182.0264706474849), 7: np.float64(171.18480255931124)}, 'speed': {1: np.float64(39.13242728573511), 2: np.float64(25.47490510442117), 3: np.float64(28.176889804205207), 4: np.float64(35.47348916439533), 5: np.float64(33.94563162323414), 6: np.float64(40.32464985135129), 7: np.float64(46.97045650592798)}, 'rate': {1: np.float64(7549.630861936821), 2: np.float64(5772.753458073774), 3: np.float64(5225.508173604536), 4: np.float64(5738.420989797838), 5: np.float64(6197.294743763688), 6: np.float64(7342.02696992944), 7: np.float64(8042.680368302411)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 13 (no missing data).
+2. Partial observations and available video clips at time step 14 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 13:
+Density: {1: 192.9, 2: 226.5, 3: 185.4, 4: 161.7, 5: 182.5, 6: 182.0, 7: 171.2}
+Speed:   {1: 39.1, 2: 25.5, 3: 28.2, 4: 35.5, 5: 33.9, 6: 40.3, 7: 47.0}
+Flow:    {1: 7549.6, 2: 5772.8, 3: 5225.5, 4: 5738.4, 5: 6197.3, 6: 7342.0, 7: 8042.7}
+
+Partially observed sensor readings at time step 14:
+Density: {1: 128.4, 2: 173.9, 3: 214.4, 4: 197.8, 5: 192.2, 6: 177.9, 7: 155.7}
+Speed:   {1: 52.5, 2: 41.0, 3: 25.9, 4: 18.7, 5: 24.3, 6: 36.6, 7: 53.3}
+Flow:    {1: 6743.4, 2: 7127.7, 3: 5358.4, 4: 3700.7, 5: 4543.6, 6: 6518.5, 7: 8303.0}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 14 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 128.4,
+    "2": 173.9,
+    "3": 214.4,
+    "4": 197.8,
+    "5": 192.2,
+    "6": 17.9,
+    "7": 15.7
+  },
+  "speed": {
+    "1": 52.5,
+    "2": 41.0,
+    "3": 25.9,
+    "4": 18.7,
+    "5": 24.3,
+    "6": 36.6,
+    "7": 53.3
+  },
+  "flow": {
+    "1": 643.4,
+    "2": 717.7,
+    "3": 535.4,
+    "4": 37.0,
+    "5": 54.3,
+    "6": 618.5,
+    "7": 830.3
+  }
+}
+```
+
+video path:
+['../data/video_cut/P1/P1_840_900.mp4', '../data/video_cut/P2/P2_840_900.mp4', '../data/video_cut/P4/P4_840_900.mp4', '../data/video_cut/P6/P6_840_900.mp4', '../data/video_cut/P7/P7_840_900.mp4']
+ ground truth:
+{'density': {1: np.float64(128.3870187851736), 2: np.float64(173.90706048961908), 3: np.float64(191.0961277819532), 4: np.float64(197.78916017574832), 5: np.float64(197.7859218583304), 6: np.float64(177.85476012255754), 7: np.float64(155.72610798990806)}, 'speed': {1: np.float64(52.51044494054692), 2: np.float64(40.97505161278476), 3: np.float64(31.830179377662308), 4: np.float64(18.705391210839164), 5: np.float64(20.83211050328405), 6: np.float64(36.64126245318309), 7: np.float64(53.30423738548748)}, 'rate': {1: np.float64(6743.380016947923), 2: np.float64(7127.6693646300455), 3: np.float64(6084.176369475938), 4: np.float64(3700.6678231865226), 5: np.float64(4121.349719631219), 6: np.float64(6518.486099713083), 7: np.float64(8302.97988660252)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 14 (no missing data).
+2. Partial observations and available video clips at time step 15 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 14:
+Density: {1: 128.4, 2: 173.9, 3: 191.1, 4: 197.8, 5: 197.8, 6: 177.9, 7: 155.7}
+Speed:   {1: 52.5, 2: 41.0, 3: 31.8, 4: 18.7, 5: 20.8, 6: 36.6, 7: 53.3}
+Flow:    {1: 6743.4, 2: 7127.7, 3: 6084.2, 4: 3700.7, 5: 4121.3, 6: 6518.5, 7: 8303.0}
+
+Partially observed sensor readings at time step 15:
+Density: {1: 200.8, 2: 211.6, 3: 214.4, 4: 186.0, 5: 150.3, 6: 215.0, 7: 241.6}
+Speed:   {1: 31.6, 2: 29.0, 3: 25.9, 4: 24.5, 5: 31.8, 6: 28.0, 7: 20.7}
+Flow:    {1: 6035.2, 2: 5910.9, 3: 5358.4, 4: 4449.4, 5: 4777.7, 6: 5692.5, 7: 4996.3}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 15 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+"density": {
+"1": 20.8,
+"2": 21.6,
+"3": 214.4,
+"4": 18.0,
+"5": 150.3,
+"6": 215.0,
+"7": 24.1
+}
+"speed": {
+"1": 31.6,
+"2": 29.0,
+"3": 25.9,
+"4": 24.5,
+"5": 31.8,
+"6": 28.0,
+"7": 20.7
+}
+"flow": {
+"1": 6035.2,
+"2": 5910.9,
+"3": 535.4,
+"4": 444.4,
+"5": 47.7,
+"6": 527.5,
+"7": 496.3
+}
+}
+
+video path:
+['../data/video_cut/P5/P5_900_960.mp4', '../data/video_cut/P7/P7_900_960.mp4']
+ ground truth:
+{'density': {1: np.float64(173.31322770944422), 2: np.float64(168.05421314195988), 3: np.float64(154.40438220887245), 4: np.float64(138.7872902387936), 5: np.float64(150.26662499278189), 6: np.float64(195.38158700444387), 7: np.float64(241.6487593954097)}, 'speed': {1: np.float64(43.88639664927188), 2: np.float64(47.27452508145398), 3: np.float64(45.81746408926823), 4: np.float64(41.80284282097482), 5: np.float64(31.78703706095489), 6: np.float64(22.289554544246627), 7: np.float64(20.67064096809104)}, 'rate': {1: np.float64(7608.03420348241), 2: np.float64(7946.710673303495), 3: np.float64(7076.222695989192), 4: np.float64(5803.183929541012), 5: np.float64(4777.74979398705), 6: np.float64(4356.079970080941), 7: np.float64(4996.309526465534)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 15 (no missing data).
+2. Partial observations and available video clips at time step 16 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 15:
+Density: {1: 173.3, 2: 168.1, 3: 154.4, 4: 138.8, 5: 150.3, 6: 195.4, 7: 241.6}
+Speed:   {1: 43.9, 2: 47.3, 3: 45.8, 4: 41.8, 5: 31.8, 6: 22.3, 7: 20.7}
+Flow:    {1: 7608.0, 2: 7946.7, 3: 7076.2, 4: 5803.2, 5: 4777.7, 6: 4356.1, 7: 4996.3}
+
+Partially observed sensor readings at time step 16:
+Density: {1: 198.6, 2: 211.1, 3: 162.3, 4: 145.1, 5: 192.2, 6: 134.1, 7: 219.1}
+Speed:   {1: 28.7, 2: 27.4, 3: 41.1, 4: 47.6, 5: 24.3, 6: 58.6, 7: 31.9}
+Flow:    {1: 5710.0, 2: 5795.2, 3: 6676.6, 4: 6910.0, 5: 4543.6, 6: 7861.6, 7: 6496.4}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 16 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 19.6,
+    "2": 21.1,
+    "3": 16.3,
+    "4": 14.1,
+    "5": 192.2,
+    "6": 134.1,
+    "7": 29.1
+  },
+  "speed": {
+    "1": 28.7,
+    "2": 27.4,
+    "3": 41.1,
+    "4": 47.6,
+    "5": 24.3,
+    "6": 58.6,
+    "7": 31.9
+  },
+  "flow": {
+    "1": 510.0,
+    "2": 5795.2,
+    "3": 6707.2,
+    "4": 6910.0,
+    "5": 4543.6,
+    "6": 781.6,
+    "7": 6496.4
+  }
+}
+```
+
+video path:
+['../data/video_cut/P1/P1_960_1020.mp4', '../data/video_cut/P2/P2_960_1020.mp4', '../data/video_cut/P3/P3_960_1020.mp4', '../data/video_cut/P4/P4_960_1020.mp4', '../data/video_cut/P6/P6_960_1020.mp4']
+ ground truth:
+{'density': {1: np.float64(198.6048029229889), 2: np.float64(211.10593103621432), 3: np.float64(162.28413520384285), 4: np.float64(145.09578044589824), 5: np.float64(121.8211223148371), 6: np.float64(134.05963873508384), 7: np.float64(190.70210014191687)}, 'speed': {1: np.float64(28.743215439474845), 2: np.float64(27.44479135716137), 3: np.float64(41.131061738568846), 4: np.float64(47.611683358208445), 5: np.float64(56.49760487065426), 6: np.float64(58.62748564662168), 7: np.float64(41.85566298288901)}, 'rate': {1: np.float64(5709.99751187286), 2: np.float64(5795.236854035746), 3: np.float64(6676.622287343784), 4: np.float64(6910.0174077548445), 5: np.float64(6884.358139176086), 6: np.float64(7861.58538556807), 7: np.float64(7983.999906889911)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 16 (no missing data).
+2. Partial observations and available video clips at time step 17 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 16:
+Density: {1: 198.6, 2: 211.1, 3: 162.3, 4: 145.1, 5: 121.8, 6: 134.1, 7: 190.7}
+Speed:   {1: 28.7, 2: 27.4, 3: 41.1, 4: 47.6, 5: 56.5, 6: 58.6, 7: 41.9}
+Flow:    {1: 5710.0, 2: 5795.2, 3: 6676.6, 4: 6910.0, 5: 6884.4, 6: 7861.6, 7: 7984.0}
+
+Partially observed sensor readings at time step 17:
+Density: {1: 200.8, 2: 228.5, 3: 214.4, 4: 186.0, 5: 129.0, 6: 115.5, 7: 131.0}
+Speed:   {1: 31.6, 2: 26.4, 3: 25.9, 4: 24.5, 5: 51.9, 6: 70.2, 7: 67.5}
+Flow:    {1: 6035.2, 2: 6025.7, 3: 5358.4, 4: 4449.4, 5: 6699.5, 6: 8112.9, 7: 8839.6}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 17 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 20.8,
+    "2": 28.5,
+    "3": 21.4,
+    "4": 18.0,
+    "5": 129.0,
+    "6": 15.5,
+    "7": 131.0
+  },
+  "speed": {
+    "1": 31.6,
+    "2": 26.4,
+    "3": 25.9,
+    "4": 24.5,
+    "5": 51.9,
+    "6": 70.2,
+    "7": 67.5
+  },
+  "flow": {
+    "1": 6035.2,
+    "2": 6025.7,
+    "3": 535.8,
+    "4": 444.9,
+    "5": 691.5,
+    "6": 812.9,
+    "7": 839.6
+  }
+}
+```
+
+video path:
+['../data/video_cut/P2/P2_1020_1080.mp4', '../data/video_cut/P5/P5_1020_1080.mp4', '../data/video_cut/P6/P6_1020_1080.mp4', '../data/video_cut/P7/P7_1020_1080.mp4']
+ ground truth:
+{'density': {1: np.float64(202.4402682849146), 2: np.float64(228.5140070734689), 3: np.float64(242.0618113979207), 4: np.float64(180.6034034750191), 5: np.float64(128.99440911285566), 6: np.float64(115.47777111948236), 7: np.float64(131.01190102067554)}, 'speed': {1: np.float64(28.7345541846392), 2: np.float64(26.36216788479246), 3: np.float64(21.121887017326856), 4: np.float64(27.49226488389281), 5: np.float64(51.92277049682599), 6: np.float64(70.23680667831013), 7: np.float64(67.45445226841156)}, 'rate': {1: np.float64(5818.515420070119), 2: np.float64(6025.662032689178), 3: np.float64(5114.107067562946), 4: np.float64(4966.463772907983), 5: np.float64(6699.456428829098), 6: np.float64(8112.8598368771645), 7: np.float64(8839.591396629028)}}
+
+
+-----------------------------------------------------------------------------------------------Error in case 17: skipping...
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 18 (no missing data).
+2. Partial observations and available video clips at time step 19 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 18:
+Density: {1: 217.2, 2: 239.4, 3: 181.3, 4: 176.1, 5: 185.2, 6: 163.6, 7: 126.8}
+Speed:   {1: 19.8, 2: 17.2, 3: 28.4, 4: 23.9, 5: 20.9, 6: 41.1, 7: 66.1}
+Flow:    {1: 4296.1, 2: 4118.2, 3: 5144.9, 4: 4206.0, 5: 3871.2, 6: 6725.5, 7: 8377.2}
+
+Partially observed sensor readings at time step 19:
+Density: {1: 200.8, 2: 211.6, 3: 214.4, 4: 183.1, 5: 198.9, 6: 215.0, 7: 166.7}
+Speed:   {1: 31.6, 2: 29.0, 3: 25.9, 4: 21.2, 5: 24.9, 6: 28.0, 7: 36.4}
+Flow:    {1: 6035.2, 2: 5910.9, 3: 5358.4, 4: 3876.0, 5: 4945.2, 6: 5692.5, 7: 6068.0}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 19 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+  "density": {
+    "1": 20.8,
+    "2": 21.6,
+    "3": 214.4,
+    "4": 183.1,
+    "5": 19.9,
+    "6": 215.0,
+    "7": 16.7
+  },
+  "speed": {
+    "1": 31.6,
+    "2": 29.0,
+    "3": 25.9,
+    "4": 21.2,
+    "5": 24.9,
+    "6": 28.0,
+    "7": 36.4
+  },
+  "flow": {
+    "1": 6035.2,
+    "2": 5910.9,
+    "3": 535.4,
+    "4": 376.0,
+    "5": 494.2,
+    "6": 592.5,
+    "7": 606.0
+  }
+}
+
+video path:
+['../data/video_cut/P4/P4_1140_1200.mp4', '../data/video_cut/P5/P5_1140_1200.mp4', '../data/video_cut/P7/P7_1140_1200.mp4']
+ ground truth:
+{'density': {1: np.float64(230.2400050804143), 2: np.float64(247.4603055660781), 3: np.float64(236.44885230434625), 4: np.float64(183.08884736453564), 5: np.float64(198.88513270449167), 6: np.float64(221.0385697185653), 7: np.float64(166.71427931382837)}, 'speed': {1: np.float64(23.25280318337567), 2: np.float64(22.3047137043758), 3: np.float64(18.22421563594905), 4: np.float64(21.164753937776204), 5: np.float64(24.8582014642481), 6: np.float64(24.04881666707293), 7: np.float64(36.38834767180096)}, 'rate': {1: np.float64(5355.091845008031), 2: np.float64(5520.93990599385), 3: np.float64(4310.1945934720725), 4: np.float64(3876.019348024669), 5: np.float64(4945.188434367733), 6: np.float64(5317.072661063973), 7: np.float64(6068.00537538571)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 19 (no missing data).
+2. Partial observations and available video clips at time step 20 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 19:
+Density: {1: 230.2, 2: 247.5, 3: 236.4, 4: 183.1, 5: 198.9, 6: 221.0, 7: 166.7}
+Speed:   {1: 23.3, 2: 22.3, 3: 18.2, 4: 21.2, 5: 24.9, 6: 24.0, 7: 36.4}
+Flow:    {1: 5355.1, 2: 5520.9, 3: 4310.2, 4: 3876.0, 5: 4945.2, 6: 5317.1, 7: 6068.0}
+
+Partially observed sensor readings at time step 20:
+Density: {1: 178.5, 2: 211.6, 3: 244.8, 4: 203.0, 5: 188.4, 6: 179.6, 7: 195.9}
+Speed:   {1: 40.4, 2: 29.0, 3: 20.0, 4: 21.6, 5: 19.6, 6: 26.6, 7: 30.6}
+Flow:    {1: 7207.4, 2: 5910.9, 3: 4891.9, 4: 4387.6, 5: 3696.0, 6: 4786.0, 7: 5998.9}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 20 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+  "density": {
+   "1": 18.5,
+   "2": 21.6,
+   "3": 24.8,
+   "4": 203.0,
+   "5": 18.4,
+   "6": 179.6,
+   "7": 195.9
+  },
+  "speed": {
+   "1": 40.4,
+   "2": 29.0,
+   "3": 20.0,
+   "4": 21.6,
+   "5": 19.6,
+   "6": 26.6,
+   "7": 30.6
+  },
+  "flow": {
+   "1": 7207.4,
+   "2": 5910.9,
+   "3": 481.9,
+   "4": 437.6,
+   "5": 36660.0,
+   "6": 476.0,
+   "7": 598.9
+  }
+}
+
+video path:
+['../data/video_cut/P1/P1_1200_1260.mp4', '../data/video_cut/P3/P3_1200_1260.mp4', '../data/video_cut/P4/P4_1200_1260.mp4', '../data/video_cut/P5/P5_1200_1260.mp4', '../data/video_cut/P6/P6_1200_1260.mp4', '../data/video_cut/P7/P7_1200_1260.mp4']
+ ground truth:
+{'density': {1: np.float64(178.51143421627594), 2: np.float64(247.98096750583684), 3: np.float64(244.79114501605875), 4: np.float64(202.98498275064912), 5: np.float64(188.42776730468347), 6: np.float64(179.64254679159447), 7: np.float64(195.9485624036764)}, 'speed': {1: np.float64(40.36448831416828), 2: np.float64(23.661183637984223), 3: np.float64(19.978833259243626), 4: np.float64(21.60977233415129), 5: np.float64(19.609846699237945), 6: np.float64(26.635120496359395), 7: np.float64(30.60703423934652)}, 'rate': {1: np.float64(7207.361618644389), 2: np.float64(5869.020658896051), 3: np.float64(4891.889608071499), 4: np.float64(4387.578730830888), 5: np.float64(3695.982640161923), 6: np.float64(4786.022006993073), 7: np.float64(5998.934953566037)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 20 (no missing data).
+2. Partial observations and available video clips at time step 21 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 20:
+Density: {1: 178.5, 2: 248.0, 3: 244.8, 4: 203.0, 5: 188.4, 6: 179.6, 7: 195.9}
+Speed:   {1: 40.4, 2: 23.7, 3: 20.0, 4: 21.6, 5: 19.6, 6: 26.6, 7: 30.6}
+Flow:    {1: 7207.4, 2: 5869.0, 3: 4891.9, 4: 4387.6, 5: 3696.0, 6: 4786.0, 7: 5998.9}
+
+Partially observed sensor readings at time step 21:
+Density: {1: 200.8, 2: 176.0, 3: 249.4, 4: 186.0, 5: 192.2, 6: 191.4, 7: 224.6}
+Speed:   {1: 31.6, 2: 41.4, 3: 23.5, 4: 24.5, 5: 24.3, 6: 29.2, 7: 23.8}
+Flow:    {1: 6035.2, 2: 7290.2, 3: 5866.3, 4: 4449.4, 5: 4543.6, 6: 5583.0, 7: 5344.6}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 21 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+  "density": {
+    "1": 20.8,
+    "2": 17.0,
+    "3": 24.4,
+    "4": 18.0,
+    "5": 192.2,
+    "6": 191.4,
+    "7": 24.6
+  },
+  "speed": {
+    "1": 3.6,
+    "2": 4.1,
+    "3": 23.5,
+    "4": 24.5,
+    "5": 24.3,
+    "6": 29.2,
+    "7": 23.8
+  },
+  "flow": {
+    "1": 6035.2,
+    "2": 7290.2,
+    "3": 586.3,
+    "4": 449.4,
+    "5": 4443.6,
+    "6": 583.0,
+    "7": 534.6
+  }
+}
+
+video path:
+['../data/video_cut/P2/P2_1260_1320.mp4', '../data/video_cut/P3/P3_1260_1320.mp4', '../data/video_cut/P6/P6_1260_1320.mp4', '../data/video_cut/P7/P7_1260_1320.mp4']
+ ground truth:
+{'density': {1: np.float64(158.04430215949404), 2: np.float64(175.97750887466233), 3: np.float64(249.3690388306372), 4: np.float64(198.949058552577), 5: np.float64(166.729323729877), 6: np.float64(191.4091982220928), 7: np.float64(224.62234719325332)}, 'speed': {1: np.float64(47.93236199589703), 2: np.float64(41.41612803693598), 3: np.float64(23.518671318657887), 4: np.float64(19.86005405637381), 5: np.float64(24.10048371385672), 6: np.float64(29.16023576815802), 7: np.float64(23.78772278420944)}, 'rate': {1: np.float64(7577.370026363525), 2: np.float64(7290.1670848048125), 3: np.float64(5866.325221596987), 4: np.float64(3952.1474257781706), 5: np.float64(4019.2828488637833), 6: np.float64(5582.961810039696), 7: np.float64(5344.617775704705)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 21 (no missing data).
+2. Partial observations and available video clips at time step 22 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 21:
+Density: {1: 158.0, 2: 176.0, 3: 249.4, 4: 198.9, 5: 166.7, 6: 191.4, 7: 224.6}
+Speed:   {1: 47.9, 2: 41.4, 3: 23.5, 4: 19.9, 5: 24.1, 6: 29.2, 7: 23.8}
+Flow:    {1: 7577.4, 2: 7290.2, 3: 5866.3, 4: 3952.1, 5: 4019.3, 6: 5583.0, 7: 5344.6}
+
+Partially observed sensor readings at time step 22:
+Density: {1: 200.8, 2: 211.6, 3: 175.7, 4: 184.6, 5: 208.6, 6: 215.0, 7: 203.9}
+Speed:   {1: 31.6, 2: 29.0, 3: 32.9, 4: 24.5, 5: 22.5, 6: 28.0, 7: 34.7}
+Flow:    {1: 6035.2, 2: 5910.9, 3: 5774.3, 4: 4517.4, 5: 4697.5, 6: 5692.5, 7: 7068.7}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 22 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 20.8,
+    "2": 21.6,
+    "3": 17.7,
+    "4": 184.6,
+    "5": 20.6,
+    "6": 215.0,
+    "7": 203.9
+  },
+  "speed": {
+    "1": 31.6,
+    "2": 29.0,
+    "3": 32.9,
+    "4": 24.5,
+    "5": 2.5,
+    "6": 28.0,
+    "7": 34.7
+  },
+  "flow": {
+    "1": 6035.2,
+    "2": 591.9,
+    "3": 574.3,
+    "4": 417.4,
+    "5": 497.5,
+    "6": 592.5,
+    "7": 706.7
+  }
+}
+```
+
+video path:
+['../data/video_cut/P3/P3_1320_1380.mp4', '../data/video_cut/P4/P4_1320_1380.mp4', '../data/video_cut/P5/P5_1320_1380.mp4', '../data/video_cut/P7/P7_1320_1380.mp4']
+ ground truth:
+{'density': {1: np.float64(162.57926900991674), 2: np.float64(149.68612120566505), 3: np.float64(175.71064352462403), 4: np.float64(184.61567618060087), 5: np.float64(208.64200448745137), 6: np.float64(238.8101302359952), 7: np.float64(203.8841316160917)}, 'speed': {1: np.float64(42.61574753398952), 2: np.float64(44.025214867625714), 3: np.float64(32.85419806342423), 4: np.float64(24.463186709674225), 5: np.float64(22.50896451111458), 6: np.float64(24.470346312832294), 7: np.float64(34.66122896459021)}, 'rate': {1: np.float64(6930.205285764701), 2: np.float64(6591.645470502416), 3: np.float64(5774.305566195467), 4: np.float64(4517.440355748674), 5: np.float64(4697.514019140534), 6: np.float64(5845.257974986048), 7: np.float64(7068.678102139327)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 22 (no missing data).
+2. Partial observations and available video clips at time step 23 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 22:
+Density: {1: 162.6, 2: 149.7, 3: 175.7, 4: 184.6, 5: 208.6, 6: 238.8, 7: 203.9}
+Speed:   {1: 42.6, 2: 44.0, 3: 32.9, 4: 24.5, 5: 22.5, 6: 24.5, 7: 34.7}
+Flow:    {1: 6930.2, 2: 6591.6, 3: 5774.3, 4: 4517.4, 5: 4697.5, 6: 5845.3, 7: 7068.7}
+
+Partially observed sensor readings at time step 23:
+Density: {1: 187.3, 2: 206.0, 3: 214.4, 4: 180.5, 5: 192.2, 6: 219.7, 7: 215.6}
+Speed:   {1: 37.7, 2: 36.4, 3: 25.9, 4: 33.5, 5: 24.3, 6: 29.7, 7: 34.6}
+Flow:    {1: 7055.7, 2: 7492.0, 3: 5358.4, 4: 6041.3, 5: 4543.6, 6: 6518.1, 7: 7450.2}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 23 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 18.3,
+    "2": 20.0,
+    "3": 21.4,
+    "4": 180.5,
+    "5": 192.2,
+    "6": 219.7,
+    "7": 215.6
+  },
+  "speed": {
+    "1": 37.7,
+    "2": 36.4,
+    "3": 25.9,
+    "4": 32.5,
+    "5": 24.3,
+    "6": 29.7,
+    "7": 34.6
+  },
+  "flow": {
+    "1": 705.7,
+    "2": 7492.0,
+    "3": 535.8,
+    "4": 6041.3,
+    "5": 4543.6,
+    "6": 618.1,
+    "7": 740.2
+  }
+}
+```
+
+video path:
+['../data/video_cut/P1/P1_1380_1440.mp4', '../data/video_cut/P2/P2_1380_1440.mp4', '../data/video_cut/P4/P4_1380_1440.mp4', '../data/video_cut/P6/P6_1380_1440.mp4', '../data/video_cut/P7/P7_1380_1440.mp4']
+ ground truth:
+{'density': {1: np.float64(187.29162660348223), 2: np.float64(205.9816150541343), 3: np.float64(185.7585296112385), 4: np.float64(180.4613500393656), 5: np.float64(216.14511492814515), 6: np.float64(219.66330472255012), 7: np.float64(215.56465357659428)}, 'speed': {1: np.float64(37.66285432351499), 2: np.float64(36.36302878279295), 3: np.float64(38.06947276205035), 4: np.float64(33.468634829401), 5: np.float64(25.228558289779446), 6: np.float64(29.665421063502443), 7: np.float64(34.55239677928814)}, 'rate': {1: np.float64(7055.737481000853), 2: np.float64(7492.026945992559), 3: np.float64(7073.534056270613), 4: np.float64(6041.336438717594), 5: np.float64(5454.4212963072), 6: np.float64(6518.067475499783), 7: np.float64(7450.17631306469)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 23 (no missing data).
+2. Partial observations and available video clips at time step 24 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 23:
+Density: {1: 187.3, 2: 206.0, 3: 185.8, 4: 180.5, 5: 216.1, 6: 219.7, 7: 215.6}
+Speed:   {1: 37.7, 2: 36.4, 3: 38.1, 4: 33.5, 5: 25.2, 6: 29.7, 7: 34.6}
+Flow:    {1: 7055.7, 2: 7492.0, 3: 7073.5, 4: 6041.3, 5: 5454.4, 6: 6518.1, 7: 7450.2}
+
+Partially observed sensor readings at time step 24:
+Density: {1: 200.8, 2: 219.0, 3: 212.8, 4: 174.0, 5: 214.9, 6: 237.5, 7: 219.1}
+Speed:   {1: 31.6, 2: 32.9, 3: 30.7, 4: 34.1, 5: 30.7, 6: 31.4, 7: 31.9}
+Flow:    {1: 6035.2, 2: 7197.3, 3: 6542.0, 4: 5929.3, 5: 6596.1, 6: 7457.8, 7: 6496.4}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 24 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+  "density": {
+    "1": 20.8,
+    "2": 21.0,
+    "3": 212.8,
+    "4": 174.0,
+    "5": 214.9,
+    "6": 237.5,
+    "7": 219.1
+  },
+  "speed": {
+    "1": 31.6,
+    "2": 32.9,
+    "3": 30.7,
+    "4": 34.1,
+    "5": 30.7,
+    "6": 31.4,
+    "7": 31.9
+  },
+  "flow": {
+    "1": 6035.2,
+    "2": 7197.3,
+    "3": 642.0,
+    "4": 5929.3,
+    "5": 6041.3,
+    "6": 596.1,
+    "7": 745.8
+  }
+}
+
+video path:
+['../data/video_cut/P2/P2_1440_1500.mp4', '../data/video_cut/P3/P3_1440_1500.mp4', '../data/video_cut/P4/P4_1440_1500.mp4', '../data/video_cut/P5/P5_1440_1500.mp4', '../data/video_cut/P6/P6_1440_1500.mp4']
+ ground truth:
+{'density': {1: np.float64(170.442904208068), 2: np.float64(218.9827731341559), 3: np.float64(212.7876821292518), 4: np.float64(173.99881449754392), 5: np.float64(214.8531463015963), 6: np.float64(237.5266403533089), 7: np.float64(221.4054281103168)}, 'speed': {1: np.float64(42.69730889344485), 2: np.float64(32.85880152834661), 3: np.float64(30.736400910453224), 4: np.float64(34.0678937766075), 5: np.float64(30.69251483829949), 6: np.float64(31.38992363099483), 7: np.float64(38.06955241372356)}, 'rate': {1: np.float64(7279.310605328044), 2: np.float64(7197.3478438592765), 3: np.float64(6541.996660834352), 4: np.float64(5929.2859539286255), 5: np.float64(6596.066330596515), 6: np.float64(7457.845928973439), 7: np.float64(8430.95666188224)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 24 (no missing data).
+2. Partial observations and available video clips at time step 25 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 24:
+Density: {1: 170.4, 2: 219.0, 3: 212.8, 4: 174.0, 5: 214.9, 6: 237.5, 7: 221.4}
+Speed:   {1: 42.7, 2: 32.9, 3: 30.7, 4: 34.1, 5: 30.7, 6: 31.4, 7: 38.1}
+Flow:    {1: 7279.3, 2: 7197.3, 3: 6542.0, 4: 5929.3, 5: 6596.1, 6: 7457.8, 7: 8431.0}
+
+Partially observed sensor readings at time step 25:
+Density: {1: 239.6, 2: 220.2, 3: 214.4, 4: 228.5, 5: 227.5, 6: 216.3, 7: 191.1}
+Speed:   {1: 23.3, 2: 28.7, 3: 25.9, 4: 23.1, 5: 27.8, 6: 37.1, 7: 44.6}
+Flow:    {1: 5587.2, 2: 6332.3, 3: 5358.4, 4: 5270.6, 5: 6326.6, 6: 8033.6, 7: 8532.7}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 25 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 239.6,
+    "2": 20.2,
+    "3": 214.4,
+    "4": 28.5,
+    "5": 27.5,
+    "6": 216.3,
+    "7": 191.1
+  },
+  "speed": {
+    "1": 23.3,
+    "2": 28.7,
+    "3": 25.9,
+    "4": 23.1,
+    "5": 27.8,
+    "6": 37.1,
+    "7": 4.6
+  },
+  "flow": {
+    "1": 58.2,
+    "2": 632.3,
+    "3": 535.8,
+    "4": 527.6,
+    "5": 632.6,
+    "6": 803.6,
+    "7": 853.7
+  }
+}
+```
+
+video path:
+['../data/video_cut/P1/P1_1500_1560.mp4', '../data/video_cut/P2/P2_1500_1560.mp4', '../data/video_cut/P4/P4_1500_1560.mp4', '../data/video_cut/P5/P5_1500_1560.mp4', '../data/video_cut/P6/P6_1500_1560.mp4', '../data/video_cut/P7/P7_1500_1560.mp4']
+ ground truth:
+{'density': {1: np.float64(239.57524053287443), 2: np.float64(220.22054364602235), 3: np.float64(195.8283940590667), 4: np.float64(228.50300710616136), 5: np.float64(227.4822952112141), 6: np.float64(216.27092719504597), 7: np.float64(191.06535363054437)}, 'speed': {1: np.float64(23.31543624359119), 2: np.float64(28.74683198533408), 3: np.float64(28.73612608462137), 4: np.float64(23.06006934688187), 5: np.float64(27.804369934644814), 6: np.float64(37.13645152612454), 7: np.float64(44.64713143513821)}, 'rate': {1: np.float64(5587.226796064125), 2: np.float64(6332.258608515884), 3: np.float64(5628.785575998945), 4: np.float64(5270.639964344691), 5: np.float64(6326.616090582324), 6: np.float64(8033.584528750319), 7: np.float64(8532.69702648651)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 25 (no missing data).
+2. Partial observations and available video clips at time step 26 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 25:
+Density: {1: 239.6, 2: 220.2, 3: 195.8, 4: 228.5, 5: 227.5, 6: 216.3, 7: 191.1}
+Speed:   {1: 23.3, 2: 28.7, 3: 28.7, 4: 23.1, 5: 27.8, 6: 37.1, 7: 44.6}
+Flow:    {1: 5587.2, 2: 6332.3, 3: 5628.8, 4: 5270.6, 5: 6326.6, 6: 8033.6, 7: 8532.7}
+
+Partially observed sensor readings at time step 26:
+Density: {1: 200.8, 2: 263.7, 3: 214.4, 4: 221.1, 5: 211.7, 6: 207.1, 7: 219.1}
+Speed:   {1: 31.6, 2: 21.9, 3: 25.9, 4: 25.9, 5: 20.8, 6: 27.4, 7: 31.9}
+Flow:    {1: 6035.2, 2: 5774.9, 3: 5358.4, 4: 5730.0, 5: 4396.2, 6: 5673.2, 7: 6496.4}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 26 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 20.8,
+    "2": 26.7,
+    "3": 21.4,
+    "4": 21.1,
+    "5": 21.7,
+    "6": 27.1,
+    "7": 29.1
+  },
+  "speed": {
+    "1": 31.6,
+    "2": 21.9,
+    "3": 25.9,
+    "4": 25.9,
+    "5": 20.8,
+    "6": 27.4,
+    "7": 31.9
+  },
+  "flow": {
+    "1": 6035.2,
+    "2": 574.9,
+    "3": 535.4,
+    "4": 5730.0,
+    "5": 4396.2,
+    "6": 573.2,
+    "7": 6496.4
+  }
+}
+```
+
+video path:
+['../data/video_cut/P2/P2_1560_1620.mp4', '../data/video_cut/P4/P4_1560_1620.mp4', '../data/video_cut/P5/P5_1560_1620.mp4', '../data/video_cut/P6/P6_1560_1620.mp4']
+ ground truth:
+{'density': {1: np.float64(237.19915564424545), 2: np.float64(263.65411324194014), 3: np.float64(233.48851751195943), 4: np.float64(221.05842171946543), 5: np.float64(211.66523690657388), 6: np.float64(207.1483317023338), 7: np.float64(184.6803735321664)}, 'speed': {1: np.float64(24.1230703595972), 2: np.float64(21.897828577685925), 3: np.float64(27.963728009701487), 4: np.float64(25.91430853748879), 5: np.float64(20.764265132467475), 6: np.float64(27.38017066403952), 7: np.float64(40.30360324298505)}, 'rate': {1: np.float64(5723.432222777976), 2: np.float64(5774.926015863823), 3: np.float64(6530.875713748576), 4: np.float64(5730.03813264454), 5: np.float64(4396.194763125147), 6: np.float64(5673.204161304924), 7: np.float64(7445.184098967429)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 26 (no missing data).
+2. Partial observations and available video clips at time step 27 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 26:
+Density: {1: 237.2, 2: 263.7, 3: 233.5, 4: 221.1, 5: 211.7, 6: 207.1, 7: 184.7}
+Speed:   {1: 24.1, 2: 21.9, 3: 28.0, 4: 25.9, 5: 20.8, 6: 27.4, 7: 40.3}
+Flow:    {1: 5723.4, 2: 5774.9, 3: 6530.9, 4: 5730.0, 5: 4396.2, 6: 5673.2, 7: 7445.2}
+
+Partially observed sensor readings at time step 27:
+Density: {1: 259.6, 2: 211.6, 3: 288.4, 4: 167.4, 5: 195.7, 6: 248.2, 7: 219.1}
+Speed:   {1: 23.9, 2: 29.0, 3: 17.4, 4: 25.6, 5: 25.1, 6: 24.1, 7: 31.9}
+Flow:    {1: 6210.5, 2: 5910.9, 3: 5025.7, 4: 4280.8, 5: 4904.9, 6: 5990.2, 7: 6496.4}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 27 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+  "density": {
+    "1": 259.6,
+    "2": 21.6,
+    "3": 28.4,
+    "4": 17.4,
+    "5": 195.7,
+    "6": 24.2,
+    "7": 29.1
+  },
+  "speed": {
+    "1": 23.9,
+    "2": 29.0,
+    "3": 17.4,
+    "4": 25.6,
+    "5": 25.1,
+    "6": 24.1,
+    "7": 31.9
+  },
+  "flow": {
+    "1": 6210.5,
+    "2": 5910.9,
+    "3": 5025.7,
+    "4": 428.8,
+    "5": 4904.9,
+    "6": 590.2,
+    "7": 6496.4
+  }
+}
+
+video path:
+['../data/video_cut/P1/P1_1620_1680.mp4', '../data/video_cut/P3/P3_1620_1680.mp4', '../data/video_cut/P4/P4_1620_1680.mp4', '../data/video_cut/P5/P5_1620_1680.mp4', '../data/video_cut/P6/P6_1620_1680.mp4']
+ ground truth:
+{'density': {1: np.float64(259.57214658272954), 2: np.float64(249.83140356965103), 3: np.float64(288.35010746877856), 4: np.float64(167.4182382143381), 5: np.float64(195.69732395751404), 6: np.float64(248.20788318738892), 7: np.float64(259.21893409648175)}, 'speed': {1: np.float64(23.919996777570912), 2: np.float64(24.222524767124103), 3: np.float64(17.42470375219476), 4: np.float64(25.56323023379935), 5: np.float64(25.05749187297577), 6: np.float64(24.127762247575067), 7: np.float64(26.599670323356857)}, 'rate': {1: np.float64(6210.549497007163), 2: np.float64(6053.09177330892), 3: np.float64(5025.6974783480455), 4: np.float64(4280.843202170761), 5: np.float64(4904.935571689989), 6: np.float64(5990.229167212168), 7: np.float64(6896.897893719865)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 27 (no missing data).
+2. Partial observations and available video clips at time step 28 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 27:
+Density: {1: 259.6, 2: 249.8, 3: 288.4, 4: 167.4, 5: 195.7, 6: 248.2, 7: 259.2}
+Speed:   {1: 23.9, 2: 24.2, 3: 17.4, 4: 25.6, 5: 25.1, 6: 24.1, 7: 26.6}
+Flow:    {1: 6210.5, 2: 6053.1, 3: 5025.7, 4: 4280.8, 5: 4904.9, 6: 5990.2, 7: 6896.9}
+
+Partially observed sensor readings at time step 28:
+Density: {1: 190.0, 2: 218.0, 3: 201.9, 4: 198.2, 5: 192.2, 6: 256.0, 7: 256.4}
+Speed:   {1: 36.1, 2: 27.6, 3: 25.5, 4: 18.6, 5: 24.3, 6: 22.9, 7: 28.3}
+Flow:    {1: 6858.1, 2: 6016.8, 3: 5140.5, 4: 3677.4, 5: 4543.6, 6: 5854.8, 7: 7254.1}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 28 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+  "density": {
+   "1": 190.0,
+   "2": 218.0,
+   "3": 201.9,
+   "4": 198.2,
+   "5": 192.2,
+   "6": 25.0,
+   "7": 25.4
+  },
+  "speed": {
+   "1": 36.1,
+   "2": 27.6,
+   "3": 25.5,
+   "4": 18.6,
+   "5": 24.3,
+   "6": 2.9,
+   "7": 28.3
+  },
+  "flow": {
+   "1": 658.1,
+   "2": 6016.8,
+   "3": 514.0,
+   "4": 37.4,
+   "5": 437.6,
+   "6": 585.8,
+   "7": 725.1
+  }
+}
+
+video path:
+['../data/video_cut/P1/P1_1680_1740.mp4', '../data/video_cut/P2/P2_1680_1740.mp4', '../data/video_cut/P3/P3_1680_1740.mp4', '../data/video_cut/P4/P4_1680_1740.mp4', '../data/video_cut/P6/P6_1680_1740.mp4', '../data/video_cut/P7/P7_1680_1740.mp4']
+ ground truth:
+{'density': {1: np.float64(189.98146541157075), 2: np.float64(217.9996927936622), 3: np.float64(201.9033286327264), 4: np.float64(198.1794675941231), 5: np.float64(233.95431675737444), 6: np.float64(256.03195409388974), 7: np.float64(256.39777341599665)}, 'speed': {1: np.float64(36.08961520710259), 2: np.float64(27.593067940364783), 3: np.float64(25.45386448244822), 4: np.float64(18.5512992279282), 5: np.float64(17.576094718143676), 6: np.float64(22.8617810400084), 7: np.float64(28.28529325132965)}, 'rate': {1: np.float64(6858.107791287406), 2: np.float64(6016.815491280019), 3: np.float64(5140.531543637475), 4: np.float64(3677.42487869774), 5: np.float64(4113.052653580468), 6: np.float64(5854.840303716593), 7: np.float64(7254.13706283026)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 28 (no missing data).
+2. Partial observations and available video clips at time step 29 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 28:
+Density: {1: 190.0, 2: 218.0, 3: 201.9, 4: 198.2, 5: 234.0, 6: 256.0, 7: 256.4}
+Speed:   {1: 36.1, 2: 27.6, 3: 25.5, 4: 18.6, 5: 17.6, 6: 22.9, 7: 28.3}
+Flow:    {1: 6858.1, 2: 6016.8, 3: 5140.5, 4: 3677.4, 5: 4113.1, 6: 5854.8, 7: 7254.1}
+
+Partially observed sensor readings at time step 29:
+Density: {1: 224.9, 2: 233.8, 3: 255.1, 4: 186.0, 5: 208.3, 6: 266.9, 7: 277.9}
+Speed:   {1: 16.4, 2: 22.7, 3: 23.1, 4: 24.5, 5: 23.6, 6: 19.0, 7: 20.4}
+Flow:    {1: 3690.1, 2: 5319.6, 3: 5884.5, 4: 4449.4, 5: 4911.7, 6: 5072.1, 7: 5675.9}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 29 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+  "density": {
+   "1": 24.9,
+   "2": 23.8,
+   "3": 25.1,
+   "4": 18.0,
+   "5": 20.3,
+   "6": 26.9,
+   "7": 27.9
+  },
+  "speed": {
+   "1": 16.4,
+   "2": 2.7,
+   "3": 23.1,
+   "4": 24.5,
+   "5": 23.6,
+   "6": 19.0,
+   "7": 20.4
+  },
+  "flow": {
+   "1": 390.1,
+   "2": 5319.6,
+   "3": 584.5,
+   "4": 4449.4,
+   "5": 491.7,
+   "6": 507.2,
+   "7": 575.9
+  }
+}
+
+video path:
+['../data/video_cut/P1/P1_1740_1800.mp4', '../data/video_cut/P2/P2_1740_1800.mp4', '../data/video_cut/P3/P3_1740_1800.mp4', '../data/video_cut/P5/P5_1740_1800.mp4', '../data/video_cut/P6/P6_1740_1800.mp4', '../data/video_cut/P7/P7_1740_1800.mp4']
+ ground truth:
+{'density': {1: np.float64(224.9217208218529), 2: np.float64(233.8466513698586), 3: np.float64(255.11373374943315), 4: np.float64(199.7062964101884), 5: np.float64(208.34002680382608), 6: np.float64(266.9127145320684), 7: np.float64(277.86162997828524)}, 'speed': {1: np.float64(16.402037342873538), 2: np.float64(22.74225140799409), 3: np.float64(23.060364434047717), 4: np.float64(26.645856906706065), 5: np.float64(23.56954538714994), 6: np.float64(18.99805698295764), 7: np.float64(20.421768298070425)}, 'rate': {1: np.float64(3690.1159767342265), 2: np.float64(5319.556591682144), 3: np.float64(5884.517074232274), 4: np.float64(5322.703455730261), 5: np.float64(4911.732919079713), 6: np.float64(5072.117082651351), 7: np.float64(5675.87399405767)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 29 (no missing data).
+2. Partial observations and available video clips at time step 30 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 29:
+Density: {1: 224.9, 2: 233.8, 3: 255.1, 4: 199.7, 5: 208.3, 6: 266.9, 7: 277.9}
+Speed:   {1: 16.4, 2: 22.7, 3: 23.1, 4: 26.6, 5: 23.6, 6: 19.0, 7: 20.4}
+Flow:    {1: 3690.1, 2: 5319.6, 3: 5884.5, 4: 5322.7, 5: 4911.7, 6: 5072.1, 7: 5675.9}
+
+Partially observed sensor readings at time step 30:
+Density: {1: 200.8, 2: 211.6, 3: 214.4, 4: 230.3, 5: 192.2, 6: 215.0, 7: 237.8}
+Speed:   {1: 31.6, 2: 29.0, 3: 25.9, 4: 18.9, 5: 24.3, 6: 28.0, 7: 26.1}
+Flow:    {1: 6035.2, 2: 5910.9, 3: 5358.4, 4: 4351.1, 5: 4543.6, 6: 5692.5, 7: 6210.1}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 30 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+"density": {
+"1": 20.8,
+"2": 21.6,
+"3": 214.4,
+"4": 23.0,
+"5": 192.2,
+"6": 215.0,
+"7": 237.8
+}
+"speed": {
+"1": 31.6,
+"2": 29.0,
+"3": 25.9,
+"4": 18.9,
+"5": 24.3,
+"6": 28.0,
+"7": 26.1
+}
+"flow": {
+"1": 6035.2,
+"2": 5910.9,
+"3": 535.4,
+"4": 431.1,
+"5": 432.7,
+"6": 507.2,
+"7": 5692.5
+}
+}
+
+video path:
+['../data/video_cut/P4/P4_1800_1860.mp4', '../data/video_cut/P7/P7_1800_1860.mp4']
+ ground truth:
+{'density': {1: np.float64(237.81420814010863), 2: np.float64(245.7945685892872), 3: np.float64(256.0599586233518), 4: np.float64(230.2786606037588), 5: np.float64(189.60925792743524), 6: np.float64(191.04209776877747), 7: np.float64(237.8047008970572)}, 'speed': {1: np.float64(24.081156895357747), 2: np.float64(15.964814514827513), 3: np.float64(14.54938945060749), 4: np.float64(18.890288952713583), 5: np.float64(24.950738236330874), 6: np.float64(32.16071709094317), 7: np.float64(26.10760423910142)}, 'rate': {1: np.float64(5728.30280280345), 2: np.float64(3925.066155103569), 3: np.float64(3726.466848031267), 4: np.float64(4351.140607801942), 5: np.float64(4732.098330331929), 6: np.float64(6145.618879316688), 7: np.float64(6210.095488581635)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 30 (no missing data).
+2. Partial observations and available video clips at time step 31 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 30:
+Density: {1: 237.8, 2: 245.8, 3: 256.1, 4: 230.3, 5: 189.6, 6: 191.0, 7: 237.8}
+Speed:   {1: 24.1, 2: 16.0, 3: 14.5, 4: 18.9, 5: 25.0, 6: 32.2, 7: 26.1}
+Flow:    {1: 5728.3, 2: 3925.1, 3: 3726.5, 4: 4351.1, 5: 4732.1, 6: 6145.6, 7: 6210.1}
+
+Partially observed sensor readings at time step 31:
+Density: {1: 200.8, 2: 209.4, 3: 255.1, 4: 186.0, 5: 207.4, 6: 188.0, 7: 190.3}
+Speed:   {1: 31.6, 2: 33.2, 3: 19.0, 4: 24.5, 5: 13.3, 6: 26.0, 7: 30.1}
+Flow:    {1: 6035.2, 2: 6950.4, 3: 4853.7, 4: 4449.4, 5: 2755.4, 6: 4899.7, 7: 5722.0}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 31 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+  "density": {
+    "1": 20.8,
+    "2": 29.4,
+    "3": 25.1,
+    "4": 18.0,
+    "5": 20.4,
+    "6": 18.0,
+    "7": 19.3
+  },
+  "speed": {
+    "1": 31.6,
+    "2": 3.2,
+    "3": 19.0,
+    "4": 24.5,
+    "5": 13.3,
+    "6": 26.0,
+    "7": 30.1
+  },
+  "flow": {
+    "1": 6035.2,
+    "2": 950.4,
+    "3": 485.7,
+    "4": 4449.4,
+    "5": 275.4,
+    "6": 499.7,
+    "7": 572.0
+  }
+}
+
+video path:
+['../data/video_cut/P2/P2_1860_1920.mp4', '../data/video_cut/P3/P3_1860_1920.mp4', '../data/video_cut/P5/P5_1860_1920.mp4', '../data/video_cut/P6/P6_1860_1920.mp4', '../data/video_cut/P7/P7_1860_1920.mp4']
+ ground truth:
+{'density': {1: np.float64(181.3820080023235), 2: np.float64(209.4056009271547), 3: np.float64(255.12528716669712), 4: np.float64(221.43699008002207), 5: np.float64(207.36389174173095), 6: np.float64(188.04698336903016), 7: np.float64(190.2731923663833)}, 'speed': {1: np.float64(38.49463035117591), 2: np.float64(33.18282373413444), 3: np.float64(19.020004486295672), 4: np.float64(10.322088960040505), 5: np.float64(13.28427371688495), 6: np.float64(26.049290905199), 7: np.float64(30.064694031582768)}, 'rate': {1: np.float64(6984.015283102872), 2: np.float64(6950.442511299461), 3: np.float64(4853.722506810538), 4: np.float64(2286.2756411779096), 5: np.float64(2755.3817172331283), 6: np.float64(4899.740715247698), 7: np.float64(5721.965238549725)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 31 (no missing data).
+2. Partial observations and available video clips at time step 32 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 31:
+Density: {1: 181.4, 2: 209.4, 3: 255.1, 4: 221.4, 5: 207.4, 6: 188.0, 7: 190.3}
+Speed:   {1: 38.5, 2: 33.2, 3: 19.0, 4: 10.3, 5: 13.3, 6: 26.0, 7: 30.1}
+Flow:    {1: 6984.0, 2: 6950.4, 3: 4853.7, 4: 2286.3, 5: 2755.4, 6: 4899.7, 7: 5722.0}
+
+Partially observed sensor readings at time step 32:
+Density: {1: 200.8, 2: 218.3, 3: 208.2, 4: 185.0, 5: 200.5, 6: 194.4, 7: 219.1}
+Speed:   {1: 31.6, 2: 29.7, 3: 30.8, 4: 26.9, 5: 16.8, 6: 17.8, 7: 31.9}
+Flow:    {1: 6035.2, 2: 6489.0, 3: 6423.4, 4: 4985.8, 5: 3378.1, 6: 3453.0, 7: 6496.4}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 32 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+  "density": {
+    "1": 20.8,
+    "2": 21.3,
+    "3": 20.2,
+    "4": 185.0,
+    "5": 20.5,
+    "6": 194.4,
+    "7": 29.1
+  },
+  "speed": {
+    "1": 31.6,
+    "2": 29.7,
+    "3": 30.8,
+    "4": 26.9,
+    "5": 16.8,
+    "6": 17.8,
+    "7": 31.9
+  },
+  "flow": {
+    "1": 6035.2,
+    "2": 648.0,
+    "3": 495.4,
+    "4": 4985.8,
+    "5": 375.4,
+    "6": 343.0,
+    "7": 6496.4
+  }
+}
+
+video path:
+['../data/video_cut/P2/P2_1920_1980.mp4', '../data/video_cut/P3/P3_1920_1980.mp4', '../data/video_cut/P4/P4_1920_1980.mp4', '../data/video_cut/P5/P5_1920_1980.mp4', '../data/video_cut/P6/P6_1920_1980.mp4']
+ ground truth:
+{'density': {1: np.float64(220.84487797836655), 2: np.float64(218.33514733914805), 3: np.float64(208.220307298066), 4: np.float64(184.99454795065188), 5: np.float64(200.5480061506516), 6: np.float64(194.41873176058056), 7: np.float64(243.3143039295882)}, 'speed': {1: np.float64(21.373942675185518), 2: np.float64(29.712778262289717), 3: np.float64(30.841067312441357), 4: np.float64(26.944145062873936), 5: np.float64(16.83991154595752), 6: np.float64(17.756059100258195), 7: np.float64(21.98860066000289)}, 'rate': {1: np.float64(4721.530434277528), 2: np.float64(6488.9994519126185), 3: np.float64(6423.375401745216), 4: np.float64(4985.792032961518), 5: np.float64(3378.0725807470244), 6: np.float64(3452.991502936801), 7: np.float64(5351.506471119802)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 32 (no missing data).
+2. Partial observations and available video clips at time step 33 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 32:
+Density: {1: 220.8, 2: 218.3, 3: 208.2, 4: 185.0, 5: 200.5, 6: 194.4, 7: 243.3}
+Speed:   {1: 21.4, 2: 29.7, 3: 30.8, 4: 26.9, 5: 16.8, 6: 17.8, 7: 22.0}
+Flow:    {1: 4721.5, 2: 6489.0, 3: 6423.4, 4: 4985.8, 5: 3378.1, 6: 3453.0, 7: 5351.5}
+
+Partially observed sensor readings at time step 33:
+Density: {1: 232.4, 2: 211.6, 3: 233.4, 4: 186.0, 5: 182.6, 6: 215.0, 7: 254.0}
+Speed:   {1: 26.5, 2: 29.0, 3: 16.5, 4: 24.5, 5: 27.7, 6: 28.0, 7: 22.3}
+Flow:    {1: 6166.7, 2: 5910.9, 3: 3847.1, 4: 4449.4, 5: 5068.3, 6: 5692.5, 7: 5663.5}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 33 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 232.4,
+    "2": 21.6,
+    "3": 23.4,
+    "4": 18.0,
+    "5": 182.6,
+    "6": 215.0,
+    "7": 25.0
+  },
+  "speed": {
+    "1": 26.5,
+    "2": 29.0,
+    "3": 16.5,
+    "4": 24.5,
+    "5": 27.7,
+    "6": 28.0,
+    "7": 2.3
+  },
+  "flow": {
+    "1": 616.7,
+    "2": 5910.9,
+    "3": 384.1,
+    "4": 4449.4,
+    "5": 506.3,
+    "6": 592.5,
+    "7": 563.5
+  }
+}
+```
+
+video path:
+['../data/video_cut/P1/P1_1980_2040.mp4', '../data/video_cut/P3/P3_1980_2040.mp4', '../data/video_cut/P5/P5_1980_2040.mp4', '../data/video_cut/P7/P7_1980_2040.mp4']
+ ground truth:
+{'density': {1: np.float64(232.42337077211565), 2: np.float64(228.7687607832478), 3: np.float64(233.4111902215276), 4: np.float64(165.4415109103951), 5: np.float64(182.61510787441352), 6: np.float64(210.06698549445207), 7: np.float64(253.97255239212944)}, 'speed': {1: np.float64(26.52522392205917), 2: np.float64(18.449681175747138), 3: np.float64(16.477890473210344), 4: np.float64(24.148284524638072), 5: np.float64(27.746860212867517), 6: np.float64(29.44253971019888), 7: np.float64(22.294040740047205)}, 'rate': {1: np.float64(6166.655342301542), 2: np.float64(4221.7878651411), 3: np.float64(3847.105595311832), 4: np.float64(3996.1482726811855), 5: np.float64(5068.289016734532), 6: np.float64(6186.48400924778), 7: np.float64(5663.519445406405)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 33 (no missing data).
+2. Partial observations and available video clips at time step 34 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 33:
+Density: {1: 232.4, 2: 228.8, 3: 233.4, 4: 165.4, 5: 182.6, 6: 210.1, 7: 254.0}
+Speed:   {1: 26.5, 2: 18.4, 3: 16.5, 4: 24.1, 5: 27.7, 6: 29.4, 7: 22.3}
+Flow:    {1: 6166.7, 2: 4221.8, 3: 3847.1, 4: 3996.1, 5: 5068.3, 6: 6186.5, 7: 5663.5}
+
+Partially observed sensor readings at time step 34:
+Density: {1: 200.8, 2: 192.5, 3: 194.4, 4: 217.5, 5: 181.0, 6: 215.0, 7: 212.5}
+Speed:   {1: 31.6, 2: 28.3, 3: 23.0, 4: 12.8, 5: 17.2, 6: 28.0, 7: 34.3}
+Flow:    {1: 6035.2, 2: 5447.1, 3: 4470.9, 4: 2788.3, 5: 3119.3, 6: 5692.5, 7: 7282.9}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 34 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 20.8,
+    "2": 192.5,
+    "3": 194.4,
+    "4": 217.5,
+    "5": 181.0,
+    "6": 215.0,
+    "7": 212.5
+  },
+  "speed": {
+    "1": 31.6,
+    "2": 28.3,
+    "3": 23.0,
+    "4": 12.8,
+    "5": 17.2,
+    "6": 28.0,
+    "7": 34.3
+  },
+  "flow": {
+    "1": 6035.2,
+    "2": 547.1,
+    "3": 470.9,
+    "4": 278.3,
+    "5": 319.3,
+    "6": 592.5,
+    "7": 728.9
+  }
+}
+```
+
+video path:
+['../data/video_cut/P2/P2_2040_2100.mp4', '../data/video_cut/P3/P3_2040_2100.mp4', '../data/video_cut/P4/P4_2040_2100.mp4', '../data/video_cut/P5/P5_2040_2100.mp4', '../data/video_cut/P7/P7_2040_2100.mp4']
+ ground truth:
+{'density': {1: np.float64(213.3191565317725), 2: np.float64(192.4833324839425), 3: np.float64(194.3760354695436), 4: np.float64(217.4601007007132), 5: np.float64(181.0066682457941), 6: np.float64(203.57134069990772), 7: np.float64(212.479788223487)}, 'speed': {1: np.float64(27.80538948329129), 2: np.float64(28.291830272318855), 3: np.float64(22.995411887914432), 4: np.float64(12.819048285235766), 5: np.float64(17.228785222594205), 6: np.float64(24.57944605708193), 7: np.float64(34.267070069748904)}, 'rate': {1: np.float64(5932.935987269511), 2: np.float64(5447.095569058823), 3: np.float64(4470.897721477334), 4: np.float64(2788.342961210433), 5: np.float64(3119.320888459279), 6: np.float64(5004.947772120021), 7: np.float64(7282.917987523498)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 34 (no missing data).
+2. Partial observations and available video clips at time step 35 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 34:
+Density: {1: 213.3, 2: 192.5, 3: 194.4, 4: 217.5, 5: 181.0, 6: 203.6, 7: 212.5}
+Speed:   {1: 27.8, 2: 28.3, 3: 23.0, 4: 12.8, 5: 17.2, 6: 24.6, 7: 34.3}
+Flow:    {1: 5932.9, 2: 5447.1, 3: 4470.9, 4: 2788.3, 5: 3119.3, 6: 5004.9, 7: 7282.9}
+
+Partially observed sensor readings at time step 35:
+Density: {1: 186.6, 2: 211.6, 3: 235.0, 4: 186.0, 5: 192.2, 6: 244.6, 7: 202.1}
+Speed:   {1: 36.3, 2: 29.0, 3: 24.1, 4: 26.4, 5: 24.3, 6: 18.3, 7: 23.0}
+Flow:    {1: 6770.6, 2: 5910.9, 3: 5671.9, 4: 4909.8, 5: 4543.6, 6: 4487.7, 7: 4655.0}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 35 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 18.6,
+    "2": 21.6,
+    "3": 23.0,
+    "4": 18.0,
+    "5": 192.2,
+    "6": 24.6,
+    "7": 202.1
+  },
+  "speed": {
+    "1": 36.3,
+    "2": 29.0,
+    "3": 24.1,
+    "4": 26.4,
+    "5": 24.3,
+    "6": 18.3,
+    "7": 23.0
+  },
+  "flow": {
+    "1": 670.6,
+    "2": 5910.9,
+    "3": 571.9,
+    "4": 4909.8,
+    "5": 494.3,
+    "6": 487.7,
+    "7": 455.0
+  }
+}
+```
+
+video path:
+['../data/video_cut/P1/P1_2100_2160.mp4', '../data/video_cut/P3/P3_2100_2160.mp4', '../data/video_cut/P4/P4_2100_2160.mp4', '../data/video_cut/P6/P6_2100_2160.mp4', '../data/video_cut/P7/P7_2100_2160.mp4']
+ ground truth:
+{'density': {1: np.float64(186.59237539965653), 2: np.float64(195.8140722159414), 3: np.float64(234.9636470808575), 4: np.float64(186.0007983147205), 5: np.float64(208.84791361235412), 6: np.float64(244.6483145337127), 7: np.float64(202.0855062451416)}, 'speed': {1: np.float64(36.27605721164715), 2: np.float64(34.62175852330108), 3: np.float64(24.13344842088336), 4: np.float64(26.389832185259756), 5: np.float64(19.91617351111378), 6: np.float64(18.33885407025813), 7: np.float64(23.029081796700183)}, 'rate': {1: np.float64(6770.563156830307), 2: np.float64(6781.157698438221), 3: np.float64(5671.930219093194), 4: np.float64(4909.782557592818), 5: np.float64(4160.512816668958), 6: np.float64(4487.714754256167), 7: np.float64(4655.031358636802)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 35 (no missing data).
+2. Partial observations and available video clips at time step 36 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 35:
+Density: {1: 186.6, 2: 195.8, 3: 235.0, 4: 186.0, 5: 208.8, 6: 244.6, 7: 202.1}
+Speed:   {1: 36.3, 2: 34.6, 3: 24.1, 4: 26.4, 5: 19.9, 6: 18.3, 7: 23.0}
+Flow:    {1: 6770.6, 2: 6781.2, 3: 5671.9, 4: 4909.8, 5: 4160.5, 6: 4487.7, 7: 4655.0}
+
+Partially observed sensor readings at time step 36:
+Density: {1: 200.2, 2: 197.3, 3: 214.4, 4: 172.5, 5: 179.5, 6: 200.8, 7: 219.1}
+Speed:   {1: 29.4, 2: 31.5, 3: 25.9, 4: 28.4, 5: 23.9, 6: 26.8, 7: 31.9}
+Flow:    {1: 5881.1, 2: 6219.6, 3: 5358.4, 4: 4902.2, 5: 4290.6, 6: 5386.1, 7: 6496.4}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 36 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 20.2,
+    "2": 197.3,
+    "3": 214.4,
+    "4": 172.5,
+    "5": 199.5,
+    "6": 20.8,
+    "7": 29.1
+  },
+  "speed": {
+    "1": 29.4,
+    "2": 31.5,
+    "3": 25.9,
+    "4": 28.4,
+    "5": 23.9,
+    "6": 26.8,
+    "7": 31.9
+  },
+  "flow": {
+    "1": 581.1,
+    "2": 621.6,
+    "3": 535.8,
+    "4": 492.2,
+    "5": 4290.6,
+    "6": 536.1,
+    "7": 6496.4
+  }
+}
+```
+
+video path:
+['../data/video_cut/P1/P1_2160_2220.mp4', '../data/video_cut/P2/P2_2160_2220.mp4', '../data/video_cut/P4/P4_2160_2220.mp4', '../data/video_cut/P5/P5_2160_2220.mp4', '../data/video_cut/P6/P6_2160_2220.mp4']
+ ground truth:
+{'density': {1: np.float64(200.22114133046784), 2: np.float64(197.3180968891104), 3: np.float64(228.7559959849296), 4: np.float64(172.5313528058786), 5: np.float64(179.49552172710835), 6: np.float64(200.8215195400536), 7: np.float64(206.6065893333477)}, 'speed': {1: np.float64(29.365458904642335), 2: np.float64(31.512652068604226), 3: np.float64(26.284703475299903), 4: np.float64(28.405869077440908), 5: np.float64(23.89728448387265), 6: np.float64(26.8133947278704), 7: np.float64(24.66884930193352)}, 'rate': {1: np.float64(5881.086224057805), 2: np.float64(6219.603431367833), 3: np.float64(6014.318042496434), 4: np.float64(4902.1537768595335), 5: np.float64(4290.550256355371), 6: np.float64(5386.080901897642), 7: np.float64(5098.047555562133)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 36 (no missing data).
+2. Partial observations and available video clips at time step 37 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 36:
+Density: {1: 200.2, 2: 197.3, 3: 228.8, 4: 172.5, 5: 179.5, 6: 200.8, 7: 206.6}
+Speed:   {1: 29.4, 2: 31.5, 3: 26.3, 4: 28.4, 5: 23.9, 6: 26.8, 7: 24.7}
+Flow:    {1: 5881.1, 2: 6219.6, 3: 6014.3, 4: 4902.2, 5: 4290.6, 6: 5386.1, 7: 5098.0}
+
+Partially observed sensor readings at time step 37:
+Density: {1: 200.8, 2: 220.1, 3: 231.6, 4: 174.0, 5: 173.1, 6: 215.0, 7: 216.8}
+Speed:   {1: 31.6, 2: 22.2, 3: 20.8, 4: 24.1, 5: 28.6, 6: 28.0, 7: 32.2}
+Flow:    {1: 6035.2, 2: 4879.0, 3: 4826.3, 4: 4190.1, 5: 4952.3, 6: 5692.5, 7: 6982.0}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 37 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 20.8,
+    "2": 20.1,
+    "3": 231.6,
+    "4": 174.0,
+    "5": 173.1,
+    "6": 215.0,
+    "7": 216.8
+  },
+  "speed": {
+    "1": 31.6,
+    "2": 2.2,
+    "3": 20.8,
+    "4": 24.1,
+    "5": 28.6,
+    "6": 28.0,
+    "7": 32.2
+  },
+  "flow": {
+    "1": 6035.2,
+    "2": 4899.0,
+    "3": 4826.3,
+    "4": 4190.1,
+    "5": 495.2,
+    "6": 592.5,
+    "7": 698.0
+  }
+}
+```
+
+video path:
+['../data/video_cut/P2/P2_2220_2280.mp4', '../data/video_cut/P3/P3_2220_2280.mp4', '../data/video_cut/P4/P4_2220_2280.mp4', '../data/video_cut/P5/P5_2220_2280.mp4', '../data/video_cut/P7/P7_2220_2280.mp4']
+ ground truth:
+{'density': {1: np.float64(254.42170028023952), 2: np.float64(220.1170325224868), 3: np.float64(231.56245538040767), 4: np.float64(173.95130923956705), 5: np.float64(173.09225957019262), 6: np.float64(189.69729390285704), 7: np.float64(216.8348022166539)}, 'speed': {1: np.float64(17.682555139446517), 2: np.float64(22.15985690135881), 3: np.float64(20.837172852936916), 4: np.float64(24.08172687423133), 5: np.float64(28.603637452281923), 6: np.float64(30.636861770367656), 7: np.float64(32.19149508149625)}, 'rate': {1: np.float64(4499.973887214539), 2: np.float64(4879.006793727879), 3: np.float64(4826.338322422021), 4: np.float64(4190.117003597247), 5: np.float64(4952.331798487497), 6: np.float64(5813.212980510987), 7: np.float64(6982.017892130815)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 37 (no missing data).
+2. Partial observations and available video clips at time step 38 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 37:
+Density: {1: 254.4, 2: 220.1, 3: 231.6, 4: 174.0, 5: 173.1, 6: 189.7, 7: 216.8}
+Speed:   {1: 17.7, 2: 22.2, 3: 20.8, 4: 24.1, 5: 28.6, 6: 30.6, 7: 32.2}
+Flow:    {1: 4500.0, 2: 4879.0, 3: 4826.3, 4: 4190.1, 5: 4952.3, 6: 5813.2, 7: 6982.0}
+
+Partially observed sensor readings at time step 38:
+Density: {1: 212.6, 2: 244.1, 3: 219.8, 4: 200.5, 5: 198.6, 6: 215.0, 7: 219.1}
+Speed:   {1: 17.5, 2: 14.6, 3: 15.8, 4: 17.7, 5: 18.8, 6: 28.0, 7: 31.9}
+Flow:    {1: 3720.8, 2: 3562.3, 3: 3472.4, 4: 3546.0, 5: 3733.9, 6: 5692.5, 7: 6496.4}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 38 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 212.6,
+    "2": 24.1,
+    "3": 219.8,
+    "4": 20.5,
+    "5": 19.6,
+    "6": 215.0,
+    "7": 219.1
+  },
+  "speed": {
+    "1": 17.5,
+    "2": 14.6,
+    "3": 15.8,
+    "4": 17.7,
+    "5": 18.8,
+    "6": 28.0,
+    "7": 31.9
+  },
+  "flow": {
+    "1": 372.8,
+    "2": 362.3,
+    "3": 3472.4,
+    "4": 3546.0,
+    "5": 373.9,
+    "6": 592.5,
+    "7": 6496.4
+  }
+}
+```
+
+video path:
+['../data/video_cut/P1/P1_2280_2340.mp4', '../data/video_cut/P2/P2_2280_2340.mp4', '../data/video_cut/P3/P3_2280_2340.mp4', '../data/video_cut/P4/P4_2280_2340.mp4', '../data/video_cut/P5/P5_2280_2340.mp4']
+ ground truth:
+{'density': {1: np.float64(212.57095259075928), 2: np.float64(244.07118109859704), 3: np.float64(219.83041691186028), 4: np.float64(200.5470296710383), 5: np.float64(198.6103635422996), 6: np.float64(182.2872742546001), 7: np.float64(188.06219362773703)}, 'speed': {1: np.float64(17.499161917887328), 2: np.float64(14.591445782022904), 3: np.float64(15.791627044232444), 4: np.float64(17.676979414282293), 5: np.float64(18.795468119870108), 6: np.float64(29.52558854949024), 7: np.float64(34.919379632417204)}, 'rate': {1: np.float64(3720.7628503956207), 2: np.float64(3562.260296878885), 3: np.float64(3472.3659117216803), 4: np.float64(3545.970449750821), 5: np.float64(3733.9274470791856), 6: np.float64(5383.51263078875), 7: np.float64(6568.69109883324)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 38 (no missing data).
+2. Partial observations and available video clips at time step 39 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 38:
+Density: {1: 212.6, 2: 244.1, 3: 219.8, 4: 200.5, 5: 198.6, 6: 182.3, 7: 188.1}
+Speed:   {1: 17.5, 2: 14.6, 3: 15.8, 4: 17.7, 5: 18.8, 6: 29.5, 7: 34.9}
+Flow:    {1: 3720.8, 2: 3562.3, 3: 3472.4, 4: 3546.0, 5: 3733.9, 6: 5383.5, 7: 6568.7}
+
+Partially observed sensor readings at time step 39:
+Density: {1: 210.5, 2: 211.6, 3: 214.4, 4: 214.2, 5: 192.2, 6: 215.0, 7: 245.8}
+Speed:   {1: 14.1, 2: 29.0, 3: 25.9, 4: 12.9, 5: 24.3, 6: 28.0, 7: 26.2}
+Flow:    {1: 2966.6, 2: 5910.9, 3: 5358.4, 4: 2758.9, 5: 4543.6, 6: 5692.5, 7: 6452.4}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 39 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+"density": {
+"1": 210.5,
+"2": 21.6,
+"3": 214.4,
+"4": 214.2,
+"5": 192.2,
+"6": 215.0,
+"7": 24.3
+},
+"speed": {
+"1": 14.1,
+"2": 29.0,
+"3": 25.9,
+"4": 12.9,
+"5": 24.3,
+"6": 28.0,
+"7": 26.2
+},
+"flow": {
+"1": 296.6,
+"2": 591.9,
+"3": 535.8,
+"4": 278.9,
+"5": 454.6,
+"6": 592.5,
+"7": 6452.4
+}
+}
+
+video path:
+['../data/video_cut/P1/P1_2340_2400.mp4', '../data/video_cut/P4/P4_2340_2400.mp4', '../data/video_cut/P7/P7_2340_2400.mp4']
+ ground truth:
+{'density': {1: np.float64(210.53334091354105), 2: np.float64(222.9843372392515), 3: np.float64(272.6900414725445), 4: np.float64(214.1575172505524), 5: np.float64(181.5971870990693), 6: np.float64(229.3203783295328), 7: np.float64(245.77380213023895)}, 'speed': {1: np.float64(14.087454966911682), 2: np.float64(17.00232389819955), 3: np.float64(13.693717575319878), 4: np.float64(12.87920349499475), 5: np.float64(17.31239545431091), 6: np.float64(21.1883473995774), 7: np.float64(26.24652367999257)}, 'rate': {1: np.float64(2966.6358798163988), 2: np.float64(3792.219489702025), 3: np.float64(3735.093401858255), 4: np.float64(2758.882158108231), 5: np.float64(3144.6846652714485), 6: np.float64(4860.159884642339), 7: np.float64(6452.354199860808)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 39 (no missing data).
+2. Partial observations and available video clips at time step 40 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 39:
+Density: {1: 210.5, 2: 223.0, 3: 272.7, 4: 214.2, 5: 181.6, 6: 229.3, 7: 245.8}
+Speed:   {1: 14.1, 2: 17.0, 3: 13.7, 4: 12.9, 5: 17.3, 6: 21.2, 7: 26.2}
+Flow:    {1: 2966.6, 2: 3792.2, 3: 3735.1, 4: 2758.9, 5: 3144.7, 6: 4860.2, 7: 6452.4}
+
+Partially observed sensor readings at time step 40:
+Density: {1: 243.7, 2: 240.0, 3: 214.4, 4: 188.7, 5: 192.2, 6: 257.1, 7: 224.9}
+Speed:   {1: 16.1, 2: 13.5, 3: 25.9, 4: 13.4, 5: 24.3, 6: 17.2, 7: 24.0}
+Flow:    {1: 3929.5, 2: 3233.8, 3: 5358.4, 4: 2521.7, 5: 4543.6, 6: 4410.6, 7: 5403.2}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 40 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+  "density": {
+   "1": 24.1,
+   "2": 20.0,
+   "3": 23.7,
+   "4": 18.7,
+   "5": 192.2,
+   "6": 25.1,
+   "7": 24.9
+  },
+  "speed": {
+   "1": 16.1,
+   "2": 13.5,
+   "3": 25.9,
+   "4": 13.4,
+   "5": 24.3,
+   "6": 17.2,
+   "7": 24.0
+  },
+  "flow": {
+   "1": 392.5,
+   "2": 323.8,
+   "3": 535.1,
+   "4": 252.7,
+   "5": 4314.7,
+   "6": 480.2,
+   "7": 5403.2
+  }
+}
+
+video path:
+['../data/video_cut/P1/P1_2400_2460.mp4', '../data/video_cut/P2/P2_2400_2460.mp4', '../data/video_cut/P4/P4_2400_2460.mp4', '../data/video_cut/P6/P6_2400_2460.mp4', '../data/video_cut/P7/P7_2400_2460.mp4']
+ ground truth:
+{'density': {1: np.float64(243.6876090770625), 2: np.float64(239.97600374168852), 3: np.float64(246.13335654959675), 4: np.float64(188.74671203112487), 5: np.float64(211.51364417649276), 6: np.float64(257.0561233209871), 7: np.float64(224.9182949681261)}, 'speed': {1: np.float64(16.121226619802968), 2: np.float64(13.471945867393575), 3: np.float64(12.505385671214968), 4: np.float64(13.357027291038747), 5: np.float64(13.40042884605264), 6: np.float64(17.153902270905924), 7: np.float64(24.01680503536594)}, 'rate': {1: np.float64(3929.545772142232), 2: np.float64(3233.7688100279624), 3: np.float64(3078.7780833270094), 4: np.float64(2521.738391234432), 5: np.float64(2835.096897979368), 6: np.float64(4410.640968125611), 7: np.float64(5403.197434944175)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 40 (no missing data).
+2. Partial observations and available video clips at time step 41 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 40:
+Density: {1: 243.7, 2: 240.0, 3: 246.1, 4: 188.7, 5: 211.5, 6: 257.1, 7: 224.9}
+Speed:   {1: 16.1, 2: 13.5, 3: 12.5, 4: 13.4, 5: 13.4, 6: 17.2, 7: 24.0}
+Flow:    {1: 3929.5, 2: 3233.8, 3: 3078.8, 4: 2521.7, 5: 2835.1, 6: 4410.6, 7: 5403.2}
+
+Partially observed sensor readings at time step 41:
+Density: {1: 220.1, 2: 211.6, 3: 252.4, 4: 164.9, 5: 186.2, 6: 226.5, 7: 219.1}
+Speed:   {1: 26.6, 2: 29.0, 3: 13.5, 4: 11.5, 5: 9.4, 6: 13.3, 7: 31.9}
+Flow:    {1: 5862.4, 2: 5910.9, 3: 3414.5, 4: 1889.4, 5: 1749.5, 6: 3022.7, 7: 6496.4}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 41 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+  "density": {
+   "1": 20.1,
+   "2": 21.6,
+   "3": 252.4,
+   "4": 16.1,
+   "5": 18.2,
+   "6": 26.5,
+   "7": 29.1
+  },
+  "speed": {
+   "1": 26.6,
+   "2": 29.0,
+   "3": 13.5,
+   "4": 13.4,
+   "5": 9.4,
+   "6": 13.3,
+   "7": 31.9
+  },
+  "flow": {
+   "1": 582.4,
+   "2": 591.9,
+   "3": 3414.5,
+   "4": 189.4,
+   "5": 1749.5,
+   "6": 302.7,
+   "7": 6496.4
+  }
+}
+
+video path:
+['../data/video_cut/P1/P1_2460_2520.mp4', '../data/video_cut/P3/P3_2460_2520.mp4', '../data/video_cut/P4/P4_2460_2520.mp4', '../data/video_cut/P5/P5_2460_2520.mp4', '../data/video_cut/P6/P6_2460_2520.mp4']
+ ground truth:
+{'density': {1: np.float64(220.06123667241792), 2: np.float64(252.80347605842957), 3: np.float64(252.37389458210853), 4: np.float64(164.90831929227508), 5: np.float64(186.2014996533109), 6: np.float64(226.4638592736947), 7: np.float64(304.6069308564302)}, 'speed': {1: np.float64(26.632981107722536), 2: np.float64(21.10694620889392), 3: np.float64(13.526070236308218), 4: np.float64(11.454576233292691), 5: np.float64(9.393162980737122), 6: np.float64(13.344099980363044), 7: np.float64(18.48122910823865)}, 'rate': {1: np.float64(5862.382513168006), 2: np.float64(5337.2711456679845), 3: np.float64(3414.4982141781597), 4: np.float64(1889.436994189732), 5: np.float64(1749.467400389162), 6: np.float64(3022.727612244381), 7: np.float64(5630.947182005545)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 41 (no missing data).
+2. Partial observations and available video clips at time step 42 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 41:
+Density: {1: 220.1, 2: 252.8, 3: 252.4, 4: 164.9, 5: 186.2, 6: 226.5, 7: 304.6}
+Speed:   {1: 26.6, 2: 21.1, 3: 13.5, 4: 11.5, 5: 9.4, 6: 13.3, 7: 18.5}
+Flow:    {1: 5862.4, 2: 5337.3, 3: 3414.5, 4: 1889.4, 5: 1749.5, 6: 3022.7, 7: 5630.9}
+
+Partially observed sensor readings at time step 42:
+Density: {1: 200.8, 2: 207.5, 3: 193.5, 4: 186.0, 5: 213.8, 6: 258.6, 7: 265.2}
+Speed:   {1: 31.6, 2: 29.1, 3: 25.2, 4: 24.5, 5: 12.2, 6: 13.4, 7: 11.3}
+Flow:    {1: 6035.2, 2: 6037.4, 3: 4881.2, 4: 4449.4, 5: 2609.8, 6: 3453.2, 7: 3007.3}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 42 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+  "density": {
+    "1": 20.8,
+    "2": 27.5,
+    "3": 193.5,
+    "4": 186.0,
+    "5": 213.8,
+    "6": 258.6,
+    "7": 26.2
+  },
+  "speed": {
+    "1": 31.6,
+    "2": 29.1,
+    "3": 25.2,
+    "4": 24.5,
+    "5": 12.2,
+    "6": 13.4,
+    "7": 1.3
+  },
+  "flow": {
+    "1": 6035.2,
+    "2": 6037.4,
+    "3": 481.2,
+    "4": 4449.4,
+    "5": 260.8,
+    "6": 343.2,
+    "7": 307.3
+  }
+}
+
+video path:
+['../data/video_cut/P2/P2_2520_2580.mp4', '../data/video_cut/P3/P3_2520_2580.mp4', '../data/video_cut/P5/P5_2520_2580.mp4', '../data/video_cut/P6/P6_2520_2580.mp4', '../data/video_cut/P7/P7_2520_2580.mp4']
+ ground truth:
+{'density': {1: np.float64(207.7705514850724), 2: np.float64(207.48571032553244), 3: np.float64(193.50622436004056), 4: np.float64(183.38471496576756), 5: np.float64(213.83529262494852), 6: np.float64(258.5532141839028), 7: np.float64(265.20928359610963)}, 'speed': {1: np.float64(33.95075071776226), 2: np.float64(29.090535244650813), 3: np.float64(25.218393346536523), 4: np.float64(19.737227280720944), 5: np.float64(12.201439038524382), 6: np.float64(13.352591860598553), 7: np.float64(11.33640137501903)}, 'rate': {1: np.float64(7055.766439570036), 2: np.float64(6037.410780805862), 3: np.float64(4881.161482149257), 4: np.float64(3620.4295315710647), 5: np.float64(2609.764154073554), 6: np.float64(3453.2366173818514), 7: np.float64(3007.286179588326)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 42 (no missing data).
+2. Partial observations and available video clips at time step 43 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 42:
+Density: {1: 207.8, 2: 207.5, 3: 193.5, 4: 183.4, 5: 213.8, 6: 258.6, 7: 265.2}
+Speed:   {1: 34.0, 2: 29.1, 3: 25.2, 4: 19.7, 5: 12.2, 6: 13.4, 7: 11.3}
+Flow:    {1: 7055.8, 2: 6037.4, 3: 4881.2, 4: 3620.4, 5: 2609.8, 6: 3453.2, 7: 3007.3}
+
+Partially observed sensor readings at time step 43:
+Density: {1: 170.9, 2: 211.6, 3: 198.9, 4: 185.1, 5: 213.7, 6: 215.0, 7: 219.1}
+Speed:   {1: 35.4, 2: 29.0, 3: 28.7, 4: 24.2, 5: 22.4, 6: 28.0, 7: 31.9}
+Flow:    {1: 6046.3, 2: 5910.9, 3: 5713.8, 4: 4478.1, 5: 4779.6, 6: 5692.5, 7: 6496.4}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 43 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 170.9,
+    "2": 21.6,
+    "3": 19.9,
+    "4": 185.1,
+    "5": 213.7,
+    "6": 25.0,
+    "7": 29.1
+  },
+  "speed": {
+    "1": 35.4,
+    "2": 29.0,
+    "3": 28.7,
+    "4": 24.2,
+    "5": 2.4,
+    "6": 28.0,
+    "7": 31.9
+  },
+  "flow": {
+    "1": 6046.3,
+    "2": 5910.9,
+    "3": 513.8,
+    "4": 479.1,
+    "5": 479.6,
+    "6": 592.5,
+    "7": 6496.4
+  }
+}
+```
+
+video path:
+['../data/video_cut/P1/P1_2580_2640.mp4', '../data/video_cut/P3/P3_2580_2640.mp4', '../data/video_cut/P4/P4_2580_2640.mp4', '../data/video_cut/P5/P5_2580_2640.mp4']
+ ground truth:
+{'density': {1: np.float64(170.90123433179258), 2: np.float64(199.52753906764477), 3: np.float64(198.85465050088865), 4: np.float64(185.1248117602381), 5: np.float64(213.72645853921583), 6: np.float64(284.4091735512516), 7: np.float64(308.9274260005919)}, 'speed': {1: np.float64(35.36999505123254), 2: np.float64(32.08435722142887), 3: np.float64(28.726091182570958), 4: np.float64(24.18340834583984), 5: np.float64(22.35741626717127), 6: np.float64(19.38882760396863), 7: np.float64(17.24617595413581)}, 'rate': {1: np.float64(6046.318497138923), 2: np.float64(6403.346617274167), 3: np.float64(5713.774660228171), 4: np.float64(4478.091477906873), 5: np.float64(4779.590886931086), 6: np.float64(5515.767752471301), 7: np.float64(5329.176455630596)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 43 (no missing data).
+2. Partial observations and available video clips at time step 44 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 43:
+Density: {1: 170.9, 2: 199.5, 3: 198.9, 4: 185.1, 5: 213.7, 6: 284.4, 7: 308.9}
+Speed:   {1: 35.4, 2: 32.1, 3: 28.7, 4: 24.2, 5: 22.4, 6: 19.4, 7: 17.2}
+Flow:    {1: 6046.3, 2: 6403.3, 3: 5713.8, 4: 4478.1, 5: 4779.6, 6: 5515.8, 7: 5329.2}
+
+Partially observed sensor readings at time step 44:
+Density: {1: 189.3, 2: 211.9, 3: 214.4, 4: 186.0, 5: 214.0, 6: 215.0, 7: 208.2}
+Speed:   {1: 35.3, 2: 32.7, 3: 25.9, 4: 24.5, 5: 26.8, 6: 28.0, 7: 27.3}
+Flow:    {1: 6677.3, 2: 6939.5, 3: 5358.4, 4: 4449.4, 5: 5740.5, 6: 5692.5, 7: 5693.9}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 44 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 18.3,
+    "2": 21.9,
+    "3": 214.4,
+    "4": 18.0,
+    "5": 214.0,
+    "6": 215.0,
+    "7": 28.2
+  },
+  "speed": {
+    "1": 35.3,
+    "2": 32.7,
+    "3": 25.9,
+    "4": 24.5,
+    "5": 26.8,
+    "6": 28.0,
+    "7": 27.3
+  },
+  "flow": {
+    "1": 677.3,
+    "2": 939.5,
+    "3": 535.4,
+    "4": 479.4,
+    "5": 479.6,
+    "6": 515.8,
+    "7": 532.9
+  }
+}
+```
+
+video path:
+['../data/video_cut/P1/P1_2640_2700.mp4', '../data/video_cut/P2/P2_2640_2700.mp4', '../data/video_cut/P5/P5_2640_2700.mp4', '../data/video_cut/P7/P7_2640_2700.mp4']
+ ground truth:
+{'density': {1: np.float64(189.2816694705192), 2: np.float64(211.91524089555247), 3: np.float64(216.58430968687), 4: np.float64(199.18544344483968), 5: np.float64(214.0289394630649), 6: np.float64(221.31322353333232), 7: np.float64(208.15727914414416)}, 'speed': {1: np.float64(35.267991031152164), 2: np.float64(32.7380510958799), 3: np.float64(30.74851742405732), 4: np.float64(30.34349886377857), 5: np.float64(26.814342524972464), 6: np.float64(25.403465434657026), 7: np.float64(27.346648794273108)}, 'rate': {1: np.float64(6677.287894157929), 2: np.float64(6939.4625497512925), 3: np.float64(6661.346025615108), 4: np.float64(6045.52575916092), 5: np.float64(5740.5099522418095), 6: np.float64(5623.557643752348), 7: np.float64(5693.856762646831)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 44 (no missing data).
+2. Partial observations and available video clips at time step 45 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 44:
+Density: {1: 189.3, 2: 211.9, 3: 216.6, 4: 199.2, 5: 214.0, 6: 221.3, 7: 208.2}
+Speed:   {1: 35.3, 2: 32.7, 3: 30.7, 4: 30.3, 5: 26.8, 6: 25.4, 7: 27.3}
+Flow:    {1: 6677.3, 2: 6939.5, 3: 6661.3, 4: 6045.5, 5: 5740.5, 6: 5623.6, 7: 5693.9}
+
+Partially observed sensor readings at time step 45:
+Density: {1: 200.8, 2: 228.8, 3: 214.4, 4: 175.7, 5: 192.2, 6: 191.2, 7: 212.1}
+Speed:   {1: 31.6, 2: 33.3, 3: 25.9, 4: 29.5, 5: 24.3, 6: 34.7, 7: 34.0}
+Flow:    {1: 6035.2, 2: 7624.0, 3: 5358.4, 4: 5178.3, 5: 4543.6, 6: 6631.3, 7: 7219.9}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 45 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 20.8,
+    "2": 28.8,
+    "3": 214.4,
+    "4": 17.7,
+    "5": 192.2,
+    "6": 191.2,
+    "7": 212.1
+  },
+  "speed": {
+    "1": 31.6,
+    "2": 3.3,
+    "3": 25.9,
+    "4": 29.5,
+    "5": 24.3,
+    "6": 34.7,
+    "7": 34.0
+  },
+  "flow": {
+    "1": 6035.2,
+    "2": 724.0,
+    "3": 535.8,
+    "4": 517.3,
+    "5": 454.6,
+    "6": 631.3,
+    "7": 729.9
+  }
+}
+```
+
+video path:
+['../data/video_cut/P2/P2_2700_2760.mp4', '../data/video_cut/P4/P4_2700_2760.mp4', '../data/video_cut/P6/P6_2700_2760.mp4', '../data/video_cut/P7/P7_2700_2760.mp4']
+ ground truth:
+{'density': {1: np.float64(215.9601898289508), 2: np.float64(228.7799435427404), 3: np.float64(241.0490469010853), 4: np.float64(175.73859343444894), 5: np.float64(158.59400937070367), 6: np.float64(191.2406453920035), 7: np.float64(212.1327871917716)}, 'speed': {1: np.float64(36.26895122316249), 2: np.float64(33.31601302605526), 3: np.float64(27.73606311704498), 4: np.float64(29.458314321714443), 5: np.float64(33.31750188959439), 6: np.float64(34.66609486815823), 7: np.float64(34.02635658006266)}, 'rate': {1: np.float64(7834.648558104903), 2: np.float64(7623.980795514653), 3: np.float64(6687.4578468691225), 4: np.float64(5178.283934225553), 5: np.float64(5285.3047230240445), 6: np.float64(6631.258284517972), 7: np.float64(7219.947988928322)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 45 (no missing data).
+2. Partial observations and available video clips at time step 46 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 45:
+Density: {1: 216.0, 2: 228.8, 3: 241.0, 4: 175.7, 5: 158.6, 6: 191.2, 7: 212.1}
+Speed:   {1: 36.3, 2: 33.3, 3: 27.7, 4: 29.5, 5: 33.3, 6: 34.7, 7: 34.0}
+Flow:    {1: 7834.6, 2: 7624.0, 3: 6687.5, 4: 5178.3, 5: 5285.3, 6: 6631.3, 7: 7219.9}
+
+Partially observed sensor readings at time step 46:
+Density: {1: 239.8, 2: 195.1, 3: 214.4, 4: 188.1, 5: 192.4, 6: 196.8, 7: 210.4}
+Speed:   {1: 24.2, 2: 31.5, 3: 25.9, 4: 26.0, 5: 29.1, 6: 34.7, 7: 37.1}
+Flow:    {1: 5805.2, 2: 6139.3, 3: 5358.4, 4: 4889.1, 5: 5602.7, 6: 6831.8, 7: 7797.8}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 46 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 239.8,
+    "2": 195.1,
+    "3": 214.4,
+    "4": 18.1,
+    "5": 192.4,
+    "6": 196.8,
+    "7": 210.4
+  },
+  "speed": {
+    "1": 24.2,
+    "2": 31.5,
+    "3": 25.9,
+    "4": 26.0,
+    "5": 29.1,
+    "6": 34.7,
+    "7": 37.1
+  },
+  "flow": {
+    "1": 5805.2,
+    "2": 6139.3,
+    "3": 535.8,
+    "4": 489.1,
+    "5": 529.1,
+    "6": 34.7,
+    "7": 797.8
+  }
+}
+```
+
+video path:
+['../data/video_cut/P1/P1_2760_2820.mp4', '../data/video_cut/P2/P2_2760_2820.mp4', '../data/video_cut/P4/P4_2760_2820.mp4', '../data/video_cut/P5/P5_2760_2820.mp4', '../data/video_cut/P6/P6_2760_2820.mp4', '../data/video_cut/P7/P7_2760_2820.mp4']
+ ground truth:
+{'density': {1: np.float64(239.84055700711687), 2: np.float64(195.1088806249092), 3: np.float64(206.56970012881695), 4: np.float64(188.07158256192065), 5: np.float64(192.412926636916), 6: np.float64(196.80292609190664), 7: np.float64(210.35146152402768)}, 'speed': {1: np.float64(24.198362686459028), 2: np.float64(31.45777159047729), 3: np.float64(26.79705981760413), 4: np.float64(25.98926263422048), 5: np.float64(29.11056895996246), 6: np.float64(34.70484800018954), 7: np.float64(37.06089011786862)}, 'rate': {1: np.float64(5805.229957552958), 2: np.float64(6139.256999288478), 3: np.float64(5536.873313321941), 4: np.float64(4889.089177177185), 5: np.float64(5602.67926213988), 6: np.float64(6831.75872129568), 7: np.float64(7797.801967525951)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 46 (no missing data).
+2. Partial observations and available video clips at time step 47 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 46:
+Density: {1: 239.8, 2: 195.1, 3: 206.6, 4: 188.1, 5: 192.4, 6: 196.8, 7: 210.4}
+Speed:   {1: 24.2, 2: 31.5, 3: 26.8, 4: 26.0, 5: 29.1, 6: 34.7, 7: 37.1}
+Flow:    {1: 5805.2, 2: 6139.3, 3: 5536.9, 4: 4889.1, 5: 5602.7, 6: 6831.8, 7: 7797.8}
+
+Partially observed sensor readings at time step 47:
+Density: {1: 237.6, 2: 262.5, 3: 215.7, 4: 198.2, 5: 180.8, 6: 191.4, 7: 155.7}
+Speed:   {1: 10.7, 2: 13.6, 3: 21.1, 4: 20.4, 5: 23.9, 6: 31.7, 7: 44.8}
+Flow:    {1: 2546.6, 2: 3576.8, 3: 4549.5, 4: 4053.5, 5: 4315.9, 6: 6077.2, 7: 6985.0}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 47 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+"density": {
+"1": 237.6,
+"2": 262.5,
+"3": 215.7,
+"4": 198.2,
+"5": 180.8,
+"6": 191.4,
+"7": 15.7
+}
+"speed": {
+"1": 10.7,
+"2": 13.6,
+"3": 21.1,
+"4": 20.4,
+"5": 23.9,
+"6": 31.7,
+"7": 4.8
+}
+"flow": {
+"1": 256.6,
+"2": 376.8,
+"3": 49.5,
+"4": 489.1,
+"5": 502.7,
+"6": 683.8,
+"7": 797.8
+}
+
+video path:
+['../data/video_cut/P1/P1_2820_2880.mp4', '../data/video_cut/P2/P2_2820_2880.mp4', '../data/video_cut/P3/P3_2820_2880.mp4', '../data/video_cut/P4/P4_2820_2880.mp4', '../data/video_cut/P5/P5_2820_2880.mp4', '../data/video_cut/P6/P6_2820_2880.mp4', '../data/video_cut/P7/P7_2820_2880.mp4']
+ ground truth:
+{'density': {1: np.float64(237.6097844541392), 2: np.float64(262.4732872616818), 3: np.float64(215.68188032490545), 4: np.float64(198.2274496384483), 5: np.float64(180.8287392773343), 6: np.float64(191.40867592469985), 7: np.float64(155.7259670144454)}, 'speed': {1: np.float64(10.714817439680958), 2: np.float64(13.623925111526468), 3: np.float64(21.088339676475407), 4: np.float64(20.44371681583253), 5: np.float64(23.861311595198544), 6: np.float64(31.741569491342265), 7: np.float64(44.84284593902937)}, 'rate': {1: np.float64(2546.595211928616), 2: np.float64(3576.829017481865), 3: np.float64(4549.533542560722), 4: np.float64(4053.540083765848), 5: np.float64(4315.912074251847), 6: np.float64(6077.162342319302), 7: np.float64(6984.977725796448)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 47 (no missing data).
+2. Partial observations and available video clips at time step 48 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 47:
+Density: {1: 237.6, 2: 262.5, 3: 215.7, 4: 198.2, 5: 180.8, 6: 191.4, 7: 155.7}
+Speed:   {1: 10.7, 2: 13.6, 3: 21.1, 4: 20.4, 5: 23.9, 6: 31.7, 7: 44.8}
+Flow:    {1: 2546.6, 2: 3576.8, 3: 4549.5, 4: 4053.5, 5: 4315.9, 6: 6077.2, 7: 6985.0}
+
+Partially observed sensor readings at time step 48:
+Density: {1: 202.5, 2: 211.6, 3: 185.8, 4: 160.8, 5: 169.7, 6: 219.9, 7: 235.1}
+Speed:   {1: 25.8, 2: 29.0, 3: 8.5, 4: 10.9, 5: 16.9, 6: 19.9, 7: 29.9}
+Flow:    {1: 5222.7, 2: 5910.9, 3: 1571.4, 4: 1759.4, 5: 2876.0, 6: 4371.7, 7: 7032.3}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 48 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 202.5,
+    "2": 21.6,
+    "3": 185.8,
+    "4": 160.8,
+    "5": 169.7,
+    "6": 219.9,
+    "7": 235.1
+  },
+  "speed": {
+    "1": 25.8,
+    "2": 29.0,
+    "3": 8.5,
+    "4": 10.9,
+    "5": 16.9,
+    "6": 19.9,
+    "7": 29.9
+  },
+  "flow": {
+    "1": 522.7,
+    "2": 591.9,
+    "3": 151.4,
+    "4": 179.4,
+    "5": 286.0,
+    "6": 437.7,
+    "7": 703.3
+  }
+}
+```
+
+video path:
+['../data/video_cut/P1/P1_2880_2940.mp4', '../data/video_cut/P3/P3_2880_2940.mp4', '../data/video_cut/P4/P4_2880_2940.mp4', '../data/video_cut/P5/P5_2880_2940.mp4', '../data/video_cut/P6/P6_2880_2940.mp4', '../data/video_cut/P7/P7_2880_2940.mp4']
+ ground truth:
+{'density': {1: np.float64(202.4523555622773), 2: np.float64(194.7852865819155), 3: np.float64(185.8463087140324), 4: np.float64(160.83693952757423), 5: np.float64(169.66975635751115), 6: np.float64(219.93827564644857), 7: np.float64(235.14916624587144)}, 'speed': {1: np.float64(25.790475700084244), 2: np.float64(13.624868620268268), 3: np.float64(8.452985639014274), 4: np.float64(10.935944480082467), 5: np.float64(16.946361284629493), 6: np.float64(19.87194515927004), 7: np.float64(29.897967864658256)}, 'rate': {1: np.float64(5222.675093088868), 2: np.float64(2654.601245599933), 3: np.float64(1571.3571016582553), 4: np.float64(1759.352730094835), 5: np.float64(2876.0187905259663), 6: np.float64(4371.716771317529), 7: np.float64(7032.276462091347)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 48 (no missing data).
+2. Partial observations and available video clips at time step 49 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 48:
+Density: {1: 202.5, 2: 194.8, 3: 185.8, 4: 160.8, 5: 169.7, 6: 219.9, 7: 235.1}
+Speed:   {1: 25.8, 2: 13.6, 3: 8.5, 4: 10.9, 5: 16.9, 6: 19.9, 7: 29.9}
+Flow:    {1: 5222.7, 2: 2654.6, 3: 1571.4, 4: 1759.4, 5: 2876.0, 6: 4371.7, 7: 7032.3}
+
+Partially observed sensor readings at time step 49:
+Density: {1: 152.4, 2: 211.6, 3: 214.4, 4: 188.8, 5: 192.2, 6: 278.8, 7: 270.7}
+Speed:   {1: 39.1, 2: 29.0, 3: 25.9, 4: 10.8, 5: 24.3, 6: 12.5, 7: 15.6}
+Flow:    {1: 5961.8, 2: 5910.9, 3: 5358.4, 4: 2046.4, 5: 4543.6, 6: 3478.9, 7: 4236.4}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 49 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+"density": {
+"1": 152.4,
+"2": 21.6,
+"3": 214.4,
+"4": 18.8,
+"5": 192.2,
+"6": 27.8,
+"7": 270.7
+},
+"speed": {
+"1": 39.1,
+"2": 29.0,
+"3": 25.9,
+"4": 10.8,
+"5": 24.3,
+"6": 12.5,
+"7": 15.6
+},
+"flow": {
+"1": 591.8,
+"2": 5910.9,
+"3": 535.4,
+"4": 204.4,
+"5": 454.6,
+"6": 348.9,
+"7": 4236.4
+}
+}
+
+video path:
+['../data/video_cut/P1/P1_2940_3000.mp4', '../data/video_cut/P4/P4_2940_3000.mp4', '../data/video_cut/P6/P6_2940_3000.mp4', '../data/video_cut/P7/P7_2940_3000.mp4']
+ ground truth:
+{'density': {1: np.float64(152.36353208370147), 2: np.float64(168.85224140428468), 3: np.float64(219.21510340311133), 4: np.float64(188.8287481791762), 5: np.float64(176.91259095445818), 6: np.float64(278.816562295602), 7: np.float64(270.7186046777153)}, 'speed': {1: np.float64(39.11868140609954), 2: np.float64(35.01600662869004), 3: np.float64(20.253269607919343), 4: np.float64(10.834794517480958), 5: np.float64(9.326431042207336), 6: np.float64(12.474357403469975), 7: np.float64(15.644877467828856)}, 'rate': {1: np.float64(5961.781584940732), 2: np.float64(5914.040138767231), 3: np.float64(4440.955676520019), 4: np.float64(2046.442824031956), 5: np.float64(1650.3841663862402), 6: np.float64(3478.945081592286), 7: np.float64(4236.440302651898)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 49 (no missing data).
+2. Partial observations and available video clips at time step 50 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 49:
+Density: {1: 152.4, 2: 168.9, 3: 219.2, 4: 188.8, 5: 176.9, 6: 278.8, 7: 270.7}
+Speed:   {1: 39.1, 2: 35.0, 3: 20.3, 4: 10.8, 5: 9.3, 6: 12.5, 7: 15.6}
+Flow:    {1: 5961.8, 2: 5914.0, 3: 4441.0, 4: 2046.4, 5: 1650.4, 6: 3478.9, 7: 4236.4}
+
+Partially observed sensor readings at time step 50:
+Density: {1: 168.8, 2: 158.7, 3: 180.2, 4: 186.0, 5: 234.5, 6: 300.9, 7: 292.9}
+Speed:   {1: 38.3, 2: 38.4, 3: 31.1, 4: 24.5, 5: 15.5, 6: 13.6, 7: 15.3}
+Flow:    {1: 6464.7, 2: 6092.1, 3: 5600.3, 4: 4449.4, 5: 3641.7, 6: 4080.1, 7: 4489.0}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 50 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+  "density": {
+    "1": 16.8,
+    "2": 15.7,
+    "3": 18.2,
+    "4": 18.0,
+    "5": 234.5,
+    "6": 30.9,
+    "7": 292.9
+  },
+  "speed": {
+    "1": 38.3,
+    "2": 38.4,
+    "3": 31.1,
+    "4": 24.5,
+    "5": 15.5,
+    "6": 13.6,
+    "7": 15.3
+  },
+  "flow": {
+    "1": 6464.7,
+    "2": 6092.1,
+    "3": 501.0,
+    "4": 4449.4,
+    "5": 361.7,
+    "6": 408.1,
+    "7": 492.0
+  }
+}
+
+video path:
+['../data/video_cut/P1/P1_3000_3060.mp4', '../data/video_cut/P2/P2_3000_3060.mp4', '../data/video_cut/P3/P3_3000_3060.mp4', '../data/video_cut/P5/P5_3000_3060.mp4', '../data/video_cut/P6/P6_3000_3060.mp4', '../data/video_cut/P7/P7_3000_3060.mp4']
+ ground truth:
+{'density': {1: np.float64(168.83874141371814), 2: np.float64(158.6502042713438), 3: np.float64(180.2012284336228), 4: np.float64(173.63267147818564), 5: np.float64(234.49092180800704), 6: np.float64(300.85016280671834), 7: np.float64(292.8925143668285)}, 'speed': {1: np.float64(38.27968197382781), 2: np.float64(38.38969682005364), 3: np.float64(31.0701006015014), 4: np.float64(25.48831677495923), 5: np.float64(15.526399467631178), 6: np.float64(13.558307230269708), 7: np.float64(15.322664420943225)}, 'rate': {1: np.float64(6464.742769380852), 2: np.float64(6092.087604723882), 3: np.float64(5600.299181170099), 4: np.float64(4426.733989702931), 5: np.float64(3641.728890418748), 6: np.float64(4080.05994223741), 7: np.float64(4489.039062426878)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 50 (no missing data).
+2. Partial observations and available video clips at time step 51 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 50:
+Density: {1: 168.8, 2: 158.7, 3: 180.2, 4: 173.6, 5: 234.5, 6: 300.9, 7: 292.9}
+Speed:   {1: 38.3, 2: 38.4, 3: 31.1, 4: 25.5, 5: 15.5, 6: 13.6, 7: 15.3}
+Flow:    {1: 6464.7, 2: 6092.1, 3: 5600.3, 4: 4426.7, 5: 3641.7, 6: 4080.1, 7: 4489.0}
+
+Partially observed sensor readings at time step 51:
+Density: {1: 195.2, 2: 208.2, 3: 198.4, 4: 169.1, 5: 197.8, 6: 230.2, 7: 219.1}
+Speed:   {1: 27.8, 2: 32.4, 3: 32.6, 4: 32.9, 5: 28.4, 6: 27.3, 7: 31.9}
+Flow:    {1: 5435.5, 2: 6740.3, 3: 6475.7, 4: 5560.5, 5: 5629.1, 6: 6283.0, 7: 6496.4}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 51 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 195.2,
+    "2": 28.2,
+    "3": 198.4,
+    "4": 16.1,
+    "5": 197.8,
+    "6": 230.2,
+    "7": 219.1
+  },
+  "speed": {
+    "1": 27.8,
+    "2": 32.4,
+    "3": 32.6,
+    "4": 32.9,
+    "5": 28.4,
+    "6": 27.3,
+    "7": 31.9
+  },
+  "flow": {
+    "1": 535.5,
+    "2": 60.3,
+    "3": 60.3,
+    "4": 42.5,
+    "5": 361.7,
+    "6": 40.1,
+    "7": 496.4
+  }
+}
+```
+
+video path:
+['../data/video_cut/P1/P1_3060_3120.mp4', '../data/video_cut/P2/P2_3060_3120.mp4', '../data/video_cut/P3/P3_3060_3120.mp4', '../data/video_cut/P4/P4_3060_3120.mp4', '../data/video_cut/P5/P5_3060_3120.mp4', '../data/video_cut/P6/P6_3060_3120.mp4']
+ ground truth:
+{'density': {1: np.float64(195.2156245753083), 2: np.float64(208.2029600940983), 3: np.float64(198.35927758438703), 4: np.float64(169.06346897356653), 5: np.float64(197.8409427894653), 6: np.float64(230.1612771321473), 7: np.float64(292.280841973604)}, 'speed': {1: np.float64(27.836352994070555), 2: np.float64(32.3652395886064), 3: np.float64(32.63797806257434), 4: np.float64(32.88162977061135), 5: np.float64(28.44544457473341), 6: np.float64(27.2913832460998), 7: np.float64(20.839661313198864)}, 'rate': {1: np.float64(5435.47786761706), 2: np.float64(6740.258425994061), 3: np.float64(6475.697988673029), 4: np.float64(5560.501125494549), 5: np.float64(5629.1098088256285), 6: np.float64(6283.022700961687), 7: np.float64(6092.588245109533)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 51 (no missing data).
+2. Partial observations and available video clips at time step 52 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 51:
+Density: {1: 195.2, 2: 208.2, 3: 198.4, 4: 169.1, 5: 197.8, 6: 230.2, 7: 292.3}
+Speed:   {1: 27.8, 2: 32.4, 3: 32.6, 4: 32.9, 5: 28.4, 6: 27.3, 7: 20.8}
+Flow:    {1: 5435.5, 2: 6740.3, 3: 6475.7, 4: 5560.5, 5: 5629.1, 6: 6283.0, 7: 6092.6}
+
+Partially observed sensor readings at time step 52:
+Density: {1: 282.7, 2: 234.0, 3: 205.2, 4: 184.6, 5: 175.7, 6: 177.1, 7: 219.1}
+Speed:   {1: 13.1, 2: 16.6, 3: 21.1, 4: 24.1, 5: 31.6, 6: 38.5, 7: 31.9}
+Flow:    {1: 3713.2, 2: 3877.3, 3: 4338.3, 4: 4452.9, 5: 5545.3, 6: 6814.3, 7: 6496.4}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 52 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+  "density": {
+    "1": 282.7,
+    "2": 234.0,
+    "3": 205.2,
+    "4": 184.6,
+    "5": 175.7,
+    "6": 17.1,
+    "7": 219.1
+  },
+  "speed": {
+    "1": 13.1,
+    "2": 16.6,
+    "3": 21.1,
+    "4": 24.1,
+    "5": 31.6,
+    "6": 38.5,
+    "7": 31.9
+  },
+  "flow": {
+    "1": 3713.2,
+    "2": 387.3,
+    "3": 438.3,
+    "4": 452.9,
+    "5": 545.3,
+    "6": 614.3,
+    "7": 6496.4
+  }
+}
+
+video path:
+['../data/video_cut/P1/P1_3120_3180.mp4', '../data/video_cut/P2/P2_3120_3180.mp4', '../data/video_cut/P3/P3_3120_3180.mp4', '../data/video_cut/P4/P4_3120_3180.mp4', '../data/video_cut/P5/P5_3120_3180.mp4', '../data/video_cut/P6/P6_3120_3180.mp4']
+ ground truth:
+{'density': {1: np.float64(282.7044276009042), 2: np.float64(233.9624183459693), 3: np.float64(205.23702688162484), 4: np.float64(184.59185131125665), 5: np.float64(175.6754251882806), 6: np.float64(177.10578566109837), 7: np.float64(186.87477744491983)}, 'speed': {1: np.float64(13.131185528114052), 2: np.float64(16.567933821465363), 3: np.float64(21.13263416178312), 4: np.float64(24.116963485867203), 5: np.float64(31.557343518871857), 6: np.float64(38.46623697314827), 7: np.float64(39.20024310398265)}, 'rate': {1: np.float64(3713.1916886772815), 2: np.float64(3877.263126012264), 3: np.float64(4338.305900190158), 4: np.float64(4452.931078488374), 5: np.float64(5545.264583942012), 6: np.float64(6814.331759446439), 7: np.float64(7327.4062528411105)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 52 (no missing data).
+2. Partial observations and available video clips at time step 53 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 52:
+Density: {1: 282.7, 2: 234.0, 3: 205.2, 4: 184.6, 5: 175.7, 6: 177.1, 7: 186.9}
+Speed:   {1: 13.1, 2: 16.6, 3: 21.1, 4: 24.1, 5: 31.6, 6: 38.5, 7: 39.2}
+Flow:    {1: 3713.2, 2: 3877.3, 3: 4338.3, 4: 4452.9, 5: 5545.3, 6: 6814.3, 7: 7327.4}
+
+Partially observed sensor readings at time step 53:
+Density: {1: 220.3, 2: 228.0, 3: 214.4, 4: 206.9, 5: 180.7, 6: 201.3, 7: 219.1}
+Speed:   {1: 19.7, 2: 12.7, 3: 25.9, 4: 13.9, 5: 20.1, 6: 28.5, 7: 31.9}
+Flow:    {1: 4345.1, 2: 2907.3, 3: 5358.4, 4: 2883.9, 5: 3639.6, 6: 5733.2, 7: 6496.4}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 53 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+  "density": {
+    "1": 20.3,
+    "2": 28.0,
+    "3": 214.4,
+    "4": 206.9,
+    "5": 180.7,
+    "6": 201.3,
+    "7": 29.1
+  },
+  "speed": {
+    "1": 19.7,
+    "2": 12.7,
+    "3": 25.9,
+    "4": 13.9,
+    "5": 20.1,
+    "6": 28.5,
+    "7": 31.9
+  },
+  "flow": {
+    "1": 4545.1,
+    "2": 2907.3,
+    "3": 5358.4,
+    "4": 283.9,
+    "5": 363.6,
+    "6": 573.2,
+    "7": 6496.4
+  }
+}
+
+video path:
+['../data/video_cut/P1/P1_3180_3240.mp4', '../data/video_cut/P2/P2_3180_3240.mp4', '../data/video_cut/P4/P4_3180_3240.mp4', '../data/video_cut/P5/P5_3180_3240.mp4', '../data/video_cut/P6/P6_3180_3240.mp4']
+ ground truth:
+{'density': {1: np.float64(220.27836598611452), 2: np.float64(227.98224003226957), 3: np.float64(240.5110875511804), 4: np.float64(206.86722281578324), 5: np.float64(180.73282169067895), 6: np.float64(201.28073086930743), 7: np.float64(176.95912730173103)}, 'speed': {1: np.float64(19.720579204653344), 2: np.float64(12.749109427570009), 3: np.float64(13.376754139480877), 4: np.float64(13.937374049569446), 5: np.float64(20.13281678223556), 6: np.float64(28.476440148358417), 7: np.float64(39.512196586500174)}, 'rate': {1: np.float64(4345.125598157571), 2: np.float64(2907.312310298173), 3: np.float64(3218.0787609089302), 4: np.float64(2883.921679573954), 5: np.float64(3639.589406652055), 6: np.float64(5733.221485228397), 7: np.float64(6993.828262147993)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 53 (no missing data).
+2. Partial observations and available video clips at time step 54 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 53:
+Density: {1: 220.3, 2: 228.0, 3: 240.5, 4: 206.9, 5: 180.7, 6: 201.3, 7: 177.0}
+Speed:   {1: 19.7, 2: 12.7, 3: 13.4, 4: 13.9, 5: 20.1, 6: 28.5, 7: 39.5}
+Flow:    {1: 4345.1, 2: 2907.3, 3: 3218.1, 4: 2883.9, 5: 3639.6, 6: 5733.2, 7: 6993.8}
+
+Partially observed sensor readings at time step 54:
+Density: {1: 222.2, 2: 216.0, 3: 214.4, 4: 186.0, 5: 192.2, 6: 200.6, 7: 219.3}
+Speed:   {1: 25.9, 2: 24.8, 3: 25.9, 4: 24.5, 5: 24.3, 6: 17.1, 7: 21.4}
+Flow:    {1: 5752.2, 2: 5358.2, 3: 5358.4, 4: 4449.4, 5: 4543.6, 6: 3430.2, 7: 4697.8}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 54 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 222.2,
+    "2": 216.0,
+    "3": 24.4,
+    "4": 18.0,
+    "5": 192.2,
+    "6": 20.6,
+    "7": 29.3
+  },
+  "speed": {
+    "1": 25.9,
+    "2": 24.8,
+    "3": 25.9,
+    "4": 24.5,
+    "5": 24.3,
+    "6": 17.1,
+    "7": 21.4
+  },
+  "flow": {
+    "1": 575.2,
+    "2": 535.2,
+    "3": 535.4,
+    "4": 449.4,
+    "5": 444.3,
+    "6": 343.2,
+    "7": 497.8
+  }
+}
+```
+
+video path:
+['../data/video_cut/P1/P1_3240_3300.mp4', '../data/video_cut/P2/P2_3240_3300.mp4', '../data/video_cut/P6/P6_3240_3300.mp4', '../data/video_cut/P7/P7_3240_3300.mp4']
+ ground truth:
+{'density': {1: np.float64(222.1588577802456), 2: np.float64(215.97551448798407), 3: np.float64(231.11216765964767), 4: np.float64(208.1689651312336), 5: np.float64(183.61813273913344), 6: np.float64(200.5631315583806), 7: np.float64(219.2606274210755)}, 'speed': {1: np.float64(25.885633735969247), 2: np.float64(24.803043087110023), 3: np.float64(16.230025860487164), 4: np.float64(11.326488716113502), 5: np.float64(11.342501419317264), 6: np.float64(17.098363271081986), 7: np.float64(21.420394287243912)}, 'rate': {1: np.float64(5752.190463140776), 2: np.float64(5358.217110934207), 3: np.float64(3751.913737735545), 4: np.float64(2358.425173684646), 5: np.float64(2083.2204533312274), 6: np.float64(3430.176472641458), 7: np.float64(4697.847720774723)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 54 (no missing data).
+2. Partial observations and available video clips at time step 55 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 54:
+Density: {1: 222.2, 2: 216.0, 3: 231.1, 4: 208.2, 5: 183.6, 6: 200.6, 7: 219.3}
+Speed:   {1: 25.9, 2: 24.8, 3: 16.2, 4: 11.3, 5: 11.3, 6: 17.1, 7: 21.4}
+Flow:    {1: 5752.2, 2: 5358.2, 3: 3751.9, 4: 2358.4, 5: 2083.2, 6: 3430.2, 7: 4697.8}
+
+Partially observed sensor readings at time step 55:
+Density: {1: 200.8, 2: 221.4, 3: 235.3, 4: 186.0, 5: 215.0, 6: 274.2, 7: 232.6}
+Speed:   {1: 31.6, 2: 27.5, 3: 21.9, 4: 24.5, 5: 15.0, 6: 12.6, 7: 15.7}
+Flow:    {1: 6035.2, 2: 6082.0, 3: 5165.2, 4: 4449.4, 5: 3215.3, 6: 3455.8, 7: 3662.6}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 55 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+  "density": {
+    "1": 20.8,
+    "2": 21.4,
+    "3": 235.3,
+    "4": 18.0,
+    "5": 25.0,
+    "6": 27.4,
+    "7": 232.6
+  },
+  "speed": {
+    "1": 31.6,
+    "2": 27.5,
+    "3": 21.9,
+    "4": 24.5,
+    "5": 15.0,
+    "6": 12.6,
+    "7": 15.7
+  },
+  "flow": {
+    "1": 6035.2,
+    "2": 6082.0,
+    "3": 516.2,
+    "4": 449.4,
+    "5": 315.3,
+    "6": 345.8,
+    "7": 362.6
+  }
+}
+
+video path:
+['../data/video_cut/P2/P2_3300_3360.mp4', '../data/video_cut/P3/P3_3300_3360.mp4', '../data/video_cut/P5/P5_3300_3360.mp4', '../data/video_cut/P6/P6_3300_3360.mp4', '../data/video_cut/P7/P7_3300_3360.mp4']
+ ground truth:
+{'density': {1: np.float64(193.84088448880595), 2: np.float64(221.4234386327036), 3: np.float64(235.32655872500715), 4: np.float64(203.2220322541852), 5: np.float64(214.97701049534635), 6: np.float64(274.2157191752099), 7: np.float64(232.608143949087)}, 'speed': {1: np.float64(33.65557745043198), 2: np.float64(27.460578483051187), 3: np.float64(21.94342014543779), 4: np.float64(20.24806250507913), 5: np.float64(14.952437731618913), 6: np.float64(12.599277951405153), 7: np.float64(15.741646675263787)}, 'rate': {1: np.float64(6525.491843964501), 2: np.float64(6081.967494778009), 3: np.float64(5165.187418357179), 4: np.float64(4115.902561164305), 5: np.float64(3215.2507165190677), 6: np.float64(3455.801793161556), 7: np.float64(3662.569700146809)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 55 (no missing data).
+2. Partial observations and available video clips at time step 56 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 55:
+Density: {1: 193.8, 2: 221.4, 3: 235.3, 4: 203.2, 5: 215.0, 6: 274.2, 7: 232.6}
+Speed:   {1: 33.7, 2: 27.5, 3: 21.9, 4: 20.2, 5: 15.0, 6: 12.6, 7: 15.7}
+Flow:    {1: 6525.5, 2: 6082.0, 3: 5165.2, 4: 4115.9, 5: 3215.3, 6: 3455.8, 7: 3662.6}
+
+Partially observed sensor readings at time step 56:
+Density: {1: 200.8, 2: 211.6, 3: 206.6, 4: 189.6, 5: 193.6, 6: 215.0, 7: 273.2}
+Speed:   {1: 31.6, 2: 29.0, 3: 27.4, 4: 22.3, 5: 21.1, 6: 28.0, 7: 22.9}
+Flow:    {1: 6035.2, 2: 5910.9, 3: 5662.9, 4: 4219.3, 5: 4078.7, 6: 5692.5, 7: 6250.7}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 56 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 20.8,
+    "2": 21.6,
+    "3": 20.6,
+    "4": 19.6,
+    "5": 193.6,
+    "6": 215.0,
+    "7": 273.2
+  },
+  "speed": {
+    "1": 3.1,
+    "2": 29.0,
+    "3": 27.4,
+    "4": 2.3,
+    "5": 21.1,
+    "6": 28.0,
+    "7": 2.9
+  },
+  "flow": {
+    "1": 6035.2,
+    "2": 591.9,
+    "3": 562.9,
+    "4": 429.3,
+    "5": 415.3,
+    "6": 3415.8,
+    "7": 362.6
+  }
+}
+```
+
+video path:
+['../data/video_cut/P3/P3_3360_3420.mp4', '../data/video_cut/P4/P4_3360_3420.mp4', '../data/video_cut/P5/P5_3360_3420.mp4', '../data/video_cut/P7/P7_3360_3420.mp4']
+ ground truth:
+{'density': {1: np.float64(206.67339182170772), 2: np.float64(186.54977724075343), 3: np.float64(206.63531279151135), 4: np.float64(189.5749332623495), 5: np.float64(193.5810142950407), 6: np.float64(216.54640176285892), 7: np.float64(273.20915775885965)}, 'speed': {1: np.float64(32.22813524043123), 2: np.float64(34.35769042613096), 3: np.float64(27.3981062039968), 4: np.float64(22.25109639315533), 5: np.float64(21.064442317462536), 6: np.float64(26.58507829462385), 7: np.float64(22.873121348181847)}, 'rate': {1: np.float64(6662.397896038483), 2: np.float64(6411.05524062917), 3: np.float64(5662.861092905442), 4: np.float64(4219.326651500954), 5: np.float64(4078.716771298434), 6: np.float64(5758.372261976366), 7: np.float64(6250.741060708256)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 56 (no missing data).
+2. Partial observations and available video clips at time step 57 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 56:
+Density: {1: 206.7, 2: 186.5, 3: 206.6, 4: 189.6, 5: 193.6, 6: 216.5, 7: 273.2}
+Speed:   {1: 32.2, 2: 34.4, 3: 27.4, 4: 22.3, 5: 21.1, 6: 26.6, 7: 22.9}
+Flow:    {1: 6662.4, 2: 6411.1, 3: 5662.9, 4: 4219.3, 5: 4078.7, 6: 5758.4, 7: 6250.7}
+
+Partially observed sensor readings at time step 57:
+Density: {1: 153.2, 2: 209.5, 3: 203.0, 4: 183.4, 5: 210.5, 6: 215.0, 7: 219.1}
+Speed:   {1: 46.3, 2: 32.0, 3: 29.2, 4: 28.2, 5: 24.6, 6: 28.0, 7: 31.9}
+Flow:    {1: 7095.2, 2: 6715.9, 3: 5919.4, 4: 5169.7, 5: 5170.9, 6: 5692.5, 7: 6496.4}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 57 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: ```json
+{
+  "density": {
+    "1": 153.2,
+    "2": 29.5,
+    "3": 203.0,
+    "4": 183.4,
+    "5": 210.5,
+    "6": 215.0,
+    "7": 219.1
+  },
+  "speed": {
+    "1": 4.3,
+    "2": 32.0,
+    "3": 29.2,
+    "4": 28.2,
+    "5": 24.6,
+    "6": 28.0,
+    "7": 31.9
+  },
+  "flow": {
+    "1": 705.2,
+    "2": 615.9,
+    "3": 591.4,
+    "4": 516.7,
+    "5": 407.9,
+    "6": 575.4,
+    "7": 625.7
+  }
+}
+```
+
+video path:
+['../data/video_cut/P1/P1_3420_3480.mp4', '../data/video_cut/P2/P2_3420_3480.mp4', '../data/video_cut/P3/P3_3420_3480.mp4', '../data/video_cut/P4/P4_3420_3480.mp4', '../data/video_cut/P5/P5_3420_3480.mp4']
+ ground truth:
+{'density': {1: np.float64(153.18405357210267), 2: np.float64(209.5331436878826), 3: np.float64(202.97062257220645), 4: np.float64(183.42037280539253), 5: np.float64(210.48374628382211), 6: np.float64(255.22147911441323), 7: np.float64(233.86145609103207)}, 'speed': {1: np.float64(46.30623389353257), 2: np.float64(32.04357138790865), 3: np.float64(29.156167614316523), 4: np.float64(28.177729701847014), 5: np.float64(24.560476935331), 6: np.float64(24.438373969749158), 7: np.float64(30.92523488840597)}, 'rate': {1: np.float64(7095.186910991843), 2: np.float64(6715.903773432802), 3: np.float64(5919.355783240213), 4: np.float64(5169.688704074712), 5: np.float64(5170.900522406942), 6: np.float64(6238.789744253857), 7: np.float64(7234.066192759631)}}
+
+
+-----------------------------------------------------------------------------------------------output:
+ER: 
+
+
+You are tasked with estimating the complete traffic state at the second time step.
+
+Each traffic state consists of:
+- Density (vehicles/km)
+- Speed (km/h)
+- Flow rate (vehicles/hour)
+
+The relationship is:
+Flow rate = Density × Speed.
+
+Inputs provided:
+1. Full observations at time step 57 (no missing data).
+2. Partial observations and available video clips at time step 58 (some sensors missing).
+Each video file name contains its corresponding sensor ID.
+
+Fully observed sensor readings at time step 57:
+Density: {1: 153.2, 2: 209.5, 3: 203.0, 4: 183.4, 5: 210.5, 6: 255.2, 7: 233.9}
+Speed:   {1: 46.3, 2: 32.0, 3: 29.2, 4: 28.2, 5: 24.6, 6: 24.4, 7: 30.9}
+Flow:    {1: 7095.2, 2: 6715.9, 3: 5919.4, 4: 5169.7, 5: 5170.9, 6: 6238.8, 7: 7234.1}
+
+Partially observed sensor readings at time step 58:
+Density: {1: 152.9, 2: 166.4, 3: 214.4, 4: 186.0, 5: 192.2, 6: 229.6, 7: 219.1}
+Speed:   {1: 51.1, 2: 42.8, 3: 25.9, 4: 24.5, 5: 24.3, 6: 29.7, 7: 31.9}
+Flow:    {1: 7819.8, 2: 7121.0, 3: 5358.4, 4: 4449.4, 5: 4543.6, 6: 6813.1, 7: 6496.4}
+
+! Important Instructions:
+Please ONLY output the final estimated traffic state at time step 58 in the following strict JSON format without any explanation, computation steps, or additional text:
+
+{
+  "density": {sensor_id: value, ...},
+  "speed": {sensor_id: value, ...},
+  "flow": {sensor_id: value, ...}
+}
+Replace sensor_id and value with the actual numbers.
+
+Do not output anything other than this JSON format. ASSISTANT: {
+"density": {
+"1": 152.9,
+"2": 16.4,
+"3": 214.4,
+"4": 18.0,
+"5": 192.2,
+"6": 29.6,
+"7": 29.1
+},
+"speed": {
+"1": 51.1,
+"2": 42.8,
+"3": 25.9,
+"4": 24.5,
+"5": 24.3,
+"6": 29.7,
+"7": 31.9
+},
+"flow": {
+"1": 719.8,
+"2": 712.0,
+"3": 535.4,
+"4": 444.4,
+"5": 433.6,
+"6": 681.1,
+"7": 6496.4
+}
+}
+
+video path:
+['../data/video_cut/P1/P1_3480_3540.mp4', '../data/video_cut/P2/P2_3480_3540.mp4', '../data/video_cut/P6/P6_3480_3540.mp4']
+ ground truth:
+{'density': {1: np.float64(152.94283803944705), 2: np.float64(166.40016723191124), 3: np.float64(186.1330215410644), 4: np.float64(176.51974284983152), 5: np.float64(207.8038578947208), 6: np.float64(229.6266684435286), 7: np.float64(227.92207929083955)}, 'speed': {1: np.float64(51.11614039828815), 2: np.float64(42.783377484532615), 3: np.float64(34.8508965169606), 4: np.float64(30.67184047296568), 5: np.float64(26.419339845235697), 6: np.float64(29.66259912079587), 7: np.float64(32.25728233755399)}, 'rate': {1: np.float64(7819.842771576615), 2: np.float64(7120.978046159701), 3: np.float64(6488.558191691898), 4: np.float64(5415.567144889491), 5: np.float64(5491.441853752668), 6: np.float64(6813.06212843602), 7: np.float64(7354.02320081098)}}
+
+
