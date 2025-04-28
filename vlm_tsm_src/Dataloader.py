@@ -66,12 +66,13 @@ class MultiModalDataset(Dataset):
             time_start = t
             time_end = self.time_bins[i + 1] if i + 1 < len(self.time_bins) else t + 300
 
-            entry = {"time_index": i, "video_paths": {}, "density": {}, "speed": {}, "rate": {}}
+            entry = {"time_index": i, "video_paths": {}, "density": {}, "speed": {}, "rate": {}, "count":{}}
 
             for sensor_id in self.sensor_ids:
                 entry["density"][sensor_id] = self.data_frames["density"].iloc[i][str(sensor_id)]
                 entry["speed"][sensor_id] = self.data_frames["speed"].iloc[i][str(sensor_id)]
                 entry["rate"][sensor_id] = self.data_frames["rate"].iloc[i][str(sensor_id)]
+                entry["count"][sensor_id] = self.data_frames["count"].iloc[i][str(sensor_id)]
                 video_name = f"P{sensor_id}_{int(time_start)}_{int(time_end)}.mp4"
                 video_path = os.path.join(self.output_dir, str(f"P{sensor_id}"), video_name)
                 entry["video_paths"][sensor_id] = video_path
@@ -92,23 +93,65 @@ class MultiModalDataset(Dataset):
         def dict_to_str(d):
             return "{" + ", ".join(f"{int(k)}: {v:.1f}" for k, v in d.items()) + "}"
 
+        a = list(full_t1_data['density'].keys())
+
+        # """
+        # prompt = (
+        #     f"There are two time steps showing density, speed, and flow from a highway based on different observation locations.\n"
+        #     f"The first step is fully observed while the next partially observed. For those unobserved data, there are videos for your reference. \n"
+        #     f"The numbers in video file name indicates the sensor index from sensor {a[0]} to sensor {a[-1]}.\n"
+        #     f"The data is in a dictionary format and the key is the sensor index.\n"
+        #     f"Your task is to predict the traffic state data on step 2 considering the sensor location and video input, which is sequentially linked from small to large.\n "
+        #     f"You can count the total number of vehicle in video as count and get rate = count/video length \n"
+        #     f"You can count the number of vehicle in on frame and get density = number of frame/0.65.\n "
+        #     f"Please output the result in same format as your input data.\n"
+        #     f"The following text shows the traffic state.\n"
+        #     f"Time step {t1_idx}:\n"
+        #     f"Density: {dict_to_str(full_t1_data['density'])}\n"
+        #     f"Speed:   {dict_to_str(full_t1_data['speed'])}\n"
+        #     f"Flow:    {dict_to_str(full_t1_data['rate'])}\n\n"
+        #     f"Time step {t2_idx} - Observed (some values may be missing):\n"
+        #     f"Density: {dict_to_str(partial_t2_data['density'])}\n"
+        #     f"Speed:   {dict_to_str(partial_t2_data['speed'])}\n"
+        #     f"Flow:    {dict_to_str(partial_t2_data['rate'])}\n"
+        # )
+        # """
+
         prompt = (
-            f"Your task is to predict the density, speed, and flow for step 2. Step 1 is the fully observed data.\n"
-            f"below are the data for the observation with dictionary, the key is the sensor index."
-            f"Your output should consider the location for the sensors, which is sequentially linked from small to large. "
-            f"Time step {t1_idx}:\n"
+            f"You are tasked with estimating the complete traffic state at the second time step.\n\n"
+            f"Each traffic state consists of:\n"
+            f"- Density (vehicles/km)\n"
+            f"- Speed (km/h)\n"
+            f"- Flow rate (vehicles/hour)\n\n"
+            f"The relationship is:\n"
+            f"Flow rate = Density × Speed.\n\n"
+            f"Inputs provided:\n"
+            f"1. Full observations at time step {t1_idx} (no missing data).\n"
+            f"2. Partial observations and available video clips at time step {t2_idx} (some sensors missing).\n"
+            f"Each video file name contains its corresponding sensor ID.\n\n"
+            f"Fully observed sensor readings at time step {t1_idx}:\n"
             f"Density: {dict_to_str(full_t1_data['density'])}\n"
             f"Speed:   {dict_to_str(full_t1_data['speed'])}\n"
             f"Flow:    {dict_to_str(full_t1_data['rate'])}\n\n"
-            f"Time step {t2_idx} - Observed (some values may be missing):\n"
+            f"Partially observed sensor readings at time step {t2_idx}:\n"
             f"Density: {dict_to_str(partial_t2_data['density'])}\n"
             f"Speed:   {dict_to_str(partial_t2_data['speed'])}\n"
-            f"Flow:    {dict_to_str(partial_t2_data['rate'])}\n"
+            f"Flow:    {dict_to_str(partial_t2_data['rate'])}\n\n"
+            "! Important Instructions:\n"
+            f"Please ONLY output the final estimated traffic state at time step {t2_idx} "
+            "in the following strict JSON format without any explanation, computation steps, or additional text:\n\n"
+            "{\n"
+            "  \"density\": {sensor_id: value, ...},\n"
+            "  \"speed\": {sensor_id: value, ...},\n"
+            "  \"flow\": {sensor_id: value, ...}\n"
+            "}\n"
+            "Replace sensor_id and value with the actual numbers.\n\n"
+            "Do not output anything other than this JSON format."
         )
         return prompt
 
     def __getitem__(self, index):
-        if index >= len(self.temporal_data) - 1:
+        if index >= len(self.temporal_data):
             raise IndexError("Index out of range for paired time step.")
 
         t1_data = self.temporal_data[index]
@@ -145,7 +188,7 @@ class MultiModalDataset(Dataset):
 
         conversation = [{
             "role": str("user"),
-            "content": [{"type": "text", "text": prompt}] + available_video_paths
+            "content": [{"type": "text", "text": prompt}] + available_video_paths,
         }]
 
         return {

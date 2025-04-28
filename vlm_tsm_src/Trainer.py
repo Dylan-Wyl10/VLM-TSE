@@ -14,6 +14,7 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 import os
 from PIL import Image
+from utili import *
 
 
 class VLM_TSE_Agent:
@@ -43,7 +44,7 @@ class VLM_TSE_Agent:
         self.batch_size = min(self.data_count//4, 16)
         self.dataloader = DataLoader(self.dataset,
                                      batch_size=1,
-                                     shuffle=True,
+                                     shuffle=False,
                                      collate_fn=custom_collat_fn,
                                      num_workers=2)
 
@@ -57,7 +58,7 @@ class VLM_TSE_Agent:
         #
         # processor = AutoProcessor.from_pretrained(model_id)
 
-    def read_video_pyav(self, video_path, num_frames=8, resize=(336, 336)):
+    def read_video_pyav(self, video_path, compress_ratio = 150, num_frames=8, resize=(336, 336)):
         if not isinstance(video_path, str) or not os.path.isfile(video_path):
             raise FileNotFoundError(f"Invalid or missing video file: {video_path}")
         
@@ -80,40 +81,58 @@ class VLM_TSE_Agent:
         return np.stack(frames)
     
     def test(self):
-        for batch_id, data in enumerate(self.dataloader):
-            sample = data[0]['conversation']
-            prompt = sample[0]["content"][0]["text"]
-            video_paths = [v["path"] for v in sample[0]["content"][1:]]
+        with open('logs_1min.txt', "w") as f:
 
-            print("Prompt:")
-            print(prompt)
-            print("Videos:", video_paths)
+            for batch_id, data in enumerate(self.dataloader):
+                sample = data[0]['conversation']
+                prompt = sample[0]["content"][0]["text"]
+                video_paths = [v["path"] for v in sample[0]["content"][1:]]
 
-            clips = [self.read_video_pyav(path) for path in video_paths]
-            print("Video shapes:", [c.shape for c in clips])
+
+
+                print("Prompt:")
+                print(prompt)
+                print("Videos:", video_paths)
+
+                clips = [self.read_video_pyav(path) for path in video_paths]
+                print("Video shapes:", [c.shape for c in clips])
             
-            conversation = [
-                {
+                conversation = [
+                    {
                     "role": "user",
-                    "content": [{"type": "text", "text": prompt}] + [{"type": "video"} for _ in video_paths]
-                }
-            ]
-            formatted_prompt = self.processor.apply_chat_template(conversation, add_generation_prompt=True)
+                    "content": [{"type": "text", "text": prompt}]  + [{"type": "video"} for _ in video_paths]
+                    }
+                ]
+                formatted_prompt = self.processor.apply_chat_template(conversation, add_generation_prompt=True)
             
-            inputs = self.processor(
-                text=formatted_prompt,
-                videos=clips,
-                padding=True,
-                return_tensors="pt"
-            ).to(self.device)
+                inputs = self.processor(
+                    text=formatted_prompt,
+                    videos=clips,
+                    padding=True,
+                    return_tensors="pt"
+                ).to(self.device)
 
-            torch.cuda.empty_cache()
-            with torch.no_grad():
-                output = self.model.generate(**inputs, max_new_tokens=512)
-            decoded = self.processor.decode(output[0][2:], skip_special_tokens=True)
+            # torch.cuda.empty_cache()
+                with torch.no_grad():
+                    f.write(f"-----------------------------------------------------------------------------------------------")
+                    try:
+                        output = self.model.generate(**inputs, max_new_tokens=512)
+                        decoded = self.processor.decode(output[0][2:], skip_special_tokens=True)
+                        gth = data[0]['groundtruth']
+                        f.write(f"output:\n{decoded}\n\n")
+                        f.write(f"ground truth:\n{str(gth)}\n\n\n")
+                        print("\nModel Prediction:\n", decoded)
 
-            print("\nModel Prediction:\n", decoded)
-            return decoded
+                    except Exception as e:
+                        print(f"Error in case {batch_id}: skipping...")
+                        f.write(f"Error in case {batch_id}: skipping...\n\n")
+                        torch.cuda.empty_cache()
+                # ground truth
+                gth = data[0]['groundtruth']
+
+
+                print("\nModel Prediction:\n", decoded)
+            # return decoded
             
             # input = self.processor(text=prompt, v)
 
@@ -170,7 +189,8 @@ if __name__ == "__main__":
     csv_files = {
                 'density': '../data/traffic_state/traffic_state_groundtruth/5min/edie_density_10_16.csv',
                 'speed': '../data/traffic_state/traffic_state_groundtruth/5min/edie_speed_10_16.csv',
-                'rate': '../data/traffic_state/traffic_state_groundtruth/5min/edie_flow_10_16.csv'
+                'rate': '../data/traffic_state/traffic_state_groundtruth/5min/edie_flow_10_16.csv',
+                'count': '../data/traffic_state/traffic_state_groundtruth/5min/edie_count_10_16.csv'
     }
     # dataset = MultiModalDataset(
     #     csv_paths=csv_files,
@@ -191,6 +211,7 @@ if __name__ == "__main__":
     )
 
 tse_agent.test()
+
 #tse_agent.smalltry()
 
 
