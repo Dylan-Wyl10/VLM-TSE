@@ -81,7 +81,7 @@ class EvaluationTool:
 
     def plot_comparison(self, pred, gt, missing_sensors, case_idx):
         """
-        Plot and save comparison figure for one case, marking missing sensors.
+        Plot and save comparison figure for one case, marking missing sensors and showing missing IDs.
         """
         fig, axes = plt.subplots(1, 3, figsize=(18, 5))
         dimensions = ["density", "speed", "flow"]
@@ -109,10 +109,13 @@ class EvaluationTool:
         unique = dict(zip(labels, handles))
         fig.legend(unique.values(), unique.keys(), loc="upper right")
 
-        plt.suptitle(f"Case {case_idx} - Prediction vs Groundtruth", fontsize=16)
+        # show Missing sensor IDs
+        fig.text(0.5, 1.05, f"Missing sensors (via video): {sorted(list(missing_sensors))}", ha='center', fontsize=12)
+
+        plt.suptitle(f"Case {case_idx} - Prediction vs Groundtruth", fontsize=16, y=1.02)
         save_path = os.path.join(self.save_dir, f"case_{case_idx}_comparison.png")
         plt.tight_layout()
-        plt.savefig(save_path)
+        plt.savefig(save_path, bbox_inches="tight")
         plt.close()
 
     def plot_error_heatmap(self, all_errors, error_type="density"):
