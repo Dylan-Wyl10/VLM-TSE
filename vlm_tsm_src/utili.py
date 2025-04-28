@@ -15,54 +15,60 @@ class EvaluationTool:
         self.error_records = []
 
     def parse_cases(self):
-        """
-        Parse txt file and extract prediction JSON, groundtruth dict, and missing sensors per case.
-        """
         with open(self.txt_path, 'r', encoding='utf-8') as f:
             raw_text = f.read()
 
-        raw_cases = raw_text.split('-----------------------------------------------------------------------------------------------output:')
-        for case_text in raw_cases[1:]:  # Skip first empty
+        raw_cases = raw_text.split(
+            '-----------------------------------------------------------------------------------------------output:')
+        for idx, case_text in enumerate(raw_cases[1:]):
             try:
-                # Extract ASSISTANT output (model prediction)
-                pred_json_match = re.search(r'ASSISTANT:\s*(```json)?\s*({.*?})\s*(ground truth:)', case_text, re.DOTALL)
-                pred_text = pred_json_match.group(2) if pred_json_match else None
+                # Assistant prediction
+                pred_json_match = re.search(r'ASSISTANT:\s*(\{.*?\})\s*video path:', case_text, re.DOTALL)
+                pred_text = pred_json_match.group(1) if pred_json_match else None
 
-                # Extract groundtruth
+                # video path
+                video_match = re.search(r'video path:\s*(\[.*?\])\s*ground truth:', case_text, re.DOTALL)
+                video_text = video_match.group(1) if video_match else None
+
+                # ground truth
                 gt_match = re.search(r'ground truth:\s*({.*})', case_text, re.DOTALL)
                 gt_text = gt_match.group(1) if gt_match else None
 
-                # Extract videos mentioned (missing sensors)
-                video_ids = []
-                video_matches = re.findall(r'video.*?([Pp]\d+)', case_text)
-                for vid in video_matches:
-                    sensor_id = int(re.findall(r'\d+', vid)[0])
-                    video_ids.append(sensor_id)
+                missing_sensors = []
+                if video_text:
+                    video_list = ast.literal_eval(video_text)
+                    for path in video_list:
+                        match = re.search(r'P(\d+)', path)
+                        if match:
+                            sensor_id = int(match.group(1))
+                            missing_sensors.append(sensor_id)
 
                 if pred_text and gt_text:
                     pred = json.loads(pred_text)
-                    # Handle np.float64 manually
+
                     gt_text = re.sub(r'np\.float64\((.*?)\)', r'\1', gt_text)
                     gt = ast.literal_eval(gt_text)
 
                     gt_clean = {
                         "density": {int(k): float(v) for k, v in gt['density'].items()},
-                        "speed":   {int(k): float(v) for k, v in gt['speed'].items()},
-                        "flow":    {int(k): float(v) for k, v in gt['rate'].items()},
+                        "speed": {int(k): float(v) for k, v in gt['speed'].items()},
+                        "flow": {int(k): float(v) for k, v in gt['rate'].items()},
                     }
                     pred_clean = {
                         "density": {int(k): float(v) for k, v in pred['density'].items()},
-                        "speed":   {int(k): float(v) for k, v in pred['speed'].items()},
-                        "flow":    {int(k): float(v) for k, v in pred['flow'].items()},
+                        "speed": {int(k): float(v) for k, v in pred['speed'].items()},
+                        "flow": {int(k): float(v) for k, v in pred['flow'].items()},
                     }
 
                     self.cases.append({
                         "pred": pred_clean,
                         "gt": gt_clean,
-                        "missing_sensors": set(video_ids)
+                        "missing_sensors": set(missing_sensors)
                     })
+                else:
+                    print(f"⚠️ Warning: Case {idx} missing pred or gt, skipped.")
             except Exception as e:
-                print(f"Error parsing a case: {e}")
+                print(f"⚠️ Error parsing case {idx}: {e}")
                 continue
 
     def compute_metrics(self, pred, gt):
@@ -175,6 +181,6 @@ class EvaluationTool:
         for key in ["density", "speed", "flow"]:
             self.plot_error_heatmap([{key: case[key]} for case in all_errors], error_type=key)
 
-evaluator = EvaluationTool(txt_path="logs_1min.txt", save_dir="../result/eval_results1min")
+evaluator = EvaluationTool(txt_path="logs_5min.txt", save_dir="../result/eval_results5min")
 evaluator.parse_cases()
 evaluator.evaluate_all()

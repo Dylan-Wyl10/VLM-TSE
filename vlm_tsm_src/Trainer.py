@@ -81,7 +81,7 @@ class VLM_TSE_Agent:
         return np.stack(frames)
     
     def test(self):
-        with open('logs_1min.txt', "w") as f:
+        with open('logs_5min.txt', "w") as f:
 
             for batch_id, data in enumerate(self.dataloader):
                 sample = data[0]['conversation']
@@ -120,6 +120,7 @@ class VLM_TSE_Agent:
                         decoded = self.processor.decode(output[0][2:], skip_special_tokens=True)
                         gth = data[0]['groundtruth']
                         f.write(f"output:\n{decoded}\n\n")
+                        f.write(f"video path:\n{video_paths}\n ")
                         f.write(f"ground truth:\n{str(gth)}\n\n\n")
                         print("\nModel Prediction:\n", decoded)
 
@@ -187,10 +188,10 @@ class VLM_TSE_Agent:
 
 if __name__ == "__main__":
     csv_files = {
-                'density': '../data/traffic_state/traffic_state_groundtruth/5min/edie_density_10_16.csv',
-                'speed': '../data/traffic_state/traffic_state_groundtruth/5min/edie_speed_10_16.csv',
-                'rate': '../data/traffic_state/traffic_state_groundtruth/5min/edie_flow_10_16.csv',
-                'count': '../data/traffic_state/traffic_state_groundtruth/5min/edie_count_10_16.csv'
+                'density': '../data/traffic_state/traffic_state_groundtruth/1min/edie_density_10_16.csv',
+                'speed': '../data/traffic_state/traffic_state_groundtruth/1min/edie_speed_10_16.csv',
+                'rate': '../data/traffic_state/traffic_state_groundtruth/1min/edie_flow_10_16.csv',
+                'count': '../data/traffic_state/traffic_state_groundtruth/1min/edie_count_10_16.csv'
     }
     # dataset = MultiModalDataset(
     #     csv_paths=csv_files,
